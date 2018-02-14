@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnRaceMobile.iOS", "PawnR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnRaceMobile.UWP", "PawnRaceMobile\PawnRaceMobile.UWP\PawnRaceMobile.UWP.csproj", "{9EE33E19-B1BC-45BA-A240-771390FC344F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnRaceMobile", "PawnRaceMobile\PawnRaceMobile\PawnRaceMobile.csproj", "{1360754B-651E-4D3E-BD8A-E695AF9BDF20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnRaceMobile", "PawnRaceMobile\PawnRaceMobile\PawnRaceMobile.csproj", "{1360754B-651E-4D3E-BD8A-E695AF9BDF20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,7 +91,6 @@ Global
 		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Debug|x64.Build.0 = Debug|Any CPU
 		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Debug|x64.Deploy.0 = Debug|Any CPU
 		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Debug|x86.Build.0 = Debug|Any CPU
 		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Debug|x86.Deploy.0 = Debug|Any CPU
 		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBECFF27-FDA2-475F-82D0-971FC1211D93}.Release|Any CPU.Build.0 = Release|Any CPU
