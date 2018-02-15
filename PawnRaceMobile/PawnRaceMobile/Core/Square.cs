@@ -2,21 +2,6 @@
 {
     public struct Square
     {
-        public byte X
-        {
-            get; private set;
-        }
-
-        public byte Y
-        {
-            get; private set;
-        }
-
-        public Color Color
-        {
-            get; set;
-        }
-
         public Square(int x, int y) : this(x, y, Color.NONE)
         {
         }
@@ -31,10 +16,25 @@
             Color = color;
         }
 
-        public bool IsOccupied() => Color != Color.NONE;
+        public Color Color
+        {
+            get; set;
+        }
 
-        public bool IsOccupiedBy(Color color) => color == Color;
+        public bool IsOccupied => Color != Color.NONE;
 
         public string Notation => ('a' + X) + (Y + 1).ToString();
+
+        public byte X
+        {
+            get; private set;
+        }
+
+        public byte Y
+        {
+            get; private set;
+        }
+
+        public bool IsOccupiedBy(Color color) => color == Color;
     }
 }

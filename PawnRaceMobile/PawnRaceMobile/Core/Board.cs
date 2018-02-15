@@ -6,35 +6,10 @@ using System.Text;
 
 namespace PawnRaceMobile.Core
 {
-    public class Board
+    public class Board : ICloneable
     {
         public const int c_MAX_COORDINATE = 8;
         public const int c_MAX_INDEX = c_MAX_COORDINATE - 1;
-
-        private Square[,] Squares
-        {
-            get; set;
-        }
-
-        public List<Square> BlackPawns
-        {
-            get; private set;
-        }
-
-        public List<Square> WhitePawns
-        {
-            get; private set;
-        }
-
-        public byte WhiteGapIndex
-        {
-            get; private set;
-        }
-
-        public byte BlackGapIndex
-        {
-            get; private set;
-        }
 
         public Board(char whiteGap, char blackGap)
         {
@@ -78,20 +53,29 @@ namespace PawnRaceMobile.Core
             }
         }
 
-        //assert x<Squares.length && y < Squares[0].length
-        //  : "The square does not exist in current Squares";
-        public Square GetSquare(int x, int y) => Squares[x, y];
-
-        private void RemovePawn(Square pawn)
+        public byte BlackGapIndex
         {
-            if (pawn.Color == Color.WHITE)
-            {
-                WhitePawns.Remove(pawn);
-            }
-            else
-            {
-                BlackPawns.Remove(pawn);
-            }
+            get; private set;
+        }
+
+        public List<Square> BlackPawns
+        {
+            get; private set;
+        }
+
+        public byte WhiteGapIndex
+        {
+            get; private set;
+        }
+
+        public List<Square> WhitePawns
+        {
+            get; private set;
+        }
+
+        private Square[,] Squares
+        {
+            get; set;
         }
 
         public void AddPawn(Square pawn)
@@ -147,63 +131,30 @@ namespace PawnRaceMobile.Core
             AddPawn(to);
         }
 
-        public void unapplyMove(Move move)
+        public object Clone() => MemberwiseClone();
+
+        public void Display()
         {
-            Square pawn = Squares[move.To.X, move.To.Y];
-            Color pawnColor = pawn.Color;
-#if debug
-            if (pawnColor == Color.NONE)
+            Console.WriteLine("   A B C D E F G H   ");
+
+            for (int col = c_MAX_COORDINATE - 1; col >= 0; col--)
             {
-                Console.WriteLine("Invalid move");
-                return;
-            }
-#endif
-            if (move.IsEpCapture)
-            {
-                Square to = move.To;
-                int toX = to.X;
-                int toY = to.Y;
-                if (pawnColor == Color.BLACK)
+                string rowString = (col + 1).ToString() + "  ";
+                for (int row = 0; row < c_MAX_COORDINATE; row++)
                 {
-                    Square tPawn = Squares[toX, toY + 1];
-                    tPawn.Color = Color.WHITE;
-                    WhitePawns.Add(tPawn);
-                    BlackPawns.Remove(pawn);
-                    pawn.Color = Color.NONE;
+                    rowString += Squares[row, col].Color.Char();
+                    rowString += ' ';
                 }
-                else
-                {
-                    Square tPawn = Squares[toX, toY - 1];
-                    tPawn.Color = Color.BLACK;
-                    BlackPawns.Add(tPawn);
-                    WhitePawns.Remove(pawn);
-                    pawn.Color = Color.NONE;
-                }
+                rowString += "  " + (col + 1).ToString();
+                Console.WriteLine(rowString);
             }
-            else if (move.IsCapture)
-            {
-                if (pawnColor == Color.WHITE)
-                {
-                    pawn.Color = Color.BLACK;
-                    BlackPawns.Add(pawn);
-                    WhitePawns.Remove(pawn);
-                }
-                else
-                {
-                    pawn.Color = Color.WHITE;
-                    WhitePawns.Add(pawn);
-                    BlackPawns.Remove(pawn);
-                }
-            }
-            else
-            {
-                RemovePawn(pawn);
-                pawn.Color = Color.NONE;
-            }
-            Square from = move.From;
-            from.Color = pawnColor;
-            AddPawn(from);
+
+            Console.WriteLine("   A B C D E F G H   ");
         }
+
+        //assert x<Squares.length && y < Squares[0].length
+        //  : "The square does not exist in current Squares";
+        public Square GetSquare(int x, int y) => Squares[x, y];
 
         public string getState()
         {
@@ -364,23 +315,74 @@ namespace PawnRaceMobile.Core
             return true;
         }
 
-        public void Display()
+        public void unapplyMove(Move move)
         {
-            Console.WriteLine("   A B C D E F G H   ");
-
-            for (int col = c_MAX_COORDINATE - 1; col >= 0; col--)
+            Square pawn = Squares[move.To.X, move.To.Y];
+            Color pawnColor = pawn.Color;
+#if debug
+            if (pawnColor == Color.NONE)
             {
-                string rowString = (col + 1).ToString() + "  ";
-                for (int row = 0; row < c_MAX_COORDINATE; row++)
-                {
-                    rowString += Squares[row, col].Color.Char();
-                    rowString += ' ';
-                }
-                rowString += "  " + (col + 1).ToString();
-                Console.WriteLine(rowString);
+                Console.WriteLine("Invalid move");
+                return;
             }
+#endif
+            if (move.IsEpCapture)
+            {
+                Square to = move.To;
+                int toX = to.X;
+                int toY = to.Y;
+                if (pawnColor == Color.BLACK)
+                {
+                    Square tPawn = Squares[toX, toY + 1];
+                    tPawn.Color = Color.WHITE;
+                    WhitePawns.Add(tPawn);
+                    BlackPawns.Remove(pawn);
+                    pawn.Color = Color.NONE;
+                }
+                else
+                {
+                    Square tPawn = Squares[toX, toY - 1];
+                    tPawn.Color = Color.BLACK;
+                    BlackPawns.Add(tPawn);
+                    WhitePawns.Remove(pawn);
+                    pawn.Color = Color.NONE;
+                }
+            }
+            else if (move.IsCapture)
+            {
+                if (pawnColor == Color.WHITE)
+                {
+                    pawn.Color = Color.BLACK;
+                    BlackPawns.Add(pawn);
+                    WhitePawns.Remove(pawn);
+                }
+                else
+                {
+                    pawn.Color = Color.WHITE;
+                    WhitePawns.Add(pawn);
+                    BlackPawns.Remove(pawn);
+                }
+            }
+            else
+            {
+                RemovePawn(pawn);
+                pawn.Color = Color.NONE;
+            }
+            Square from = move.From;
+            from.Color = pawnColor;
+            AddPawn(from);
+        }
 
-            Console.WriteLine("   A B C D E F G H   ");
+        private void RemovePawn(Square pawn)
+        {
+            if (pawn.Color == Color.WHITE)
+            {
+                WhitePawns.Remove(pawn);
+            }
+            else
+            {
+                BlackPawns.Remove(pawn);
+            }
         }
     }
 }

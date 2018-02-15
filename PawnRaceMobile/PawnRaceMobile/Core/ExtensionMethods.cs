@@ -4,6 +4,24 @@ namespace PawnRaceMobile.Core
 {
     public static class ExtensionMethods
     {
+        public static char Char(this Color color)
+        {
+            switch (color)
+            {
+                case Color.NONE:
+                    return '.';
+
+                case Color.BLACK:
+                    return 'B';
+
+                case Color.WHITE:
+                    return 'W';
+
+                default:
+                    return ' ';
+            }
+        }
+
         public static Color Inverse(this Color color)
         {
             switch (color)
@@ -20,24 +38,6 @@ namespace PawnRaceMobile.Core
 
                 default:
                     return Color.NONE;
-            }
-        }
-
-        public static char Char(this Color color)
-        {
-            switch (color)
-            {
-                case Color.NONE:
-                    return '.';
-
-                case Color.BLACK:
-                    return 'B';
-
-                case Color.WHITE:
-                    return 'W';
-
-                default:
-                    return ' ';
             }
         }
     }
