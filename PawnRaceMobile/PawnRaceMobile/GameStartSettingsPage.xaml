@@ -14,9 +14,14 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="whiteColorButton" Text="White" Grid.Column="0" Grid.Row="0" IsEnabled="False"
+                <Button x:Name="whiteColorButton"
+                        Text="White"
+                        Grid.Column="0" Grid.Row="0"
+                        IsEnabled="False"
                         Clicked="OnWhiteColorSelected" />
-                <Button x:Name="blackColorButton" Text="Black" Grid.Column="1" Grid.Row="0"
+                <Button x:Name="blackColorButton"
+                        Text="Black"
+                        Grid.Column="1" Grid.Row="0"
                         Clicked="OnBlackColorSelected" />
             </Grid>
             <StackLayout x:Name="gapLayout" IsVisible="False">
@@ -59,6 +64,9 @@
                     </Picker>
                 </Grid>
             </StackLayout>
+            <Button x:Name="startButton"
+                        Text="Start!"
+                        Clicked="OnStartClicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

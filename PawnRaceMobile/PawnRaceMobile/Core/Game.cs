@@ -8,7 +8,6 @@ namespace PawnRaceMobile.Core
         private const byte c_MinMovesToFinish = 8;
         private const byte c_MinMovesToFinishByKilling = 14;
 
-        private Board m_Board;
         private Color m_CurrentPlayerColor;
         private Stack<Move> m_Moves = new Stack<Move>();
 
@@ -18,20 +17,20 @@ namespace PawnRaceMobile.Core
             {
                 for (int i = 0; i < Board.c_MAX_COORDINATE; i++)
                 {
-                    if (m_Board.GetSquare(i, 0).IsOccupiedBy(Color.BLACK))
+                    if (Board.GetSquare(i, 0).IsOccupiedBy(Color.BLACK))
                     {
                         return Color.BLACK;
                     }
-                    if (m_Board.GetSquare(i, Board.c_MAX_INDEX).IsOccupiedBy(Color.WHITE))
+                    if (Board.GetSquare(i, Board.c_MAX_INDEX).IsOccupiedBy(Color.WHITE))
                     {
                         return Color.WHITE;
                     }
                 }
-                if (m_Board.BlackPawns.Count == 0)
+                if (Board.BlackPawns.Count == 0)
                 {
                     return Color.WHITE;
                 }
-                if (m_Board.WhitePawns.Count == 0)
+                if (Board.WhitePawns.Count == 0)
                 {
                     return Color.BLACK;
                 }
@@ -49,8 +48,8 @@ namespace PawnRaceMobile.Core
                 }
                 for (int i = 0; i < Board.c_MAX_COORDINATE; i++)
                 {
-                    if (m_Board.GetSquare(i, 0).IsOccupied
-                        || m_Board.GetSquare(i, Board.c_MAX_INDEX).IsOccupied)
+                    if (Board.GetSquare(i, 0).IsOccupied
+                        || Board.GetSquare(i, Board.c_MAX_INDEX).IsOccupied)
                     {
                         return true;
                     }
@@ -63,7 +62,7 @@ namespace PawnRaceMobile.Core
                 //{
                 //    return true;
                 //}
-                return m_Board.BlackPawns.Count == 0 || m_Board.WhitePawns.Count == 0;
+                return Board.BlackPawns.Count == 0 || Board.WhitePawns.Count == 0;
             }
         }
 
@@ -84,7 +83,17 @@ namespace PawnRaceMobile.Core
 
         public int NumberOfMoves => m_Moves.Count;
 
-        public void ApplyMove() => throw new NotImplementedException();
+        public Board Board
+        {
+            get; private set;
+        }
+
+        public Game(char whiteGap, char blackGap)
+        {
+            Board = new Board(whiteGap, blackGap);
+        }
+
+        public void ApplyMove(Move move) => throw new NotImplementedException();
 
         public Move? ParseMove(string san)
         {
@@ -109,13 +118,13 @@ namespace PawnRaceMobile.Core
                 return null;
             }
 
-            Square finishSquare = m_Board.GetSquare(finishX, finishY);
-            Square startSquare = m_Board.GetSquare(startX, startY);
+            Square finishSquare = Board.GetSquare(finishX, finishY);
+            Square startSquare = Board.GetSquare(startX, startY);
 
             if (sanChars.Length == 4 && sanChars[1] == 'x')
             {
                 startX = sanChars[0] - 'a';
-                startSquare = m_Board.GetSquare(startX, startY);
+                startSquare = Board.GetSquare(startX, startY);
                 if (SquareOccupiedByCurrentPlayer(startX, startY))
                 {
                     if (SquareOccupiedByOtherPlayer(finishX, finishY))
@@ -141,7 +150,7 @@ namespace PawnRaceMobile.Core
                 int actualY = finishY + 2 * moveShift;
                 if (actualY >= 0 && actualY < Board.c_MAX_COORDINATE)
                 {
-                    startSquare = m_Board.GetSquare(startX, actualY);
+                    startSquare = Board.GetSquare(startX, actualY);
                     if (actualY == possibleY && startSquare.IsOccupiedBy(m_CurrentPlayerColor))
                     {
                         return new Move(startSquare, finishSquare);
@@ -154,10 +163,10 @@ namespace PawnRaceMobile.Core
         public void UnapplyMove() => throw new NotImplementedException();
 
         private bool SquareOccupiedByCurrentPlayer(int x, int y)
-                    => m_Board.GetSquare(x, y).IsOccupiedBy(m_CurrentPlayerColor);
+                    => Board.GetSquare(x, y).IsOccupiedBy(m_CurrentPlayerColor);
 
         private bool SquareOccupiedByOtherPlayer(int x, int y)
-            => m_Board.GetSquare(x, y).IsOccupiedBy(m_CurrentPlayerColor.Inverse());
+            => Board.GetSquare(x, y).IsOccupiedBy(m_CurrentPlayerColor.Inverse());
 
         private void SwitchPlayer() => throw new NotImplementedException();
     }

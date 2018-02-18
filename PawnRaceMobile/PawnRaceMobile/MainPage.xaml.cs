@@ -17,8 +17,6 @@ namespace PawnRaceMobile
         }
 
         private async void OnGameStart(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new GameStartSettingsPage());
-        }
+            => await Navigation.PushAsync(new GameStartSettingsPage());
     }
 }

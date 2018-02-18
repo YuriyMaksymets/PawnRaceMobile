@@ -4,18 +4,6 @@ namespace PawnRaceMobile.Core
 {
     public struct Move
     {
-        public Move(Square from, Square to, bool isCapture, bool isEpCapture)
-        {
-            From = from;
-            To = to;
-            IsCapture = isCapture;
-            IsEpCapture = isEpCapture;
-        }
-
-        public Move(Square from, Square to) : this(from, to, false, false)
-        {
-        }
-
         public Square From
         {
             get; private set;
@@ -35,11 +23,25 @@ namespace PawnRaceMobile.Core
 
         public string SAN => IsCapture || IsEpCapture
                     ? From.Notation.Substring(0, 1) + 'x' + To.Notation
-            : To.Notation;
+                    : To.Notation;
 
         public Square To
         {
             get; private set;
         }
+
+        public Move(Square from, Square to, bool isCapture, bool isEpCapture)
+        {
+            From = from;
+            To = to;
+            IsCapture = isCapture;
+            IsEpCapture = isEpCapture;
+        }
+
+        public Move(Square from, Square to) : this(from, to, false, false)
+        {
+        }
+
+        public override string ToString() => SAN;
     }
 }

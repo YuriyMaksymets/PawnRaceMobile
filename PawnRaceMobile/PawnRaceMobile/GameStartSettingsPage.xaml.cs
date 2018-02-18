@@ -68,5 +68,10 @@ namespace PawnRaceMobile
                 gapLabel.Text = c_GapPositions + m_WhiteGap + "(white) " + m_BlackGap + "(black)";
             }
         }
+
+        private async void OnStartClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new BoardPage());
+        }
     }
 }

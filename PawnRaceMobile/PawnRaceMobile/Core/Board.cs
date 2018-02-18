@@ -22,7 +22,7 @@ namespace PawnRaceMobile.Core
             get; private set;
         }
 
-        public List<Square> Pawns => (List<Square>)WhitePawns.Concat(BlackPawns);
+        public List<Square> Pawns => WhitePawns.Concat(BlackPawns).ToList();
 
         public byte WhiteGapIndex
         {
@@ -159,7 +159,7 @@ namespace PawnRaceMobile.Core
         //  : "The square does not exist in current Squares";
         public Square GetSquare(int x, int y) => Squares[x, y];
 
-        public string getState()
+        public string GetState()
         {
             StringBuilder WhitePawns = new StringBuilder(18);
             StringBuilder BlackPawns = new StringBuilder(18);
@@ -215,7 +215,7 @@ namespace PawnRaceMobile.Core
             return WhitePawns.ToString() + BlackPawns.ToString();
         }
 
-        public bool isInState(string state)
+        public bool IsInState(string state)
         {
             char[] stateC = state.ToCharArray();
             int readIndex = 0;
