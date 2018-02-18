@@ -13,7 +13,7 @@ namespace PawnRaceMobile
         {
             InitializeComponent();
 
-            MainPage = new PawnRaceMobile.MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()

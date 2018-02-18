@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PawnRaceMobile.Core
@@ -10,6 +11,33 @@ namespace PawnRaceMobile.Core
     {
         public const int c_MAX_COORDINATE = 8;
         public const int c_MAX_INDEX = c_MAX_COORDINATE - 1;
+
+        public byte BlackGapIndex
+        {
+            get; private set;
+        }
+
+        public List<Square> BlackPawns
+        {
+            get; private set;
+        }
+
+        public List<Square> Pawns => (List<Square>)WhitePawns.Concat(BlackPawns);
+
+        public byte WhiteGapIndex
+        {
+            get; private set;
+        }
+
+        public List<Square> WhitePawns
+        {
+            get; private set;
+        }
+
+        private Square[,] Squares
+        {
+            get; set;
+        }
 
         public Board(char whiteGap, char blackGap)
         {
@@ -51,31 +79,6 @@ namespace PawnRaceMobile.Core
                     }
                 }
             }
-        }
-
-        public byte BlackGapIndex
-        {
-            get; private set;
-        }
-
-        public List<Square> BlackPawns
-        {
-            get; private set;
-        }
-
-        public byte WhiteGapIndex
-        {
-            get; private set;
-        }
-
-        public List<Square> WhitePawns
-        {
-            get; private set;
-        }
-
-        private Square[,] Squares
-        {
-            get; set;
         }
 
         public void AddPawn(Square pawn)

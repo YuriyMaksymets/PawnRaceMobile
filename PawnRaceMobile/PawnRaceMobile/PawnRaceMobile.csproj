@@ -9,11 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resourses\BlackFill.PNG" />
+    <None Remove="Resourses\blackfill.png" />
+    <None Remove="Resourses\blackpawn.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resourses\BlackFill.PNG" />
+    <EmbeddedResource Include="Resourses\blackfill.png" />
+    <EmbeddedResource Include="Resourses\blackpawn.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,5 +30,14 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="BoardPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="GameStartSettingsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
