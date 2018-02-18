@@ -3,9 +3,74 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PawnRaceMobile"
              x:Class="PawnRaceMobile.MainPage">
+    <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-	<Label Text="Welcome to Xamarin.Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+        <!--<Label Text="Top Left" Grid.Row="0" Grid.Column="0" />
+        <Label Text="Top Right" Grid.Row="0" Grid.Column="1" />
+        <Label Text="Bottom Left" Grid.Row="1" Grid.Column="0" />
+        <Label Text="Bottom Right" Grid.Row="1" Grid.Column="1" />
+        <BoxView Color="#FF3399" Grid.Row="0" Grid.Column="1" />-->
 
+        <!--<Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />
+        <Image Source="blackfill.png" Grid.Row="0" Grid.Column="0" Aspect ="Fill" />-->
+        <!--<local:Board x:Name="boardview" Grid.Row="1" Grid.Column="1" />-->
+    </Grid>
 </ContentPage>
