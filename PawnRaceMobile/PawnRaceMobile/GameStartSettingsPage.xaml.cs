@@ -71,7 +71,7 @@ namespace PawnRaceMobile
 
         private async void OnStartClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BoardPage());
+            await Navigation.PushAsync(new BoardPage(m_WhiteGap, m_BlackGap));
         }
     }
 }

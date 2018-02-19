@@ -11,6 +11,31 @@ namespace PawnRaceMobile.Core
         private Color m_CurrentPlayerColor;
         private Stack<Move> m_Moves = new Stack<Move>();
 
+        public Player WhitePlayer
+        {
+            get; private set;
+        }
+
+        public Player BlackPlayer
+        {
+            get; private set;
+        }
+
+        public Player CurrentPlayer
+        {
+            get; private set;
+        }
+
+        public Game(char whiteGap, char blackGap)
+        {
+            Board = new Board(whiteGap, blackGap);
+        }
+
+        public Board Board
+        {
+            get; private set;
+        }
+
         public Color GameResult
         {
             get
@@ -82,16 +107,6 @@ namespace PawnRaceMobile.Core
         }
 
         public int NumberOfMoves => m_Moves.Count;
-
-        public Board Board
-        {
-            get; private set;
-        }
-
-        public Game(char whiteGap, char blackGap)
-        {
-            Board = new Board(whiteGap, blackGap);
-        }
 
         public void ApplyMove(Move move) => throw new NotImplementedException();
 
@@ -168,6 +183,7 @@ namespace PawnRaceMobile.Core
         private bool SquareOccupiedByOtherPlayer(int x, int y)
             => Board.GetSquare(x, y).IsOccupiedBy(m_CurrentPlayerColor.Inverse());
 
-        private void SwitchPlayer() => throw new NotImplementedException();
+        private void SwitchPlayer()
+            => CurrentPlayer = CurrentPlayer == BlackPlayer ? WhitePlayer : BlackPlayer;
     }
 }

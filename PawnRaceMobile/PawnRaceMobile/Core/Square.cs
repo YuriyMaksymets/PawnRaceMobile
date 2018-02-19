@@ -35,6 +35,10 @@
             Color = color;
         }
 
+        public bool IsBlack => IsOccupiedBy(Color.BLACK);
+
+        public bool IsWhite => IsOccupiedBy(Color.WHITE);
+
         public bool IsOccupiedBy(Color color) => color == Color;
 
         public override string ToString() => "Square " + X + " " + Y;

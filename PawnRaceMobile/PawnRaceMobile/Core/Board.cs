@@ -12,6 +12,55 @@ namespace PawnRaceMobile.Core
         public const int c_MAX_COORDINATE = 8;
         public const int c_MAX_INDEX = c_MAX_COORDINATE - 1;
 
+        public Board(char whiteGap, char blackGap)
+        {
+            //assert(whiteGap >= 'a' && whiteGap <= 'h'
+            //    && blackGap >= 'a' && blackGap <= 'h')
+            //  : "Wrong gap letter";
+            Squares = new Square[c_MAX_COORDINATE, c_MAX_COORDINATE];
+            for (int x = 0; x < c_MAX_COORDINATE; x++)
+            {
+                for (int y = 0; y < c_MAX_COORDINATE; y++)
+                {
+                    Squares[x, y] = new Square(x, y);
+                }
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                Squares[i, 1].Color = Color.WHITE;
+                Squares[i, c_MAX_COORDINATE - 2].Color = Color.BLACK;
+            }
+
+            WhiteGapIndex = (byte)(char.ToLower(whiteGap) - 'a');
+            BlackGapIndex = (byte)(char.ToLower(blackGap) - 'a');
+            try
+            {
+                Squares[WhiteGapIndex, 1].Color = Color.NONE;
+                Squares[BlackGapIndex, c_MAX_INDEX - 1].Color = Color.NONE;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Incorrect gaps: " + whiteGap + " " + blackGap);
+            }
+
+            BlackPawns = new List<Square>(7);
+            WhitePawns = new List<Square>(7);
+            for (int i = 0; i < c_MAX_COORDINATE; i++)
+            {
+                for (int j = 0; j < c_MAX_COORDINATE; j++)
+                {
+                    if (Squares[i, j].Color == Color.WHITE)
+                    {
+                        WhitePawns.Add(Squares[i, j]);
+                    }
+                    else if (Squares[i, j].Color == Color.BLACK)
+                    {
+                        BlackPawns.Add(Squares[i, j]);
+                    }
+                }
+            }
+        }
+
         public byte BlackGapIndex
         {
             get; private set;
@@ -37,48 +86,6 @@ namespace PawnRaceMobile.Core
         private Square[,] Squares
         {
             get; set;
-        }
-
-        public Board(char whiteGap, char blackGap)
-        {
-            //assert(whiteGap >= 'a' && whiteGap <= 'h'
-            //    && blackGap >= 'a' && blackGap <= 'h')
-            //  : "Wrong gap letter";
-            Squares = new Square[c_MAX_COORDINATE, c_MAX_COORDINATE];
-            for (int x = 0; x < c_MAX_COORDINATE; x++)
-            {
-                for (int y = 0; y < c_MAX_COORDINATE; y++)
-                {
-                    Squares[x, y] = new Square(x, y);
-                }
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                Squares[i, 1].Color = Color.WHITE;
-                Squares[i, c_MAX_COORDINATE - 2].Color = Color.BLACK;
-            }
-
-            WhiteGapIndex = (byte)(whiteGap - 'a');
-            BlackGapIndex = (byte)(blackGap - 'a');
-            Squares[WhiteGapIndex, 1].Color = Color.NONE;
-            Squares[BlackGapIndex, c_MAX_INDEX - 1].Color = Color.NONE;
-
-            BlackPawns = new List<Square>(7);
-            WhitePawns = new List<Square>(7);
-            for (int i = 0; i < c_MAX_COORDINATE; i++)
-            {
-                for (int j = 0; j < c_MAX_COORDINATE; j++)
-                {
-                    if (Squares[i, j].Color == Color.WHITE)
-                    {
-                        WhitePawns.Add(Squares[i, j]);
-                    }
-                    else if (Squares[i, j].Color == Color.BLACK)
-                    {
-                        BlackPawns.Add(Squares[i, j]);
-                    }
-                }
-            }
         }
 
         public void AddPawn(Square pawn)

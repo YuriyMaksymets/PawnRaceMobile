@@ -12,28 +12,37 @@ namespace PawnRaceMobile
 {
     public partial class BoardPage : ContentPage
     {
+        private Player m_User = new Player();
         private GameManager m_GameManager;
         private Square? m_SelectedPawn;
 
-        public delegate void MoveEventHandler(Move move);
+        public delegate void MoveEventHandler(Player player, Move move);
 
         public event MoveEventHandler OnMoveConstructed;
 
-        public BoardPage()
+        public BoardPage(char whiteGap, char blackGap)
         {
             InitializeComponent();
             InitializeBoardGrid();
 
-            m_GameManager = new GameManager('a', 'b');
+            m_GameManager = new GameManager(whiteGap, blackGap, m_User, new Player());
             m_GameManager.Play();
             OnMoveConstructed += m_GameManager.SelectMove;
             m_GameManager.Board.Pawns.ForEach(x =>
             {
-                Image image = new Image
+                Image image = x.IsBlack ? new Image
                 {
                     Source = ImageSource.FromResource
                     (
                         "PawnRaceMobile.Resourses.blackpawn.png"
+                        , Assembly.GetExecutingAssembly()
+                    )
+                }
+                : new Image
+                {
+                    Source = ImageSource.FromResource
+                    (
+                        "PawnRaceMobile.Resourses.whitepawn.png"
                         , Assembly.GetExecutingAssembly()
                     )
                 };
@@ -46,6 +55,12 @@ namespace PawnRaceMobile
 
         protected void OnPawnTapped(object sender, EventArgs e)
         {
+            //Hightlight this square and possible move squares
+            //Highlight colors:
+            //Current
+            //Move
+            //Attack
+            //No available moves
             Square selectedSquare = SquareFromImage(sender);
             //if selectedcolor == playercolor
             m_SelectedPawn = selectedSquare;
@@ -64,7 +79,11 @@ namespace PawnRaceMobile
                     m_SelectedPawn = null;
                     if (m_GameManager.IsValidMove(move))
                     {
-                        OnMoveConstructed?.Invoke(move);
+                        OnMoveConstructed?.Invoke(m_User, move);
+                    }
+                    else
+                    {
+                        //Get rid of highlighting
                     }
                 }
                 catch (Exception exc)

@@ -1,5 +1,4 @@
 ﻿using PawnRaceMobile.Core;
-using static PawnRaceMobile.BoardPage;
 
 namespace PawnRaceMobile
 {
@@ -9,23 +8,31 @@ namespace PawnRaceMobile
         private Game m_Game;
         public Board Board => m_Game.Board;
 
+        public delegate void BoardUpdateEventHandler();
+
+        public event BoardUpdateEventHandler OnBoardUpdate;
+
         public bool IsValidMove(Move move) => m_Game.ParseMove(move.SAN) != null;
 
-        public void SelectMove(Move move)
+        public void SelectMove(Player player, Move move)
         {
             m_SelectedMove = move;
-            //if(!m_Game.IsFinished && m_Game.Player = User)
-            m_Game.ApplyMove(move);
+            if (m_Game.CurrentPlayer == player && !m_Game.IsFinished)
+            {
+                m_Game.ApplyMove(move);
+                OnBoardUpdate?.Invoke();
+            }
         }
 
-        public GameManager(char whiteGap, char blackGap)
+        public GameManager(char whiteGap, char blackGap
+            , Player whitePlayer, Player blackPlayer)
         {
-            m_Game = new Game('a', 'a');
+            m_Game = new Game(whiteGap, blackGap);
         }
 
         public void Play()
         {
-            m_Game = new Game('a', 'a');
+            //m_Game = new Game('a', 'a');
             //while (!game.IsFinished)
             //{
             //    // Player currentPlayer = game.getCurrentPlayerColor() == Color.WHITE ? playerW : playerB;
