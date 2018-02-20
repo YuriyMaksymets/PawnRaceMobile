@@ -4,28 +4,51 @@ using System.Text;
 
 namespace PawnRaceMobile.Core
 {
-    public class Player
+    internal abstract class Player
     {
-        private readonly byte r_PassedY;
         private readonly int r_MoveShift;
-        private readonly byte r_YForLongMove;
-        private readonly byte r_YCannotAttack;
-
+        private readonly int r_PassedY;
+        private readonly Random r_Random = new Random();
+        private readonly int r_YCannotAttack;
+        private readonly int r_YForLongMove;
         private Game m_Game;
         private Player m_Opponent;
+
+        public Board Board => m_Game.Board;
 
         public Color Color
         {
             get; private set;
         }
 
-        public Board Board => m_Game.Board;
+        public bool IsWhite => Color == Color.White;
 
         private List<Square> Pawns
-            => Color == Color.WHITE ? m_Game.Board.WhitePawns : m_Game.Board.BlackPawns;
+            => Color == Color.White ? m_Game.Board.WhitePawns : m_Game.Board.BlackPawns;
+
+        public event Action<Player, Move> MoveProduced;
+
+        public Player(Color color)
+        {
+            Color = color;
+            r_YForLongMove = IsWhite ? 1 : Board.c_MAX_INDEX - 1;
+            r_YCannotAttack = Board.c_MAX_INDEX - r_YForLongMove;
+            r_MoveShift = IsWhite ? 1 : -1;
+            r_PassedY = IsWhite ? Board.c_MAX_INDEX : 0;
+        }
+
+        public abstract Move ProduceMove();
+
+        public void Set(Game game, Player opponent)
+        {
+            m_Game = game ?? throw new ArgumentNullException(nameof(game));
+            m_Opponent = opponent ?? throw new ArgumentNullException(nameof(opponent));
+        }
+
+        public abstract void TakeTurn();
 
         //If there is an obvious move, only it is returned
-        private Move[] CalculatePossibleMovesOptimized()
+        protected Move[] CalculatePossibleMovesOptimized()
         {
             if (m_Game.NumberOfMoves > 0)
             {
@@ -98,10 +121,16 @@ namespace PawnRaceMobile.Core
                     moves[numOfMoves++]
                     = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift));
                     moves[numOfMoves++]
-                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift >> 2)));
+                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift >> 1)));
                 });
                 return moves;
             }
         }
+
+        protected void OnMoveProduced(Move move)
+                                                    => MoveProduced?.Invoke(this, move);
+
+        protected Move SelectRandomMove(Move[] possibleMoves)
+            => possibleMoves[r_Random.Next(possibleMoves.Length)];
     }
 }

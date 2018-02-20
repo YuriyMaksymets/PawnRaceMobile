@@ -8,13 +8,13 @@ namespace PawnRaceMobile.Core
         {
             switch (color)
             {
-                case Color.NONE:
+                case Color.None:
                     return '.';
 
-                case Color.BLACK:
+                case Color.Black:
                     return 'B';
 
-                case Color.WHITE:
+                case Color.White:
                     return 'W';
 
                 default:
@@ -26,18 +26,18 @@ namespace PawnRaceMobile.Core
         {
             switch (color)
             {
-                case Color.WHITE:
-                    return Color.BLACK;
+                case Color.White:
+                    return Color.Black;
 
-                case Color.BLACK:
-                    return Color.WHITE;
+                case Color.Black:
+                    return Color.White;
 
-                case Color.NONE:
+                case Color.None:
                     Console.WriteLine("Getting Inverse of empty color");
-                    return Color.NONE;
+                    return Color.None;
 
                 default:
-                    return Color.NONE;
+                    return Color.None;
             }
         }
     }

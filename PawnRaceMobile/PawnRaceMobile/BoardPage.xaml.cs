@@ -13,7 +13,10 @@ namespace PawnRaceMobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BoardPage : ContentPage
     {
+        private List<Image> m_PawnImages = new List<Image>(14);
+
         protected override void OnSizeAllocated(double width, double height)
+
         {
             base.OnSizeAllocated(width, height);
             Console.WriteLine(width + " " + height);
@@ -38,6 +41,8 @@ namespace PawnRaceMobile
                 mainGrid.WidthRequest = height;
             }
         }
+
+        private void Alert(object obj) => DisplayAlert(obj.ToString(), "", "Close");
 
         private void InitializeBoardGrid()
         {
@@ -67,10 +72,38 @@ namespace PawnRaceMobile
             }
         }
 
+        private void Log(object obj) => console.Text += ('\n' + obj.ToString());
+
         private void OnClearButton(object sender, EventArgs e) => console.Text = "";
 
-        private void Alert(object obj) => DisplayAlert(obj.ToString(), "", "Close");
-
-        private void Log(object obj) => console.Text += ('\n' + obj.ToString());
+        private void RenderPawns()
+        {
+            m_PawnImages.ForEach(x => mainGrid.Children.Remove(x));
+            m_PawnImages = new List<Image>(m_GameManager.Board.Pawns.Capacity);
+            m_GameManager.Board.Pawns.ForEach(x =>
+            {
+                Image image = x.IsBlack ? new Image
+                {
+                    Source = ImageSource.FromResource
+                    (
+                        "PawnRaceMobile.Resourses.blackpawn.png"
+                        , Assembly.GetExecutingAssembly()
+                    )
+                }
+                : new Image
+                {
+                    Source = ImageSource.FromResource
+                    (
+                        "PawnRaceMobile.Resourses.whitepawn.png"
+                        , Assembly.GetExecutingAssembly()
+                    )
+                };
+                m_PawnImages.Add(image);
+                TapGestureRecognizer iconTap = new TapGestureRecognizer();
+                iconTap.Tapped += OnPawnTapped;
+                image.GestureRecognizers.Add(iconTap);
+                mainGrid.Children.Add(image, x.X, x.Y);
+            });
+        }
     }
 }

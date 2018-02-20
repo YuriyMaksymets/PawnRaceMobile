@@ -1,14 +1,16 @@
 ﻿namespace PawnRaceMobile.Core
 {
-    public struct Square
+    public class Square
     {
         public Color Color
         {
             get; set;
         }
 
-        public bool IsOccupied => Color != Color.NONE;
+        public bool IsBlack => IsOccupiedBy(Color.Black);
+        public bool IsOccupied => Color != Color.None;
 
+        public bool IsWhite => IsOccupiedBy(Color.White);
         public string Notation => ((char)('a' + X)) + (Y + 1).ToString();
 
         public byte X
@@ -21,7 +23,7 @@
             get; private set;
         }
 
-        public Square(int x, int y) : this(x, y, Color.NONE)
+        public Square(int x, int y) : this(x, y, Color.None)
         {
         }
 
@@ -34,10 +36,6 @@
             Y = (byte)y;
             Color = color;
         }
-
-        public bool IsBlack => IsOccupiedBy(Color.BLACK);
-
-        public bool IsWhite => IsOccupiedBy(Color.WHITE);
 
         public bool IsOccupiedBy(Color color) => color == Color;
 

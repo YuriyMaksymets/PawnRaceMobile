@@ -9,57 +9,8 @@ namespace PawnRaceMobile.Core
 {
     public class Board : ICloneable
     {
-        public const int c_MAX_COORDINATE = 8;
-        public const int c_MAX_INDEX = c_MAX_COORDINATE - 1;
-
-        public Board(char whiteGap, char blackGap)
-        {
-            //assert(whiteGap >= 'a' && whiteGap <= 'h'
-            //    && blackGap >= 'a' && blackGap <= 'h')
-            //  : "Wrong gap letter";
-            Squares = new Square[c_MAX_COORDINATE, c_MAX_COORDINATE];
-            for (int x = 0; x < c_MAX_COORDINATE; x++)
-            {
-                for (int y = 0; y < c_MAX_COORDINATE; y++)
-                {
-                    Squares[x, y] = new Square(x, y);
-                }
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                Squares[i, 1].Color = Color.WHITE;
-                Squares[i, c_MAX_COORDINATE - 2].Color = Color.BLACK;
-            }
-
-            WhiteGapIndex = (byte)(char.ToLower(whiteGap) - 'a');
-            BlackGapIndex = (byte)(char.ToLower(blackGap) - 'a');
-            try
-            {
-                Squares[WhiteGapIndex, 1].Color = Color.NONE;
-                Squares[BlackGapIndex, c_MAX_INDEX - 1].Color = Color.NONE;
-            }
-            catch (Exception)
-            {
-                throw new Exception("Incorrect gaps: " + whiteGap + " " + blackGap);
-            }
-
-            BlackPawns = new List<Square>(7);
-            WhitePawns = new List<Square>(7);
-            for (int i = 0; i < c_MAX_COORDINATE; i++)
-            {
-                for (int j = 0; j < c_MAX_COORDINATE; j++)
-                {
-                    if (Squares[i, j].Color == Color.WHITE)
-                    {
-                        WhitePawns.Add(Squares[i, j]);
-                    }
-                    else if (Squares[i, j].Color == Color.BLACK)
-                    {
-                        BlackPawns.Add(Squares[i, j]);
-                    }
-                }
-            }
-        }
+        public const byte c_MAX_COORDINATE = 8;
+        public const byte c_MAX_INDEX = c_MAX_COORDINATE - 1;
 
         public byte BlackGapIndex
         {
@@ -88,9 +39,58 @@ namespace PawnRaceMobile.Core
             get; set;
         }
 
+        public Board(char whiteGap, char blackGap)
+        {
+            //assert(whiteGap >= 'a' && whiteGap <= 'h'
+            //    && blackGap >= 'a' && blackGap <= 'h')
+            //  : "Wrong gap letter";
+            Squares = new Square[c_MAX_COORDINATE, c_MAX_COORDINATE];
+            for (int x = 0; x < c_MAX_COORDINATE; x++)
+            {
+                for (int y = 0; y < c_MAX_COORDINATE; y++)
+                {
+                    Squares[x, y] = new Square(x, y);
+                }
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                Squares[i, 1].Color = Color.White;
+                Squares[i, c_MAX_COORDINATE - 2].Color = Color.Black;
+            }
+
+            WhiteGapIndex = (byte)(char.ToLower(whiteGap) - 'a');
+            BlackGapIndex = (byte)(char.ToLower(blackGap) - 'a');
+            try
+            {
+                Squares[WhiteGapIndex, 1].Color = Color.None;
+                Squares[BlackGapIndex, c_MAX_INDEX - 1].Color = Color.None;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Incorrect gaps: " + whiteGap + " " + blackGap);
+            }
+
+            BlackPawns = new List<Square>(7);
+            WhitePawns = new List<Square>(7);
+            for (int i = 0; i < c_MAX_COORDINATE; i++)
+            {
+                for (int j = 0; j < c_MAX_COORDINATE; j++)
+                {
+                    if (Squares[i, j].Color == Color.White)
+                    {
+                        WhitePawns.Add(Squares[i, j]);
+                    }
+                    else if (Squares[i, j].Color == Color.Black)
+                    {
+                        BlackPawns.Add(Squares[i, j]);
+                    }
+                }
+            }
+        }
+
         public void AddPawn(Square pawn)
         {
-            if (pawn.Color == Color.WHITE)
+            if (pawn.Color == Color.White)
             {
                 WhitePawns.Add(pawn);
             }
@@ -106,7 +106,7 @@ namespace PawnRaceMobile.Core
             Square to = move.To;
             Color pawnColor = from.Color;
 #if debug
-            if (pawnColor == Color.NONE
+            if (pawnColor == Color.None
                 || (to.Color == from.Color)
                 || (move.IsCapture && !move.IsEpCapture && to.Color != pawnColor.Inverse()))
             {
@@ -118,12 +118,12 @@ namespace PawnRaceMobile.Core
             int toY = to.Y;
             if (move.IsEpCapture)
             {
-                int moveShift = pawnColor == Color.WHITE ? -1 : 1;
+                int moveShift = pawnColor == Color.White ? -1 : 1;
                 Square passedPawn = Squares[toX, toY + moveShift];
                 if (passedPawn.Color == pawnColor.Inverse())
                 {
                     RemovePawn(passedPawn);
-                    passedPawn.Color = Color.NONE;
+                    passedPawn.Color = Color.None;
                 }
                 else
                 {
@@ -136,16 +136,18 @@ namespace PawnRaceMobile.Core
                 RemovePawn(to);
             }
             RemovePawn(from);
-            from.Color = Color.NONE;
+            //throw new Exception((to.Equals(Squares[fromtoX, to.Y])).ToString());
+            from.Color = Color.None;
             to.Color = pawnColor;
             AddPawn(to);
         }
 
         public object Clone() => MemberwiseClone();
 
-        public void Display()
+        public string Display()
         {
-            Console.WriteLine("   A B C D E F G H   ");
+            StringBuilder sb = new StringBuilder();
+            sb.Append("   A B C D E F G H   ");
 
             for (int col = c_MAX_COORDINATE - 1; col >= 0; col--)
             {
@@ -153,13 +155,14 @@ namespace PawnRaceMobile.Core
                 for (int row = 0; row < c_MAX_COORDINATE; row++)
                 {
                     rowString += Squares[row, col].Color.Char();
-                    rowString += ' ';
+                    rowString += " ";
                 }
                 rowString += "  " + (col + 1).ToString();
-                Console.WriteLine(rowString);
+                sb.Append(rowString);
             }
 
-            Console.WriteLine("   A B C D E F G H   ");
+            sb.Append("   A B C D E F G H   ");
+            return sb.ToString();
         }
 
         //assert x<Squares.length && y < Squares[0].length
@@ -178,12 +181,12 @@ namespace PawnRaceMobile.Core
                 int bp = 0;
                 for (int tempY = 0; tempY < Squares.GetLength(1); tempY++)
                 {
-                    if (Squares[tempX, tempY].Color == Color.WHITE)
+                    if (Squares[tempX, tempY].Color == Color.White)
                     {
                         wPawnsYOnThisX[wp] = tempY;
                         wp++;
                     }
-                    else if (Squares[tempX, tempY].Color == Color.BLACK)
+                    else if (Squares[tempX, tempY].Color == Color.Black)
                     {
                         bPawnsYOnThisX[bp] = tempY;
                         bp++;
@@ -234,7 +237,7 @@ namespace PawnRaceMobile.Core
                     {
                         readIndex++;
                         int checkY = stateC[readIndex];
-                        if (Squares[tempX, checkY].Color != Color.WHITE)
+                        if (Squares[tempX, checkY].Color != Color.White)
                         {
                             return false;
                         }
@@ -246,7 +249,7 @@ namespace PawnRaceMobile.Core
                 {
                     for (int i = 0; i < c_MAX_COORDINATE; i++)
                     {
-                        if (Squares[tempX, i].Color == Color.WHITE)
+                        if (Squares[tempX, i].Color == Color.White)
                         {
                             return false;
                         }
@@ -257,14 +260,14 @@ namespace PawnRaceMobile.Core
                 else
                 {
                     int checkY = stateC[readIndex];
-                    if (Squares[tempX, checkY].Color != Color.WHITE)
+                    if (Squares[tempX, checkY].Color != Color.White)
                     {
                         return false;
                     }
 
                     for (int i = 0; i < c_MAX_COORDINATE; i++)
                     {
-                        if (i != checkY && Squares[tempX, i].Color == Color.WHITE)
+                        if (i != checkY && Squares[tempX, i].Color == Color.White)
                         {
                             return false;
                         }
@@ -282,7 +285,7 @@ namespace PawnRaceMobile.Core
                     {
                         readIndex++;
                         int checkY = stateC[readIndex];
-                        if (Squares[tempX, checkY].Color != Color.BLACK)
+                        if (Squares[tempX, checkY].Color != Color.Black)
                         {
                             return false;
                         }
@@ -294,7 +297,7 @@ namespace PawnRaceMobile.Core
                 {
                     for (int i = 0; i < c_MAX_COORDINATE; i++)
                     {
-                        if (Squares[tempX, i].Color == Color.BLACK)
+                        if (Squares[tempX, i].Color == Color.Black)
                         {
                             return false;
                         }
@@ -305,14 +308,14 @@ namespace PawnRaceMobile.Core
                 else
                 {
                     int checkY = stateC[readIndex];
-                    if (Squares[tempX, checkY].Color != Color.BLACK)
+                    if (Squares[tempX, checkY].Color != Color.Black)
                     {
                         return false;
                     }
 
                     for (int i = 0; i < c_MAX_COORDINATE; i++)
                     {
-                        if (i != checkY && Squares[tempX, i].Color == Color.BLACK)
+                        if (i != checkY && Squares[tempX, i].Color == Color.Black)
                         {
                             return false;
                         }
@@ -330,7 +333,7 @@ namespace PawnRaceMobile.Core
             Square pawn = Squares[move.To.X, move.To.Y];
             Color pawnColor = pawn.Color;
 #if debug
-            if (pawnColor == Color.NONE)
+            if (pawnColor == Color.None)
             {
                 Console.WriteLine("Invalid move");
                 return;
@@ -341,34 +344,34 @@ namespace PawnRaceMobile.Core
                 Square to = move.To;
                 int toX = to.X;
                 int toY = to.Y;
-                if (pawnColor == Color.BLACK)
+                if (pawnColor == Color.Black)
                 {
                     Square tPawn = Squares[toX, toY + 1];
-                    tPawn.Color = Color.WHITE;
+                    tPawn.Color = Color.White;
                     WhitePawns.Add(tPawn);
                     BlackPawns.Remove(pawn);
-                    pawn.Color = Color.NONE;
+                    pawn.Color = Color.None;
                 }
                 else
                 {
                     Square tPawn = Squares[toX, toY - 1];
-                    tPawn.Color = Color.BLACK;
+                    tPawn.Color = Color.Black;
                     BlackPawns.Add(tPawn);
                     WhitePawns.Remove(pawn);
-                    pawn.Color = Color.NONE;
+                    pawn.Color = Color.None;
                 }
             }
             else if (move.IsCapture)
             {
-                if (pawnColor == Color.WHITE)
+                if (pawnColor == Color.White)
                 {
-                    pawn.Color = Color.BLACK;
+                    pawn.Color = Color.Black;
                     BlackPawns.Add(pawn);
                     WhitePawns.Remove(pawn);
                 }
                 else
                 {
-                    pawn.Color = Color.WHITE;
+                    pawn.Color = Color.White;
                     WhitePawns.Add(pawn);
                     BlackPawns.Remove(pawn);
                 }
@@ -376,7 +379,7 @@ namespace PawnRaceMobile.Core
             else
             {
                 RemovePawn(pawn);
-                pawn.Color = Color.NONE;
+                pawn.Color = Color.None;
             }
             Square from = move.From;
             from.Color = pawnColor;
@@ -385,7 +388,7 @@ namespace PawnRaceMobile.Core
 
         private void RemovePawn(Square pawn)
         {
-            if (pawn.Color == Color.WHITE)
+            if (pawn.Color == Color.White)
             {
                 WhitePawns.Remove(pawn);
             }

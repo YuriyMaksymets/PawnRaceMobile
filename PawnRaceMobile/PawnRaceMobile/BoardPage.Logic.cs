@@ -12,45 +12,18 @@ namespace PawnRaceMobile
 {
     public partial class BoardPage : ContentPage
     {
-        private Player m_User = new Player();
         private GameManager m_GameManager;
-        private Square? m_SelectedPawn;
-
-        public delegate void MoveEventHandler(Player player, Move move);
-
-        public event MoveEventHandler OnMoveConstructed;
+        private Square m_SelectedPawn;
+        private HumanPlayer m_User = new HumanPlayer(Core.Color.White);
 
         public BoardPage(char whiteGap, char blackGap)
         {
             InitializeComponent();
             InitializeBoardGrid();
-
-            m_GameManager = new GameManager(whiteGap, blackGap, m_User, new Player());
-            m_GameManager.Play();
-            OnMoveConstructed += m_GameManager.SelectMove;
-            m_GameManager.Board.Pawns.ForEach(x =>
-            {
-                Image image = x.IsBlack ? new Image
-                {
-                    Source = ImageSource.FromResource
-                    (
-                        "PawnRaceMobile.Resourses.blackpawn.png"
-                        , Assembly.GetExecutingAssembly()
-                    )
-                }
-                : new Image
-                {
-                    Source = ImageSource.FromResource
-                    (
-                        "PawnRaceMobile.Resourses.whitepawn.png"
-                        , Assembly.GetExecutingAssembly()
-                    )
-                };
-                TapGestureRecognizer iconTap = new TapGestureRecognizer();
-                iconTap.Tapped += OnPawnTapped;
-                image.GestureRecognizers.Add(iconTap);
-                mainGrid.Children.Add(image, x.X, x.Y);
-            });
+            Player opponent = new RandomAI(Core.Color.Black);
+            m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
+            m_GameManager.MoveMade += RenderPawns;
+            RenderPawns();
         }
 
         protected void OnPawnTapped(object sender, EventArgs e)
@@ -75,15 +48,15 @@ namespace PawnRaceMobile
                 try
                 {
                     Square selectedSquare = SquareFromImage(sender);
-                    Move move = new Move(m_SelectedPawn.Value, selectedSquare);
+                    Move move = new Move(m_SelectedPawn, selectedSquare);
                     m_SelectedPawn = null;
                     if (m_GameManager.IsValidMove(move))
                     {
-                        OnMoveConstructed?.Invoke(m_User, move);
+                        m_User.ParseMove(move);
                     }
                     else
                     {
-                        //Get rid of highlighting
+                        Alert("Invalid move");
                     }
                 }
                 catch (Exception exc)
@@ -97,7 +70,7 @@ namespace PawnRaceMobile
         {
             Image senderImage = (Image)sender;
             return m_GameManager.Board
-                .GetSquare(Grid.GetRow(senderImage), Grid.GetColumn(senderImage));
+                .GetSquare(Grid.GetColumn(senderImage), Grid.GetRow(senderImage));
         }
     }
 }

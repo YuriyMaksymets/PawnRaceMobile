@@ -1,7 +1,20 @@
-﻿namespace PawnRaceMobile.Core
+﻿using System;
+
+namespace PawnRaceMobile.Core
 {
-    internal class RandomAI : AI
+    internal class RandomAI : Player
     {
-        public override Move SelecteMove(Move[] moves) => SelectRandomMove(moves);
+        public RandomAI(Color color) : base(color)
+        {
+        }
+
+        public override Move ProduceMove()
+        {
+            Move selectedMove = SelectRandomMove(CalculatePossibleMovesOptimized());
+            OnMoveProduced(selectedMove);
+            return selectedMove;
+        }
+
+        public override void TakeTurn() => ProduceMove();
     }
 }

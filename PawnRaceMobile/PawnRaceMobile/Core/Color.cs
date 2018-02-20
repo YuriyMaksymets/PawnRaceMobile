@@ -3,7 +3,7 @@
     public enum Color
     {
 #pragma warning disable IDE1006 // Naming Styles
-        BLACK, WHITE, NONE
+        None, Black, White
 #pragma warning restore IDE1006 // Naming Styles
     }
 }
