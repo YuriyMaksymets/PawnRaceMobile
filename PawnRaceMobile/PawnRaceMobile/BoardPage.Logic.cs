@@ -16,11 +16,13 @@ namespace PawnRaceMobile
         private Square m_SelectedPawn;
         private HumanPlayer m_User;
         private bool m_ControlEnabled;
+        private bool m_LocalMultiplayer;
 
-        public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite)
+        public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
             InitializeComponent();
             InitializeBoardGrid();
+            m_LocalMultiplayer = localMultiplayer;
             SetUpGame(whiteGap, blackGap, userPlaysWhite);
             RenderAllPawns();
         }
@@ -32,7 +34,15 @@ namespace PawnRaceMobile
             m_User = new HumanPlayer(userColor);
             m_User.TurnTaken += EnableControl;
             m_User.MoveProduced += DisableControl;
-            Player opponent = new RandomAI(userColor.Inverse());
+            Player opponent;
+            if (m_LocalMultiplayer)
+            {
+                opponent = new HumanPlayer(userColor.Inverse());
+            }
+            else
+            {
+                opponent = new RandomAI(userColor.Inverse());
+            }
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderAllPawns;
         }
@@ -76,6 +86,11 @@ namespace PawnRaceMobile
                     if (m_GameManager.IsValidMove(move))
                     {
                         m_User.ParseMove(move);
+                        if (m_LocalMultiplayer)
+                        {
+                            m_User = m_User.Opponent as HumanPlayer;
+                            EnableControl();
+                        }
                     }
                     else
                     {

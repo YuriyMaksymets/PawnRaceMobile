@@ -24,6 +24,24 @@
                         Grid.Column="1" Grid.Row="0"
                         Clicked="OnBlackColorSelected" />
             </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="aiModeButton"
+                        Text="1 Player"
+                        Grid.Column="0" Grid.Row="0"
+                        Clicked="OnAiModeSelected" />
+                <Button x:Name="humanModeButton"
+                        Text="2 Players"
+                        Grid.Column="1" Grid.Row="0"
+                        IsEnabled="False"
+                        Clicked="OnHumanModeSelected" />
+            </Grid>
             <StackLayout x:Name="gapLayout" IsVisible="False">
                 <Label Text="Select Gap positions" />
                 <Grid>

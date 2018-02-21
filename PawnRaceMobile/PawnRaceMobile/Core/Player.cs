@@ -12,7 +12,11 @@ namespace PawnRaceMobile.Core
         private readonly int r_YCannotAttack;
         private readonly int r_YForLongMove;
         private Game m_Game;
-        private Player m_Opponent;
+
+        internal Player Opponent
+        {
+            get; private set;
+        }
 
         public Player(Color color)
         {
@@ -44,7 +48,7 @@ namespace PawnRaceMobile.Core
         internal void Set(Game game, Player opponent)
         {
             m_Game = game ?? throw new ArgumentNullException(nameof(game));
-            m_Opponent = opponent ?? throw new ArgumentNullException(nameof(opponent));
+            Opponent = opponent ?? throw new ArgumentNullException(nameof(opponent));
         }
 
         //If there is an obvious move, only it is returned

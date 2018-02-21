@@ -16,6 +16,7 @@ namespace PawnRaceMobile
         private const string c_GapPositions = "Selected gaps are: ";
 
         private bool m_WhiteColorSelected;
+        private bool m_LocalMultiplayer;
         private char m_WhiteGap = 'A';
         private char m_BlackGap = 'A';
 
@@ -23,6 +24,7 @@ namespace PawnRaceMobile
         {
             InitializeComponent();
             m_WhiteColorSelected = true;
+            m_LocalMultiplayer = true;
             blackGapPicker.SelectedIndex = 0;
             whiteGapPicker.SelectedIndex = 0;
         }
@@ -45,6 +47,20 @@ namespace PawnRaceMobile
             gapLayout.IsVisible = false;
             colorLabel.Text = c_SelectedSide + "White";
             gapLabel.Text = c_OpponentDecides;
+        }
+
+        private void OnAiModeSelected(object sender, EventArgs e)
+        {
+            m_LocalMultiplayer = false;
+            aiModeButton.IsEnabled = false;
+            humanModeButton.IsEnabled = true;
+        }
+
+        private void OnHumanModeSelected(object sender, EventArgs e)
+        {
+            m_LocalMultiplayer = true;
+            aiModeButton.IsEnabled = true;
+            humanModeButton.IsEnabled = false;
         }
 
         private void BlackGapPicked(object sender, EventArgs e)
@@ -71,6 +87,7 @@ namespace PawnRaceMobile
 
         private async void OnStartClicked(object sender, EventArgs e)
             => await Navigation
-                .PushAsync(new BoardPage(m_WhiteGap, m_BlackGap, m_WhiteColorSelected));
+                .PushAsync(new BoardPage(m_WhiteGap, m_BlackGap
+                    , m_WhiteColorSelected, m_LocalMultiplayer));
     }
 }
