@@ -1,9 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PawnRaceMobile.Core
 {
     public static class ExtensionMethods
     {
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            foreach (T item in collection)
+            {
+                action(item);
+            }
+        }
+
         public static char Char(this Color color)
         {
             switch (color)

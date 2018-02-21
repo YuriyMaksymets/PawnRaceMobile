@@ -17,19 +17,19 @@ namespace PawnRaceMobile.Core
             get; private set;
         }
 
-        public List<Square> BlackPawns
+        public IList<Square> BlackPawns
         {
             get; private set;
         }
 
-        public List<Square> Pawns => WhitePawns.Concat(BlackPawns).ToList();
+        public IList<Square> Pawns => WhitePawns.Concat(BlackPawns).ToList();
 
         public byte WhiteGapIndex
         {
             get; private set;
         }
 
-        public List<Square> WhitePawns
+        public IList<Square> WhitePawns
         {
             get; private set;
         }
@@ -100,7 +100,7 @@ namespace PawnRaceMobile.Core
             }
         }
 
-        public void applyMove(Move move)
+        public void ApplyMove(Move move)
         {
             Square from = move.From;
             Square to = move.To;
@@ -328,7 +328,7 @@ namespace PawnRaceMobile.Core
             return true;
         }
 
-        public void unapplyMove(Move move)
+        public void UnapplyMove(Move move)
         {
             Square pawn = Squares[move.To.X, move.To.Y];
             Color pawnColor = pawn.Color;

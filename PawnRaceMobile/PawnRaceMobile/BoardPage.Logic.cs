@@ -14,20 +14,39 @@ namespace PawnRaceMobile
     {
         private GameManager m_GameManager;
         private Square m_SelectedPawn;
-        private HumanPlayer m_User = new HumanPlayer(Core.Color.White);
+        private HumanPlayer m_User;
+        private bool m_ControlEnabled;
 
-        public BoardPage(char whiteGap, char blackGap)
+        public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite)
         {
             InitializeComponent();
             InitializeBoardGrid();
-            Player opponent = new RandomAI(Core.Color.Black);
-            m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
-            m_GameManager.MoveMade += RenderPawns;
-            RenderPawns();
+            SetUpGame(whiteGap, blackGap, userPlaysWhite);
+            RenderAllPawns();
         }
+
+        private void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite)
+        {
+            Core.Color userColor = userPlaysWhite ? Core.Color.White : Core.Color.Black;
+            m_ControlEnabled = m_BoardRotated = userPlaysWhite;
+            m_User = new HumanPlayer(userColor);
+            m_User.TurnTaken += EnableControl;
+            m_User.MoveProduced += DisableControl;
+            Player opponent = new RandomAI(userColor.Inverse());
+            m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
+            m_GameManager.MoveMade += RenderAllPawns;
+        }
+
+        private void EnableControl() => m_ControlEnabled = true;
+
+        private void DisableControl(Player _, Move __) => m_ControlEnabled = false;
 
         protected void OnPawnTapped(object sender, EventArgs e)
         {
+            if (!m_ControlEnabled)
+            {
+                return;
+            }
             //Hightlight this square and possible move squares
             //Highlight colors:
             //Current
@@ -42,6 +61,10 @@ namespace PawnRaceMobile
 
         protected void OnSquareTapped(object sender, EventArgs e)
         {
+            if (!m_ControlEnabled)
+            {
+                return;
+            }
             if (m_SelectedPawn != null)
             {
                 //if selectedSquare in possibleMoves
@@ -70,7 +93,9 @@ namespace PawnRaceMobile
         {
             Image senderImage = (Image)sender;
             return m_GameManager.Board
-                .GetSquare(Grid.GetColumn(senderImage), Grid.GetRow(senderImage));
+                .GetSquare(Grid.GetColumn(senderImage),
+                m_BoardRotated ? Board.c_MAX_INDEX - Grid.GetRow(senderImage)
+                : Grid.GetRow(senderImage));
         }
     }
 }

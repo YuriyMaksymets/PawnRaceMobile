@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PawnRaceMobile.Core
 {
-    internal abstract class Player
+    internal abstract class Player : IPlayer
     {
         private readonly int r_MoveShift;
         private readonly int r_PassedY;
@@ -13,20 +13,6 @@ namespace PawnRaceMobile.Core
         private readonly int r_YForLongMove;
         private Game m_Game;
         private Player m_Opponent;
-
-        public Board Board => m_Game.Board;
-
-        public Color Color
-        {
-            get; private set;
-        }
-
-        public bool IsWhite => Color == Color.White;
-
-        private List<Square> Pawns
-            => Color == Color.White ? m_Game.Board.WhitePawns : m_Game.Board.BlackPawns;
-
-        public event Action<Player, Move> MoveProduced;
 
         public Player(Color color)
         {
@@ -37,18 +23,32 @@ namespace PawnRaceMobile.Core
             r_PassedY = IsWhite ? Board.c_MAX_INDEX : 0;
         }
 
+        public event Action<Player, Move> MoveProduced;
+
+        public Board Board => m_Game.Board;
+
+        public Color Color
+        {
+            get; private set;
+        }
+
+        public bool IsWhite => Color == Color.White;
+
+        private IList<Square> Pawns
+            => IsWhite ? Board.WhitePawns : Board.BlackPawns;
+
         public abstract Move ProduceMove();
 
-        public void Set(Game game, Player opponent)
+        public abstract void TakeTurn();
+
+        internal void Set(Game game, Player opponent)
         {
             m_Game = game ?? throw new ArgumentNullException(nameof(game));
             m_Opponent = opponent ?? throw new ArgumentNullException(nameof(opponent));
         }
 
-        public abstract void TakeTurn();
-
         //If there is an obvious move, only it is returned
-        protected Move[] CalculatePossibleMovesOptimized()
+        internal IList<Move> CalculatePossibleMovesOptimized()
         {
             if (m_Game.NumberOfMoves > 0)
             {
@@ -56,7 +56,7 @@ namespace PawnRaceMobile.Core
                 Move lastMove = m_Game.LastMove.Value;
                 bool lastMoveWasLong = lastMove.IsLong && lastMove.To.IsOccupiedBy(Color.Inverse());
                 int numOfMoves = 0;
-                for (int i = 0; i < Pawns.Capacity; i++)
+                for (int i = 0; i < Pawns.Count; i++)
                 {
                     Square pawn = Pawns[i];
                     int currentY = pawn.Y;
@@ -119,18 +119,17 @@ namespace PawnRaceMobile.Core
                 Pawns.ForEach(pawn =>
                 {
                     moves[numOfMoves++]
-                    = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift));
+                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift));
                     moves[numOfMoves++]
-                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift >> 1)));
+                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift << 1)));
                 });
                 return moves;
             }
         }
 
-        protected void OnMoveProduced(Move move)
-                                                    => MoveProduced?.Invoke(this, move);
+        protected void OnMoveProduced(Move move) => MoveProduced?.Invoke(this, move);
 
-        protected Move SelectRandomMove(Move[] possibleMoves)
-            => possibleMoves[r_Random.Next(possibleMoves.Length)];
+        protected Move SelectRandomMove(IList<Move> possibleMoves)
+            => possibleMoves[r_Random.Next(possibleMoves.Count)];
     }
 }

@@ -72,10 +72,10 @@ namespace PawnRaceMobile.Core
                 {
                     return false;
                 }
-                //if (currentPlayer.getPossibleMoves().length < 1)
-                //{
-                //    return true;
-                //}
+                if (CurrentPlayer.CalculatePossibleMovesOptimized().Count < 1)
+                {
+                    return true;
+                }
                 return Board.BlackPawns.Count == 0 || Board.WhitePawns.Count == 0;
             }
         }
@@ -121,7 +121,7 @@ namespace PawnRaceMobile.Core
 
         public void ApplyMove(Move move)
         {
-            Board.applyMove(move);
+            Board.ApplyMove(move);
             m_Moves.Push(move);
             SwitchPlayer();
         }
@@ -177,7 +177,7 @@ namespace PawnRaceMobile.Core
             else
             {
                 int possibleY = CurrentPlayer.Color == Color.White ? 1 : Board.c_MAX_INDEX - 1;
-                int actualY = finishY + 2 * moveShift;
+                int actualY = finishY + (moveShift << 1);
                 if (actualY >= 0 && actualY < Board.c_MAX_COORDINATE)
                 {
                     startSquare = Board.GetSquare(startX, actualY);
