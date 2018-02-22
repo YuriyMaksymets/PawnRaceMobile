@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PawnRaceMobile.Core;
+using System;
 
 namespace UnitTests
 {
@@ -30,6 +31,27 @@ namespace UnitTests
 
             square = new Square(3, 7);
             Assert.AreEqual(square.Notation, "d8");
+        }
+
+        [TestMethod]
+        public void BoardConstructor()
+        {
+            Board board = new Board('A', 'A');
+            for (int i = 0; i < 8; ++i)
+            {
+                for (int j = 0; j < 8; ++j)
+                {
+                    Console.Write(board.GetSquare(i, j).Color + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        [TestMethod]
+        public void PlayerGetColor()
+        { 
+            HumanPlayer player = new HumanPlayer(Color.White);
+            Console.WriteLine(player.GetColor());
         }
     }
 }

@@ -7,13 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Diagnostics;
 
 namespace PawnRaceMobile
 {
     public partial class BoardPage : ContentPage
     {
         private GameManager m_GameManager;
-        private Square m_SelectedPawn;
+        private Square m_Source;
+        private Square m_Destination;
         private HumanPlayer m_User;
         private bool m_ControlEnabled;
         private bool m_LocalMultiplayer;
@@ -63,44 +65,77 @@ namespace PawnRaceMobile
             //Move
             //Attack
             //No available moves
-            Square selectedSquare = SquareFromImage(sender);
-            //if selectedcolor == playercolor
-            m_SelectedPawn = selectedSquare;
-            Log(selectedSquare);
+
+            //Getting the selected Square
+            IPlayer currentPlayer = m_GameManager.GetPlayer();
+            Square currentSquare = SquareFromImage(sender);
+            
+            if (m_Source == null)
+            {
+                //Necesary for displaying the valid moves
+                if (currentPlayer.GetColor() == currentSquare.Color)
+                {
+                    m_Source = currentSquare;
+                }
+                
+            }
+            else
+            {
+                m_Destination = currentSquare;
+                m_Destination = SquareFromImage(sender);
+                Move move;
+                if (m_Destination.X != m_Source.X)
+                {
+                    move = new Move(m_Source, m_Destination, true, false);
+                }
+                else
+                {
+                    move = new Move(m_Source, m_Destination);
+                }
+                manageMove(move);
+
+                m_Source      = null;
+                m_Destination = null;
+            }
+           
         }
 
         protected void OnSquareTapped(object sender, EventArgs e)
         {
-            if (!m_ControlEnabled)
+            if (!m_ControlEnabled || m_Source == null)
             {
                 return;
             }
-            if (m_SelectedPawn != null)
+            m_Destination = SquareFromImage(sender);
+            Move move;
+            if (m_Destination.X != m_Source.X)
             {
-                //if selectedSquare in possibleMoves
-                try
+                move = new Move(m_Source, m_Destination, true, true);
+            }
+            else
+            {
+                move = new Move(m_Source, m_Destination);
+            }
+            manageMove(move);
+
+            m_Source      = null;
+            m_Destination = null;
+        }
+
+        private void manageMove(Move move)
+        {
+            if (m_GameManager.IsValidMove(move))
+            {
+                m_User.ParseMove(move);
+                if (m_LocalMultiplayer)
                 {
-                    Square selectedSquare = SquareFromImage(sender);
-                    Move move = new Move(m_SelectedPawn, selectedSquare);
-                    m_SelectedPawn = null;
-                    if (m_GameManager.IsValidMove(move))
-                    {
-                        m_User.ParseMove(move);
-                        if (m_LocalMultiplayer)
-                        {
-                            m_User = m_User.Opponent as HumanPlayer;
-                            EnableControl();
-                        }
-                    }
-                    else
-                    {
-                        Alert("Invalid move");
-                    }
+                    m_User = m_User.Opponent as HumanPlayer;
+                    EnableControl();
                 }
-                catch (Exception exc)
-                {
-                    Log(exc);
-                }
+            }
+            else
+            {
+                Alert("Invalid move");
             }
         }
 

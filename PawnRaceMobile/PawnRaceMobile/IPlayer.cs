@@ -9,5 +9,7 @@ namespace PawnRaceMobile.Core
         Move ProduceMove();
 
         void TakeTurn();
+
+        Color GetColor();
     }
 }

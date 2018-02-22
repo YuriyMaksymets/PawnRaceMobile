@@ -32,5 +32,10 @@ namespace PawnRaceMobile
                 CurrentPlayer.TakeTurn();
             }
         }
+
+        public IPlayer GetPlayer()
+        {
+            return CurrentPlayer;
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PawnRaceMobile.Core
 {
-    internal abstract class Player : IPlayer
+    public abstract class Player : IPlayer
     {
         private readonly int r_MoveShift;
         private readonly int r_PassedY;
@@ -135,5 +135,10 @@ namespace PawnRaceMobile.Core
 
         protected Move SelectRandomMove(IList<Move> possibleMoves)
             => possibleMoves[r_Random.Next(possibleMoves.Count)];
+
+        public Color GetColor()
+        {
+            return Color;
+        }
     }
 }

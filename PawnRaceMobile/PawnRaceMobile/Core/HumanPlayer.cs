@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PawnRaceMobile.Core
 {
-    internal class HumanPlayer : Player
+    public class HumanPlayer : Player
     {
         public event Action TurnTaken;
 
