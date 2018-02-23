@@ -2,14 +2,17 @@
 
 namespace PawnRaceMobile.Core
 {
-    internal interface IPlayer
+    public interface IPlayer
     {
-        event Action<Player, Move> MoveProduced;
+        event Action<IPlayer, Move> MoveProduced;
+
+        Color Color
+        {
+            get;
+        }
 
         Move ProduceMove();
 
         void TakeTurn();
-
-        Color GetColor();
     }
 }

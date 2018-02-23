@@ -7,7 +7,7 @@ namespace PawnRaceMobile
     {
         private Game m_Game;
         public Board Board => m_Game.Board;
-        private IPlayer CurrentPlayer => m_Game.CurrentPlayer;
+        public IPlayer CurrentPlayer => m_Game.CurrentPlayer;
 
         public event Action MoveMade;
 
@@ -21,7 +21,7 @@ namespace PawnRaceMobile
 
         public bool IsValidMove(Move move) => m_Game.ParseMove(move.SAN) != null;
 
-        public void SelectMove(Player player, Move move)
+        public void SelectMove(IPlayer player, Move move)
         {
             if (CurrentPlayer == player && !m_Game.IsFinished)
             {
@@ -31,11 +31,6 @@ namespace PawnRaceMobile
                 CurrentPlayer.MoveProduced += SelectMove;
                 CurrentPlayer.TakeTurn();
             }
-        }
-
-        public IPlayer GetPlayer()
-        {
-            return CurrentPlayer;
         }
     }
 }

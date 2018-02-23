@@ -49,9 +49,11 @@ namespace UnitTests
 
         [TestMethod]
         public void PlayerGetColor()
-        { 
+        {
             HumanPlayer player = new HumanPlayer(Color.White);
-            Console.WriteLine(player.GetColor());
+            Assert.AreEqual(Color.White, player.Color);
+            Assert.IsTrue(player.IsWhite);
+            Console.WriteLine(player.Color);
         }
     }
 }

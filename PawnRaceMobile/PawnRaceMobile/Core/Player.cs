@@ -27,7 +27,7 @@ namespace PawnRaceMobile.Core
             r_PassedY = IsWhite ? Board.c_MAX_INDEX : 0;
         }
 
-        public event Action<Player, Move> MoveProduced;
+        public event Action<IPlayer, Move> MoveProduced;
 
         public Board Board => m_Game.Board;
 
@@ -135,10 +135,5 @@ namespace PawnRaceMobile.Core
 
         protected Move SelectRandomMove(IList<Move> possibleMoves)
             => possibleMoves[r_Random.Next(possibleMoves.Count)];
-
-        public Color GetColor()
-        {
-            return Color;
-        }
     }
 }

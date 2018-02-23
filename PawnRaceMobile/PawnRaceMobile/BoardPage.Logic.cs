@@ -51,7 +51,7 @@ namespace PawnRaceMobile
 
         private void EnableControl() => m_ControlEnabled = true;
 
-        private void DisableControl(Player _, Move __) => m_ControlEnabled = false;
+        private void DisableControl(IPlayer _, Move __) => m_ControlEnabled = false;
 
         protected void OnPawnTapped(object sender, EventArgs e)
         {
@@ -67,37 +67,28 @@ namespace PawnRaceMobile
             //No available moves
 
             //Getting the selected Square
-            IPlayer currentPlayer = m_GameManager.GetPlayer();
+            IPlayer currentPlayer = m_GameManager.CurrentPlayer;
             Square currentSquare = SquareFromImage(sender);
-            
+
             if (m_Source == null)
             {
                 //Necesary for displaying the valid moves
-                if (currentPlayer.GetColor() == currentSquare.Color)
+                if (currentSquare.IsOccupiedBy(currentPlayer.Color))
                 {
                     m_Source = currentSquare;
                 }
-                
             }
             else
             {
-                m_Destination = currentSquare;
                 m_Destination = SquareFromImage(sender);
-                Move move;
-                if (m_Destination.X != m_Source.X)
-                {
-                    move = new Move(m_Source, m_Destination, true, false);
-                }
-                else
-                {
-                    move = new Move(m_Source, m_Destination);
-                }
-                manageMove(move);
+                Move move = (m_Destination.X != m_Source.X)
+                    ? new Move(m_Source, m_Destination, true, false)
+                    : new Move(m_Source, m_Destination);
 
-                m_Source      = null;
-                m_Destination = null;
+                ManageMove(move);
+
+                m_Source = m_Destination = null;
             }
-           
         }
 
         protected void OnSquareTapped(object sender, EventArgs e)
@@ -107,22 +98,16 @@ namespace PawnRaceMobile
                 return;
             }
             m_Destination = SquareFromImage(sender);
-            Move move;
-            if (m_Destination.X != m_Source.X)
-            {
-                move = new Move(m_Source, m_Destination, true, true);
-            }
-            else
-            {
-                move = new Move(m_Source, m_Destination);
-            }
-            manageMove(move);
+            Move move = (m_Destination.X != m_Source.X)
+                ? new Move(m_Source, m_Destination, true, true)
+                : new Move(m_Source, m_Destination);
 
-            m_Source      = null;
-            m_Destination = null;
+            ManageMove(move);
+
+            m_Source = m_Destination = null;
         }
 
-        private void manageMove(Move move)
+        private void ManageMove(Move move)
         {
             if (m_GameManager.IsValidMove(move))
             {
