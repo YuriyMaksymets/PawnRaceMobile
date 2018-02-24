@@ -88,6 +88,7 @@ namespace PawnRaceMobile
 
                 ManageMove(move);
 
+                UndisplayAvailableMoves();
                 m_Source = m_Destination = null;
             }
         }
@@ -105,6 +106,7 @@ namespace PawnRaceMobile
 
             ManageMove(move);
 
+            UndisplayAvailableMoves();
             m_Source = m_Destination = null;
         }
 

@@ -32,6 +32,7 @@ namespace PawnRaceMobile
         #endregion Image Sources
 
         private IList<Image> m_PawnImages = new List<Image>(14);
+        private IList<Image> m_AvailableMoves = new List<Image>();
         private bool m_BoardRotated;
 
         protected override void OnSizeAllocated(double width, double height)
@@ -121,13 +122,13 @@ namespace PawnRaceMobile
 
         private void DisplayAvailableMoves()
         {
-            Log("------");
+            //Log("------");
             Image image;
 
             IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
             foreach (Move m in availableMoves)
             {
-                Log(m.To);
+                //Log(m.To);
                 image = new Image
                 {
                     Source = r_YellowPointImageSource,
@@ -141,12 +142,18 @@ namespace PawnRaceMobile
                 {
                     AddTapRecognition(image, OnSquareTapped);
                 }
+                m_AvailableMoves.Add(image);
                 mainGrid.Children.Add(image, m.To.X
                 , m_BoardRotated ? Board.c_MAX_INDEX - m.To.Y : m.To.Y);
             }
-            Log("------");
+            //Log("------");
         }
 
+        private void UndisplayAvailableMoves()
+        {
+            m_AvailableMoves.ForEach(x => mainGrid.Children.Remove(x));
+            m_AvailableMoves.Clear();
+        }
         //private void RenderPawns(IEnumerable<Square> pawns)
         //{
         //    pawns.ForEach(x => RenderPawn(x));
