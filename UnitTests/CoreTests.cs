@@ -2,7 +2,7 @@
 using PawnRaceMobile.Core;
 using System;
 
-namespace UnitTests
+namespace PawnRaceMobile.UnitTests
 {
     [TestClass]
     public class CoreTests

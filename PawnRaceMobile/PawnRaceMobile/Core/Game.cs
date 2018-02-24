@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PawnRaceMobile.Core
 {
-    internal class Game
+    public class Game
     {
         private const byte c_MinMovesToFinish = 8;
         private const byte c_MinMovesToFinishByKilling = 14;
@@ -80,7 +80,7 @@ namespace PawnRaceMobile.Core
             }
         }
 
-        public Move? LastMove
+        public Move LastMove
         {
             get
             {
@@ -126,7 +126,7 @@ namespace PawnRaceMobile.Core
             SwitchPlayer();
         }
 
-        public Move? ParseMove(string san)
+        public Move ParseMove(string san)
         {
             if (!(san.Length == 4 || san.Length == 2))
             {

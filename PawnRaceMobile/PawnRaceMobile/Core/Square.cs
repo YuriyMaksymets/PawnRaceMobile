@@ -9,16 +9,15 @@
 
         public bool IsBlack => IsOccupiedBy(Color.Black);
         public bool IsOccupied => Color != Color.None;
-
         public bool IsWhite => IsOccupiedBy(Color.White);
         public string Notation => ((char)('a' + X)) + (Y + 1).ToString();
 
-        public byte X
+        public int X
         {
             get; private set;
         }
 
-        public byte Y
+        public int Y
         {
             get; private set;
         }
@@ -32,8 +31,8 @@
             //    assert X<Board.MAX_COORDINATE
             //&& y < Board.MAX_COORDINATE && X >= 0 && y >= 0
             //      : "Wrong square coordinate";
-            X = (byte)x;
-            Y = (byte)y;
+            X = x;
+            Y = y;
             Color = color;
         }
 

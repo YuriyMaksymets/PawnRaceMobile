@@ -56,10 +56,10 @@ namespace PawnRaceMobile.Core
         {
             if (m_Game.NumberOfMoves > 0)
             {
-                Move[] maxMovesArray = new Move[18];
-                Move lastMove = m_Game.LastMove.Value;
-                bool lastMoveWasLong = lastMove.IsLong && lastMove.To.IsOccupiedBy(Color.Inverse());
-                int numOfMoves = 0;
+                List<Move> maxMovesArray = new List<Move>(18);
+                Move lastMove = m_Game.LastMove;
+                bool lastMoveWasLong = lastMove.IsLong && lastMove.To.IsOccupiedBy(Opponent.Color);
+                // int numOfMoves = 0;
                 for (int i = 0; i < Pawns.Count; i++)
                 {
                     Square pawn = Pawns[i];
@@ -81,14 +81,16 @@ namespace PawnRaceMobile.Core
                     Square movePosition = Board.GetSquare(currentX, newY);
                     if (!movePosition.IsOccupied)
                     {
-                        maxMovesArray[numOfMoves++] = new Move(pawn, movePosition);
+                        maxMovesArray.Add(new Move(pawn, movePosition));
+                        //maxMovesArray[numOfMoves++] = new Move(pawn, movePosition);
                         if (currentY == r_YForLongMove)
                         {
                             int longMoveY = newY + r_MoveShift;
                             Square longMovePosition = Board.GetSquare(currentX, longMoveY);
                             if (!longMovePosition.IsOccupied)
                             {
-                                maxMovesArray[numOfMoves++] = new Move(pawn, longMovePosition);
+                                maxMovesArray.Add(new Move(pawn, longMovePosition));
+                                //maxMovesArray[numOfMoves++] = new Move(pawn, longMovePosition);
                             }
                         }
                     }
@@ -102,30 +104,34 @@ namespace PawnRaceMobile.Core
                             continue;
                         }
                         Square newSquare = Board.GetSquare(newX, newY);
-                        if (newSquare.IsOccupiedBy(Color.Inverse()))
+                        if (newSquare.IsOccupiedBy(Opponent.Color))
                         {
-                            maxMovesArray[numOfMoves++] = new Move(pawn, newSquare, true, false);
+                            maxMovesArray.Add(new Move(pawn, newSquare, true, false));
+                            //maxMovesArray[numOfMoves++] = new Move(pawn, newSquare, true, false);
                         }
                         else if (EpCapturePossible && lastMove.To.X == newX)
                         {
-                            maxMovesArray[numOfMoves++] = new Move(pawn, newSquare, true, true);
+                            maxMovesArray.Add(new Move(pawn, newSquare, true, true));
+                            //maxMovesArray[numOfMoves++] = new Move(pawn, newSquare, true, true);
                         }
                     }
                 }
-                Move[] moves = new Move[numOfMoves];
-                Array.Copy(maxMovesArray, moves, numOfMoves);
-                return moves;
+                // Move[] moves = new Move[numOfMoves];
+                //Array.Copy(maxMovesArray, moves, numOfMoves);
+                return maxMovesArray;
             }
             else
             {
-                Move[] moves = new Move[14];
-                int numOfMoves = 0;
+                IList<Move> moves = new List<Move>(14);
+                //int numOfMoves = 0;
                 Pawns.ForEach(pawn =>
                 {
-                    moves[numOfMoves++]
-                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift));
-                    moves[numOfMoves++]
-                        = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift << 1)));
+                    moves.Add(new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift)));
+                    moves.Add(new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift << 1))));
+                    // moves[numOfMoves++]
+                    //  = new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift));
+                    // moves[numOfMoves++]
+                    //= new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + (r_MoveShift << 1)));
                 });
                 return moves;
             }

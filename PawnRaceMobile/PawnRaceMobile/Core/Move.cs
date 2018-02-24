@@ -2,7 +2,7 @@
 
 namespace PawnRaceMobile.Core
 {
-    public struct Move
+    public class Move
     {
         public Square From
         {

@@ -2,7 +2,7 @@
 
 namespace PawnRaceMobile.Core
 {
-    internal class RandomAI : Player
+    public class RandomAI : Player
     {
         public RandomAI(Color color) : base(color)
         {

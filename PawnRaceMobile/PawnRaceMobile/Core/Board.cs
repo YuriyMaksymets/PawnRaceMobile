@@ -151,7 +151,7 @@ namespace PawnRaceMobile.Core
 
             for (int col = c_MAX_COORDINATE - 1; col >= 0; col--)
             {
-                string rowString = (col + 1).ToString() + "  ";
+                string rowString = "\n" + (col + 1).ToString() + "  ";
                 for (int row = 0; row < c_MAX_COORDINATE; row++)
                 {
                     rowString += Squares[row, col].Color.Char();
@@ -161,7 +161,7 @@ namespace PawnRaceMobile.Core
                 sb.Append(rowString);
             }
 
-            sb.Append("   A B C D E F G H   ");
+            sb.Append("\n   A B C D E F G H   ");
             return sb.ToString();
         }
 
