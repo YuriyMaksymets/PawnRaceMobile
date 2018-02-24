@@ -141,5 +141,108 @@ namespace PawnRaceMobile.Core
 
         protected Move SelectRandomMove(IList<Move> possibleMoves)
             => possibleMoves[r_Random.Next(possibleMoves.Count)];
+
+        public IList<Move> GetAvailableMovesForPawn(Square pawn)
+        {
+            List<Move> movesList = new List<Move>();
+            Move move;
+
+            int colorType = 1;
+            if (Color == Color.Black)
+            {
+                colorType = -1;
+            }
+
+            Square nextSquare = new Square(pawn.X - 1, pawn.Y + colorType);
+            Board board = m_Game.Board;
+
+            if (GameUtilis.ValidSquare(nextSquare, board))
+            {
+
+                nextSquare = board.GetSquare(nextSquare.X, nextSquare.Y);
+
+                //Check if simple capture is possible
+                if (GameUtilis.CheckSimpleCapture(nextSquare, Color))
+                {
+                    movesList.Add(new Move(pawn, nextSquare, true, false));
+                }
+                else
+                {
+                    //Check if enPassant capture
+                    move = m_Game.LastMove;
+                    if (move != null && move.IsEnPassant())
+                    {
+                        if (GameUtilis.CheckEnPassantCapture(pawn, nextSquare, board, Color, move))
+                        {
+                            movesList.Add(new Move(pawn, nextSquare, true, true));
+
+                        }
+                    }
+                }
+            }
+
+            nextSquare = new Square(pawn.X + 1, pawn.Y + colorType);
+            if (GameUtilis.ValidSquare(nextSquare, board))
+            {
+
+                nextSquare = board.GetSquare(nextSquare.X, nextSquare.Y);
+
+                //Check if simple capture is possible
+                if (GameUtilis.CheckSimpleCapture(nextSquare, Color))
+                {
+                    movesList.Add(new Move(pawn, nextSquare, true, false));
+
+                }
+                else
+                {
+                    //Check if enPassant capture
+                    move = m_Game.LastMove;
+                    if (move != null && move.IsEnPassant())
+                    {
+                        if (GameUtilis.CheckEnPassantCapture(pawn, nextSquare, board, Color, move))
+                        {
+
+                            movesList.Add(new Move(pawn, nextSquare, true, true));
+
+                        }
+                    }
+                }
+            }
+
+            //Check for one step forward move
+            nextSquare = new Square(pawn.X, pawn.Y + colorType);
+            if (GameUtilis.ValidSquare(nextSquare, board))
+            {
+
+                nextSquare = board.GetSquare(nextSquare.X, nextSquare.Y);
+
+                if (GameUtilis.CheckForwardMove(nextSquare))
+                {
+
+                    //Check for two steps forward move
+                    Square nextSquare2 = new Square(pawn.X, pawn.Y + 2 * colorType);
+                    if ((Color == Color.White && pawn.Y == 1) || (Color == Color.Black
+                        && pawn.Y == board.Size - 2))
+                    {
+                        if (GameUtilis.ValidSquare(nextSquare2, board))
+                        {
+
+                            nextSquare2 = board.GetSquare(nextSquare2.X, nextSquare2.Y);
+
+                            if (GameUtilis.CheckForwardMove(nextSquare2))
+                            {
+
+                                movesList.Add(new Move(pawn, nextSquare2, false, false));
+                            }
+
+                        }
+                    }
+                    movesList.Add(new Move(pawn, nextSquare, false, false));
+                }
+            }
+
+            return movesList;
+
+        }
     }
 }

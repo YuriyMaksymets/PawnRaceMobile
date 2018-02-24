@@ -19,6 +19,11 @@ namespace PawnRaceMobile.Core
             get; private set;
         }
 
+        public bool IsEnPassant()
+        {
+            return (Math.Abs(From.Y - To.Y) == 2);
+        }
+
         public bool IsLong => Math.Abs(From.Y - To.Y) > 1;
 
         public string SAN => IsCapture || IsEpCapture

@@ -12,6 +12,14 @@ namespace PawnRaceMobile.Core
         public const byte c_MAX_COORDINATE = 8;
         public const byte c_MAX_INDEX = c_MAX_COORDINATE - 1;
 
+        public byte Size
+        {
+            get
+            {
+                return c_MAX_COORDINATE;
+            }
+        }
+
         public byte BlackGapIndex
         {
             get; private set;

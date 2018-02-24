@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PawnRaceMobile.Core
 {
@@ -12,6 +13,8 @@ namespace PawnRaceMobile.Core
         }
 
         Move ProduceMove();
+
+        IList<Move> GetAvailableMovesForPawn(Square pawn);
 
         void TakeTurn();
     }

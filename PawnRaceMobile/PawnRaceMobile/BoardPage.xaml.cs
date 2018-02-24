@@ -24,6 +24,9 @@ namespace PawnRaceMobile
         private readonly ImageSource r_BlackFillSource = ImageSource.FromResource
            ("PawnRaceMobile.Resourses.blackfill.png", Assembly.GetExecutingAssembly());
 
+        private readonly ImageSource r_YellowPointImageSource = ImageSource.FromResource
+          ("PawnRaceMobile.Resourses.yellow_point.png", Assembly.GetExecutingAssembly());
+
         private readonly ImageSource r_WhiteFillSource = "whitefill.png";
 
         #endregion Image Sources
@@ -80,7 +83,7 @@ namespace PawnRaceMobile
                     mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
                 }
             }
-        }
+        }   
 
         private void AddTapRecognition(View element, EventHandler action)
         {

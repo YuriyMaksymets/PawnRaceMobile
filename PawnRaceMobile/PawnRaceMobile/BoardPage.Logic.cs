@@ -22,10 +22,10 @@ namespace PawnRaceMobile
 
         public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
-            InitializeComponent();
-            InitializeBoardGrid();
             m_LocalMultiplayer = localMultiplayer;
             SetUpGame(whiteGap, blackGap, userPlaysWhite);
+            InitializeComponent();
+            InitializeBoardGrid();
             RenderAllPawns();
         }
 
@@ -76,6 +76,7 @@ namespace PawnRaceMobile
                 if (currentSquare.IsOccupiedBy(currentPlayer.Color))
                 {
                     m_Source = currentSquare;
+                    DisplayAvailableMoves();
                 }
             }
             else
@@ -131,6 +132,24 @@ namespace PawnRaceMobile
                 .GetSquare(Grid.GetColumn(senderImage),
                 m_BoardRotated ? Board.c_MAX_INDEX - Grid.GetRow(senderImage)
                 : Grid.GetRow(senderImage));
+        }
+
+        private void DisplayAvailableMoves()
+        {
+            Log("------");
+            Image image = new Image
+            {
+                Source = r_YellowPointImageSource
+            };
+
+            IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
+            foreach (Move m in availableMoves)
+            {
+                Log(m.To);
+                mainGrid.Children.Add(image, m.To.X
+                , m_BoardRotated ? Board.c_MAX_INDEX - m.To.Y : m.To.Y);
+            }
+            Log("------");
         }
     }
 }
