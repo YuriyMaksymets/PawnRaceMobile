@@ -25,7 +25,7 @@ namespace PawnRaceMobile
            ("PawnRaceMobile.Resourses.blackfill.png", Assembly.GetExecutingAssembly());
 
         private readonly ImageSource r_YellowPointImageSource = ImageSource.FromResource
-          ("PawnRaceMobile.Resourses.yellow_point.png", Assembly.GetExecutingAssembly());
+          ("PawnRaceMobile.Resourses.moveHighlight.png", Assembly.GetExecutingAssembly());
 
         private readonly ImageSource r_WhiteFillSource = "whitefill.png";
 
@@ -83,7 +83,7 @@ namespace PawnRaceMobile
                     mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
                 }
             }
-        }   
+        }
 
         private void AddTapRecognition(View element, EventHandler action)
         {
@@ -117,6 +117,34 @@ namespace PawnRaceMobile
             m_PawnImages.ForEach(x => mainGrid.Children.Remove(x));
             m_PawnImages = new List<Image>(m_GameManager.Board.Pawns.Count);
             m_GameManager.Board.Pawns.ForEach(x => RenderPawn(x));
+        }
+
+        private void DisplayAvailableMoves()
+        {
+            Log("------");
+            Image image;
+
+            IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
+            foreach (Move m in availableMoves)
+            {
+                Log(m.To);
+                image = new Image
+                {
+                    Source = r_YellowPointImageSource,
+                    Aspect = Aspect.Fill
+                };
+                if (m.To.IsOccupied)
+                {
+                    AddTapRecognition(image, OnPawnTapped);
+                }
+                else
+                {
+                    AddTapRecognition(image, OnSquareTapped);
+                }
+                mainGrid.Children.Add(image, m.To.X
+                , m_BoardRotated ? Board.c_MAX_INDEX - m.To.Y : m.To.Y);
+            }
+            Log("------");
         }
 
         //private void RenderPawns(IEnumerable<Square> pawns)

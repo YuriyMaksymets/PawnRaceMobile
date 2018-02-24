@@ -133,23 +133,5 @@ namespace PawnRaceMobile
                 m_BoardRotated ? Board.c_MAX_INDEX - Grid.GetRow(senderImage)
                 : Grid.GetRow(senderImage));
         }
-
-        private void DisplayAvailableMoves()
-        {
-            Log("------");
-            Image image = new Image
-            {
-                Source = r_YellowPointImageSource
-            };
-
-            IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
-            foreach (Move m in availableMoves)
-            {
-                Log(m.To);
-                mainGrid.Children.Add(image, m.To.X
-                , m_BoardRotated ? Board.c_MAX_INDEX - m.To.Y : m.To.Y);
-            }
-            Log("------");
-        }
     }
 }

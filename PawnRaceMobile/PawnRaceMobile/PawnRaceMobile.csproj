@@ -11,10 +11,12 @@
   <ItemGroup>
     <None Remove="Resourses\blackfill.png" />
     <None Remove="Resourses\blackpawn.png" />
+    <None Remove="Resourses\moveHighlight.png" />
     <None Remove="Resourses\whitepawn.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resourses\moveHighlight.png" />
     <EmbeddedResource Include="Resourses\blackfill.png" />
     <EmbeddedResource Include="Resourses\whitepawn.png" />
     <EmbeddedResource Include="Resourses\blackpawn.png" />
