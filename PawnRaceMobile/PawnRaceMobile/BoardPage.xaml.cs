@@ -122,13 +122,12 @@ namespace PawnRaceMobile
 
         private void DisplayAvailableMoves()
         {
-            //Log("------");
+
             Image image;
 
             IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
             foreach (Move m in availableMoves)
             {
-                //Log(m.To);
                 image = new Image
                 {
                     Source = r_YellowPointImageSource,
@@ -146,7 +145,6 @@ namespace PawnRaceMobile
                 mainGrid.Children.Add(image, m.To.X
                 , m_BoardRotated ? Board.c_MAX_INDEX - m.To.Y : m.To.Y);
             }
-            //Log("------");
         }
 
         private void UndisplayAvailableMoves()
