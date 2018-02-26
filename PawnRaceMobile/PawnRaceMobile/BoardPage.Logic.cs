@@ -103,9 +103,7 @@ namespace PawnRaceMobile
             Move move = (m_Destination.X != m_Source.X)
                 ? new Move(m_Source, m_Destination, true, true)
                 : new Move(m_Source, m_Destination);
-
             ManageMove(move);
-
             UndisplayAvailableMoves();
             m_Source = m_Destination = null;
         }

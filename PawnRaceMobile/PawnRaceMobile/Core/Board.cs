@@ -12,14 +12,6 @@ namespace PawnRaceMobile.Core
         public const byte c_MAX_COORDINATE = 8;
         public const byte c_MAX_INDEX = c_MAX_COORDINATE - 1;
 
-        public byte Size
-        {
-            get
-            {
-                return c_MAX_COORDINATE;
-            }
-        }
-
         public byte BlackGapIndex
         {
             get; private set;
@@ -60,7 +52,7 @@ namespace PawnRaceMobile.Core
                     Squares[x, y] = new Square(x, y);
                 }
             }
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < c_MAX_COORDINATE; i++)
             {
                 Squares[i, 1].Color = Color.White;
                 Squares[i, c_MAX_COORDINATE - 2].Color = Color.Black;
@@ -78,8 +70,8 @@ namespace PawnRaceMobile.Core
                 throw new Exception("Incorrect gaps: " + whiteGap + " " + blackGap);
             }
 
-            BlackPawns = new List<Square>(7);
-            WhitePawns = new List<Square>(7);
+            BlackPawns = new List<Square>(c_MAX_INDEX);
+            WhitePawns = new List<Square>(c_MAX_INDEX);
             for (int i = 0; i < c_MAX_COORDINATE; i++)
             {
                 for (int j = 0; j < c_MAX_COORDINATE; j++)
@@ -122,12 +114,10 @@ namespace PawnRaceMobile.Core
                 return;
             }
 #endif
-            int toX = to.X;
-            int toY = to.Y;
             if (move.IsEpCapture)
             {
                 int moveShift = pawnColor == Color.White ? -1 : 1;
-                Square passedPawn = Squares[toX, toY + moveShift];
+                Square passedPawn = Squares[to.X, to.Y + moveShift];
                 if (passedPawn.Color == pawnColor.Inverse())
                 {
                     RemovePawn(passedPawn);
@@ -176,165 +166,6 @@ namespace PawnRaceMobile.Core
         //assert x<Squares.length && y < Squares[0].length
         //  : "The square does not exist in current Squares";
         public Square GetSquare(int x, int y) => Squares[x, y];
-
-        public string GetState()
-        {
-            StringBuilder WhitePawns = new StringBuilder(18);
-            StringBuilder BlackPawns = new StringBuilder(18);
-            for (int tempX = 0; tempX < Squares.Length; tempX++)
-            {
-                int[] wPawnsYOnThisX = new int[2];
-                int wp = 0;
-                int[] bPawnsYOnThisX = new int[2];
-                int bp = 0;
-                for (int tempY = 0; tempY < Squares.GetLength(1); tempY++)
-                {
-                    if (Squares[tempX, tempY].Color == Color.White)
-                    {
-                        wPawnsYOnThisX[wp] = tempY;
-                        wp++;
-                    }
-                    else if (Squares[tempX, tempY].Color == Color.Black)
-                    {
-                        bPawnsYOnThisX[bp] = tempY;
-                        bp++;
-                    }
-                }
-
-                if (wp == 0)
-                {
-                    WhitePawns.Append('X');
-                }
-                else if (wp == 2)
-                {
-                    WhitePawns.Append('d');
-                    WhitePawns.Append(wPawnsYOnThisX[0]);
-                    WhitePawns.Append(wPawnsYOnThisX[1]);
-                }
-                else
-                {
-                    WhitePawns.Append(wPawnsYOnThisX[0]);
-                }
-                if (bp == 0)
-                {
-                    BlackPawns.Append('X');
-                }
-                else if (bp == 2)
-                {
-                    BlackPawns.Append('d');
-                    BlackPawns.Append(bPawnsYOnThisX[0]);
-                    BlackPawns.Append(bPawnsYOnThisX[1]);
-                }
-                else
-                {
-                    BlackPawns.Append(bPawnsYOnThisX[0]);
-                }
-            }
-            return WhitePawns.ToString() + BlackPawns.ToString();
-        }
-
-        public bool IsInState(string state)
-        {
-            char[] stateC = state.ToCharArray();
-            int readIndex = 0;
-            for (int tempX = 0; tempX < Squares.Length; tempX++)
-            {
-                if (stateC[readIndex] == 'd')
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        readIndex++;
-                        int checkY = stateC[readIndex];
-                        if (Squares[tempX, checkY].Color != Color.White)
-                        {
-                            return false;
-                        }
-                    }
-
-                    readIndex++;
-                }
-                else if (stateC[readIndex] == 'X')
-                {
-                    for (int i = 0; i < c_MAX_COORDINATE; i++)
-                    {
-                        if (Squares[tempX, i].Color == Color.White)
-                        {
-                            return false;
-                        }
-                    }
-
-                    readIndex++;
-                }
-                else
-                {
-                    int checkY = stateC[readIndex];
-                    if (Squares[tempX, checkY].Color != Color.White)
-                    {
-                        return false;
-                    }
-
-                    for (int i = 0; i < c_MAX_COORDINATE; i++)
-                    {
-                        if (i != checkY && Squares[tempX, i].Color == Color.White)
-                        {
-                            return false;
-                        }
-                    }
-
-                    readIndex++;
-                }
-            }
-
-            for (int tempX = 0; tempX < Squares.Length; tempX++)
-            {
-                if (stateC[readIndex] == 'd')
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        readIndex++;
-                        int checkY = stateC[readIndex];
-                        if (Squares[tempX, checkY].Color != Color.Black)
-                        {
-                            return false;
-                        }
-                    }
-
-                    readIndex++;
-                }
-                else if (stateC[readIndex] == 'X')
-                {
-                    for (int i = 0; i < c_MAX_COORDINATE; i++)
-                    {
-                        if (Squares[tempX, i].Color == Color.Black)
-                        {
-                            return false;
-                        }
-                    }
-
-                    readIndex++;
-                }
-                else
-                {
-                    int checkY = stateC[readIndex];
-                    if (Squares[tempX, checkY].Color != Color.Black)
-                    {
-                        return false;
-                    }
-
-                    for (int i = 0; i < c_MAX_COORDINATE; i++)
-                    {
-                        if (i != checkY && Squares[tempX, i].Color == Color.Black)
-                        {
-                            return false;
-                        }
-                    }
-
-                    readIndex++;
-                }
-            }
-
-            return true;
-        }
 
         public void UnapplyMove(Move move)
         {

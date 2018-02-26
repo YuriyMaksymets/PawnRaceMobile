@@ -12,9 +12,9 @@ namespace UnitTests
     public class EfficiencyTests
     {
         [TestMethod]
-        public void MillionRandomGames()
+        public void TenThousandRandomGames()
         {
-            const int numberOfGames = 200000;
+            const int numberOfGames = 10000;
             Player p1 = new RandomAI(Color.White);
             Player p2 = new RandomAI(Color.Black);
             Game game = new Game('c', 'g', p1, p2);

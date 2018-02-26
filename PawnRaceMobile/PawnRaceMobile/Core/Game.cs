@@ -162,7 +162,7 @@ namespace PawnRaceMobile.Core
                     {
                         return new Move(startSquare, finishSquare, true, false);
                     }
-                    else if (m_Moves.Peek().IsLong
+                    else if (LastMove != null && LastMove.IsLong
                       && SquareOccupiedByOtherPlayer(finishX, startY))
                     {
                         return new Move(startSquare, finishSquare, true, true);
