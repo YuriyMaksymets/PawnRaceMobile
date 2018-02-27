@@ -1,5 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
+using System.Collections.Generic;
 
 namespace PawnRaceMobile
 {
@@ -19,7 +20,19 @@ namespace PawnRaceMobile
             CurrentPlayer.TakeTurn();
         }
 
-        public bool IsValidMove(Move move) => m_Game.ParseMove(move.SAN) != null;
+        public bool IsValidMove(Move move)
+        {
+            IList<Move> moves = CurrentPlayer.GetAvailableMovesForPawn(move.From);
+            foreach (Move m in moves)
+            {
+                if (m.Equals(move))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public void SelectMove(IPlayer player, Move move)
         {

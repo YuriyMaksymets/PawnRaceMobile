@@ -39,5 +39,10 @@
         public bool IsOccupiedBy(Color color) => color == Color;
 
         public override string ToString() => "Square " + X + " " + Y;
+
+        public bool Equals(Square otherSquare)
+        {
+            return X == otherSquare.X && Y == otherSquare.Y;
+        }
     }
 }

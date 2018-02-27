@@ -43,5 +43,10 @@ namespace PawnRaceMobile.Core
         }
 
         public override string ToString() => SAN;
+
+        public bool Equals(Move otherMove)
+        {
+            return From.Equals(otherMove.From) && To.Equals(otherMove.To);
+        }
     }
 }
