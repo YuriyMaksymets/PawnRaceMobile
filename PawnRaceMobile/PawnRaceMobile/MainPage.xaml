@@ -4,12 +4,26 @@
              xmlns:local="clr-namespace:PawnRaceMobile"
              x:Class="PawnRaceMobile.MainPage">
     <ContentPage.Content>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <Button x:Name="startGameButton" Text="Start" IsEnabled="True"
-          Clicked="OnGameStart" />
-            <!--<Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />-->
-        </StackLayout>
+          Clicked="OnGameStart"
+                    Grid.Column="1"
+                    Grid.Row="1" />
+            <Button x:Name="rulesButton" Text="Rules" IsEnabled="True"
+          Clicked="OnGameStart"
+                    Grid.Column="1"
+                    Grid.Row="2" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -40,9 +40,6 @@
 
         public override string ToString() => "Square " + X + " " + Y;
 
-        public bool Equals(Square otherSquare)
-        {
-            return X == otherSquare.X && Y == otherSquare.Y;
-        }
+        public bool Equals(Square otherSquare) => X == otherSquare.X && Y == otherSquare.Y;
     }
 }
