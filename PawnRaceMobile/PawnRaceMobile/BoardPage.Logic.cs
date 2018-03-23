@@ -22,15 +22,16 @@ namespace PawnRaceMobile
 
         public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
-            m_LocalMultiplayer = localMultiplayer;
-            SetUpGame(whiteGap, blackGap, userPlaysWhite);
+            //m_LocalMultiplayer = localMultiplayer;
+            // SetUpGame(whiteGap, blackGap, userPlaysWhite);
             InitializeComponent();
             InitializeBoardGrid();
-            RenderAllPawns();
+            //RenderAllPawns();
         }
 
-        private void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite)
+        public void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
+            m_LocalMultiplayer = localMultiplayer;
             Core.Color userColor = userPlaysWhite ? Core.Color.White : Core.Color.Black;
             m_ControlEnabled = m_BoardRotated = userPlaysWhite;
             m_User = new HumanPlayer(userColor);
@@ -47,6 +48,7 @@ namespace PawnRaceMobile
             }
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderAllPawns;
+            RenderAllPawns();
         }
 
         private void EnableControl() => m_ControlEnabled = true;

@@ -64,7 +64,7 @@ namespace PawnRaceMobile
 
         private void Alert(object obj) => DisplayAlert(obj.ToString(), "", "Close");
 
-        private void InitializeBoardGrid()
+        public void InitializeBackground()
         {
             for (int i = 0; i < 8; i++)
             {
@@ -84,6 +84,28 @@ namespace PawnRaceMobile
                     mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
                 }
             }
+        }
+
+        private void InitializeBoardGrid()
+        {
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    for (int j = 0; j < 8; j++)
+            //    {
+            //        Image image = ((j + i) % 2 == 0) ? new Image
+            //        {
+            //            Source = r_BlackFillSource,
+            //            Aspect = Aspect.AspectFill,
+            //        } :
+            //        new Image
+            //        {
+            //            Source = r_WhiteFillSource,
+            //            Aspect = Aspect.AspectFill,
+            //        };
+            //        AddTapRecognition(image, OnSquareTapped);
+            //        mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
+            //    }
+            //}
         }
 
         private void AddTapRecognition(View element, EventHandler action)
@@ -122,7 +144,6 @@ namespace PawnRaceMobile
 
         private void DisplayAvailableMoves()
         {
-
             Image image;
 
             IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
@@ -152,6 +173,7 @@ namespace PawnRaceMobile
             m_AvailableMoves.ForEach(x => mainGrid.Children.Remove(x));
             m_AvailableMoves.Clear();
         }
+
         //private void RenderPawns(IEnumerable<Square> pawns)
         //{
         //    pawns.ForEach(x => RenderPawn(x));

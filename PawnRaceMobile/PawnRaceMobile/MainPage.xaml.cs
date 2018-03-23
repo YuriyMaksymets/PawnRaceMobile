@@ -14,6 +14,10 @@ namespace PawnRaceMobile
         public MainPage() => InitializeComponent();
 
         private async void OnGameStart(object sender, EventArgs e)
-            => await Navigation.PushAsync(new GameStartSettingsPage());
+        {
+            BoardPage boardPage = new BoardPage('a', 'c', true, false);
+            boardPage.InitializeBackground();
+            await Navigation.PushAsync(new GameStartSettingsPage(boardPage));
+        }
     }
 }

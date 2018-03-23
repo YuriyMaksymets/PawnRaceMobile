@@ -19,14 +19,16 @@ namespace PawnRaceMobile
         private bool m_LocalMultiplayer;
         private char m_WhiteGap = 'A';
         private char m_BlackGap = 'A';
+        private BoardPage m_BoardPage;
 
-        public GameStartSettingsPage()
+        public GameStartSettingsPage(BoardPage boardPage)
         {
             InitializeComponent();
             m_WhiteColorSelected = true;
             m_LocalMultiplayer = true;
             blackGapPicker.SelectedIndex = 0;
             whiteGapPicker.SelectedIndex = 0;
+            m_BoardPage = boardPage;
         }
 
         private void OnBlackColorSelected(object sender, EventArgs e)
@@ -86,8 +88,9 @@ namespace PawnRaceMobile
         }
 
         private async void OnStartClicked(object sender, EventArgs e)
-            => await Navigation
-                .PushAsync(new BoardPage(m_WhiteGap, m_BlackGap
-                    , m_WhiteColorSelected, m_LocalMultiplayer));
+        {
+            m_BoardPage.SetUpGame(m_WhiteGap, m_BlackGap, m_WhiteColorSelected, m_LocalMultiplayer);
+            await Navigation.PushAsync(m_BoardPage);
+        }
     }
 }
