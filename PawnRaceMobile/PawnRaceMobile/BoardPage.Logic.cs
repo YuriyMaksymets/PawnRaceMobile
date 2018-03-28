@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Diagnostics;
+using DLToolkit.Forms.Controls;
 
 namespace PawnRaceMobile
 {
@@ -26,6 +27,7 @@ namespace PawnRaceMobile
             // SetUpGame(whiteGap, blackGap, userPlaysWhite);
             InitializeComponent();
             InitializeBoardGrid();
+            //FlowListView.
             //RenderAllPawns();
         }
 

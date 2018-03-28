@@ -27,19 +27,25 @@ namespace PawnRaceMobile
         private readonly ImageSource r_YellowPointImageSource = ImageSource.FromResource
           ("PawnRaceMobile.Resourses.moveHighlight.png", Assembly.GetExecutingAssembly());
 
-        private readonly ImageSource r_WhiteFillSource = "whitefill.png";
+        private readonly ImageSource r_WhiteFillSource = ImageSource.FromResource
+            ("PawnRaceMobile.Resourses.whitefill.png", Assembly.GetExecutingAssembly());
 
         #endregion Image Sources
 
         private IList<Image> m_PawnImages = new List<Image>(14);
         private IList<Image> m_AvailableMoves = new List<Image>();
         private bool m_BoardRotated;
+        private (double, double) m_Dimensions;
 
         protected override void OnSizeAllocated(double width, double height)
-
         {
             base.OnSizeAllocated(width, height);
-            Console.WriteLine(width + " " + height);
+            if (m_Dimensions.Item1 == width || m_Dimensions.Item2 == height)
+            {
+                return;
+            }
+            Console.WriteLine("Size allocated with width " + width + " and height " + height);
+            m_Dimensions = (width, height);
             layout.WidthRequest = width;
             layout.HeightRequest = height;
             if (height >= width)
@@ -64,6 +70,13 @@ namespace PawnRaceMobile
 
         private void Alert(object obj) => DisplayAlert(obj.ToString(), "", "Close");
 
+        protected override void OnAppearing()
+        {
+            //mainGrid.BatchBegin();
+            mainGrid.ForceLayout();
+            //mainGrid.Focus();
+        }
+
         public void InitializeBackground()
         {
             for (int i = 0; i < 8; i++)
@@ -84,6 +97,7 @@ namespace PawnRaceMobile
                     mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
                 }
             }
+            Console.WriteLine("BoardPage background initialized");
         }
 
         private void InitializeBoardGrid()
