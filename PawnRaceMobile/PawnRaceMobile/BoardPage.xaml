@@ -27,6 +27,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
         </Grid>
-        <Label x:Name="console" Text="Console" VerticalOptions="End" />
+        <ScrollView>
+            <Label x:Name="console" Text="Console" VerticalOptions="End" />
+        </ScrollView>
     </StackLayout>
 </ContentPage>

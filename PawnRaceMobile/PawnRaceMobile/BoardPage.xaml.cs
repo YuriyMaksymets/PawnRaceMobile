@@ -160,7 +160,8 @@ namespace PawnRaceMobile
         {
             Image image;
 
-            IList<Move> availableMoves = m_User.GetAvailableMovesForPawn(m_Source);
+            IList<Move> availableMoves = m_GameManager.CurrentPlayer
+                .GetAvailableMovesForPawn(m_Source);
             foreach (Move m in availableMoves)
             {
                 image = new Image

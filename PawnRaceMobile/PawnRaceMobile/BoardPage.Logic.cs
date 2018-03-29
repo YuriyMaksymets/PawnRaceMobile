@@ -43,6 +43,10 @@ namespace PawnRaceMobile
             if (m_LocalMultiplayer)
             {
                 opponent = new HumanPlayer(userColor.Inverse());
+                if (!userPlaysWhite)
+                {
+                    m_ControlEnabled = true;
+                }
             }
             else
             {
@@ -86,11 +90,14 @@ namespace PawnRaceMobile
             else
             {
                 m_Destination = SquareFromImage(sender);
-                Move move = (m_Destination.X != m_Source.X)
+                if (m_Destination != m_Source)
+                {
+                    Move move = (m_Destination.X != m_Source.X)
                     ? new Move(m_Source, m_Destination, true, false)
                     : new Move(m_Source, m_Destination);
 
-                ManageMove(move);
+                    ManageMove(move);
+                }
 
                 UndisplayAvailableMoves();
                 m_Source = m_Destination = null;
