@@ -1,14 +1,7 @@
 ﻿using PawnRaceMobile.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using System.Diagnostics;
-using DLToolkit.Forms.Controls;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PawnRaceMobile
 {
@@ -23,12 +16,11 @@ namespace PawnRaceMobile
 
         public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
-            //m_LocalMultiplayer = localMultiplayer;
-            // SetUpGame(whiteGap, blackGap, userPlaysWhite);
             InitializeComponent();
+            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+            backButton.Clicked += async (sender, e) => await Navigation.PopToRootAsync();
             InitializeBoardGrid();
-            //FlowListView.
-            //RenderAllPawns();
         }
 
         public void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)

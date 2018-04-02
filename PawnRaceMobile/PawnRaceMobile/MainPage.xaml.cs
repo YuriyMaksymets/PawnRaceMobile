@@ -1,17 +1,17 @@
-﻿using PawnRaceMobile.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PawnRaceMobile
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage() => InitializeComponent();
+        public MainPage()
+        {
+            InitializeComponent();
+            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+        }
 
         private async void OnGameStart(object sender, EventArgs e)
         {

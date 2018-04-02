@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace PawnRaceMobile
 {
@@ -20,16 +14,6 @@ namespace PawnRaceMobile
         private char m_WhiteGap = 'A';
         private char m_BlackGap = 'A';
         private BoardPage m_BoardPage;
-
-        public GameStartSettingsPage(BoardPage boardPage)
-        {
-            InitializeComponent();
-            m_WhiteColorSelected = true;
-            m_LocalMultiplayer = true;
-            blackGapPicker.SelectedIndex = 0;
-            whiteGapPicker.SelectedIndex = 0;
-            m_BoardPage = boardPage;
-        }
 
         private void OnBlackColorSelected(object sender, EventArgs e)
         {

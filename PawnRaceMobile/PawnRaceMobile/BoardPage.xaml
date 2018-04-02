@@ -30,5 +30,6 @@
         <ScrollView>
             <Label x:Name="console" Text="Console" VerticalOptions="End" />
         </ScrollView>
+        <Button x:Name="backButton" Text="Main Menu" />
     </StackLayout>
 </ContentPage>
