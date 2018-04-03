@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace PawnRaceMobile.Core
 {
@@ -10,9 +10,17 @@ namespace PawnRaceMobile.Core
 
         public override Move ProduceMove()
         {
-            Move selectedMove = SelectRandomMove(CalculatePossibleMovesOptimized());
-            OnMoveProduced(selectedMove);
-            return selectedMove;
+            IList<Move> possibleMoves = CalculatePossibleMovesOptimized();
+            if (possibleMoves.Count > 0)
+            {
+                Move selectedMove = SelectRandomMove(CalculatePossibleMovesOptimized());
+                OnMoveProduced(selectedMove);
+                return selectedMove;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override void TakeTurn() => ProduceMove();

@@ -9,6 +9,9 @@ namespace PawnRaceMobile
         private Game m_Game;
         public Board Board => m_Game.Board;
         public IPlayer CurrentPlayer => m_Game.CurrentPlayer;
+        public bool IsFinished => m_Game.IsFinished;
+        public Color GameResult => m_Game.GameResult;
+        public int TotalMoves => m_Game.NumberOfMoves;
 
         public event Action MoveMade;
 

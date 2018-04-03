@@ -1,10 +1,7 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,27 +12,57 @@ namespace PawnRaceMobile
     {
         #region Image Sources
 
-        private readonly ImageSource r_BlackImageSource = ImageSource.FromResource
-            ("PawnRaceMobile.Resourses.blackpawn.png", Assembly.GetExecutingAssembly());
-
-        private readonly ImageSource r_WhiteImageSource = ImageSource.FromResource
-            ("PawnRaceMobile.Resourses.whitepawn.png", Assembly.GetExecutingAssembly());
-
         private readonly ImageSource r_BlackFillSource = ImageSource.FromResource
            ("PawnRaceMobile.Resourses.blackfill.png", Assembly.GetExecutingAssembly());
 
-        private readonly ImageSource r_YellowPointImageSource = ImageSource.FromResource
-          ("PawnRaceMobile.Resourses.moveHighlight.png", Assembly.GetExecutingAssembly());
+        private readonly ImageSource r_BlackImageSource = ImageSource.FromResource
+                    ("PawnRaceMobile.Resourses.blackpawn.png", Assembly.GetExecutingAssembly());
 
         private readonly ImageSource r_WhiteFillSource = ImageSource.FromResource
             ("PawnRaceMobile.Resourses.whitefill.png", Assembly.GetExecutingAssembly());
 
+        private readonly ImageSource r_WhiteImageSource = ImageSource.FromResource
+                    ("PawnRaceMobile.Resourses.whitepawn.png", Assembly.GetExecutingAssembly());
+
+        private readonly ImageSource r_YellowPointImageSource = ImageSource.FromResource
+          ("PawnRaceMobile.Resourses.moveHighlight.png", Assembly.GetExecutingAssembly());
+
         #endregion Image Sources
 
-        private IList<Image> m_PawnImages = new List<Image>(14);
-        private IList<Image> m_AvailableMoves = new List<Image>();
+        private IList<Image> m_AvailableMoves = new List<Image>(2);
         private bool m_BoardRotated;
         private (double, double) m_Dimensions;
+        private IList<Image> m_PawnImages = new List<Image>(14);
+
+        public void InitializeBackground()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Image image = ((j + i) % 2 == 0) ? new Image
+                    {
+                        Source = r_BlackFillSource,
+                        Aspect = Aspect.AspectFill,
+                    } :
+                    new Image
+                    {
+                        Source = r_WhiteFillSource,
+                        Aspect = Aspect.AspectFill,
+                    };
+                    AddTapRecognition(image, OnSquareTapped);
+                    mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
+                }
+            }
+            Console.WriteLine("BoardPage background initialized");
+        }
+
+        protected override void OnAppearing()
+        {
+            //mainGrid.BatchBegin();
+            mainGrid.ForceLayout();
+            //mainGrid.Focus();
+        }
 
         protected override void OnSizeAllocated(double width, double height)
         {
@@ -68,60 +95,6 @@ namespace PawnRaceMobile
             }
         }
 
-        private void Alert(object obj) => DisplayAlert(obj.ToString(), "", "Close");
-
-        protected override void OnAppearing()
-        {
-            //mainGrid.BatchBegin();
-            mainGrid.ForceLayout();
-            //mainGrid.Focus();
-        }
-
-        public void InitializeBackground()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    Image image = ((j + i) % 2 == 0) ? new Image
-                    {
-                        Source = r_BlackFillSource,
-                        Aspect = Aspect.AspectFill,
-                    } :
-                    new Image
-                    {
-                        Source = r_WhiteFillSource,
-                        Aspect = Aspect.AspectFill,
-                    };
-                    AddTapRecognition(image, OnSquareTapped);
-                    mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
-                }
-            }
-            Console.WriteLine("BoardPage background initialized");
-        }
-
-        private void InitializeBoardGrid()
-        {
-            //for (int i = 0; i < 8; i++)
-            //{
-            //    for (int j = 0; j < 8; j++)
-            //    {
-            //        Image image = ((j + i) % 2 == 0) ? new Image
-            //        {
-            //            Source = r_BlackFillSource,
-            //            Aspect = Aspect.AspectFill,
-            //        } :
-            //        new Image
-            //        {
-            //            Source = r_WhiteFillSource,
-            //            Aspect = Aspect.AspectFill,
-            //        };
-            //        AddTapRecognition(image, OnSquareTapped);
-            //        mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
-            //    }
-            //}
-        }
-
         private void AddTapRecognition(View element, EventHandler action)
         {
             TapGestureRecognizer iconTap = new TapGestureRecognizer();
@@ -129,32 +102,7 @@ namespace PawnRaceMobile
             element.GestureRecognizers.Add(iconTap);
         }
 
-        private void Log(object obj) => console.Text += ('\n' + obj.ToString());
-
-        private void OnClearButton(object sender, EventArgs e) => console.Text = "";
-
-        private void RenderPawn(Square pawn)
-        {
-            Image image = pawn.IsBlack ? new Image
-            {
-                Source = r_BlackImageSource
-            }
-            : new Image
-            {
-                Source = r_WhiteImageSource
-            };
-            m_PawnImages.Add(image);
-            AddTapRecognition(image, OnPawnTapped);
-            mainGrid.Children.Add(image, pawn.X
-                , m_BoardRotated ? Board.c_MAX_INDEX - pawn.Y : pawn.Y);
-        }
-
-        private void RenderAllPawns()
-        {
-            m_PawnImages.ForEach(x => mainGrid.Children.Remove(x));
-            m_PawnImages = new List<Image>(m_GameManager.Board.Pawns.Count);
-            m_GameManager.Board.Pawns.ForEach(x => RenderPawn(x));
-        }
+        private void Alert(object obj) => DisplayAlert(obj.ToString(), "", "Close");
 
         private void DisplayAvailableMoves()
         {
@@ -183,15 +131,59 @@ namespace PawnRaceMobile
             }
         }
 
+        private void InitializeBoardGrid()
+        {
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    for (int j = 0; j < 8; j++)
+            //    {
+            //        Image image = ((j + i) % 2 == 0) ? new Image
+            //        {
+            //            Source = r_BlackFillSource,
+            //            Aspect = Aspect.AspectFill,
+            //        } :
+            //        new Image
+            //        {
+            //            Source = r_WhiteFillSource,
+            //            Aspect = Aspect.AspectFill,
+            //        };
+            //        AddTapRecognition(image, OnSquareTapped);
+            //        mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
+            //    }
+            //}
+        }
+
+        private void Log(object obj) => console.Text += ('\n' + obj.ToString());
+
+        private void OnClearButton(object sender, EventArgs e) => console.Text = "";
+
+        private void RenderAllPawns()
+        {
+            m_PawnImages.ForEach(x => mainGrid.Children.Remove(x));
+            m_PawnImages = new List<Image>(m_GameManager.Board.Pawns.Count);
+            m_GameManager.Board.Pawns.ForEach(x => RenderPawn(x));
+        }
+
+        private void RenderPawn(Square pawn)
+        {
+            Image image = pawn.IsBlack ? new Image
+            {
+                Source = r_BlackImageSource
+            }
+            : new Image
+            {
+                Source = r_WhiteImageSource
+            };
+            m_PawnImages.Add(image);
+            AddTapRecognition(image, OnPawnTapped);
+            mainGrid.Children.Add(image, pawn.X
+                , m_BoardRotated ? Board.c_MAX_INDEX - pawn.Y : pawn.Y);
+        }
+
         private void UndisplayAvailableMoves()
         {
             m_AvailableMoves.ForEach(x => mainGrid.Children.Remove(x));
             m_AvailableMoves.Clear();
         }
-
-        //private void RenderPawns(IEnumerable<Square> pawns)
-        //{
-        //    pawns.ForEach(x => RenderPawn(x));
-        //}
     }
 }

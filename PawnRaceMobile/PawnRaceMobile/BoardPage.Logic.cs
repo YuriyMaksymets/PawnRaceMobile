@@ -1,5 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
@@ -7,19 +8,18 @@ namespace PawnRaceMobile
 {
     public partial class BoardPage : ContentPage
     {
-        private GameManager m_GameManager;
-        private Square m_Source;
-        private Square m_Destination;
-        private HumanPlayer m_User;
         private bool m_ControlEnabled;
+        private Square m_Destination;
+        private GameManager m_GameManager;
         private bool m_LocalMultiplayer;
+        private Square m_Source;
+        private HumanPlayer m_User;
 
         public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
             InitializeComponent();
-            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
-            backButton.Clicked += async (sender, e) => await Navigation.PopToRootAsync();
+            SetNavBar();
+            backButton.Clicked += async (sender, e) => await GoToMainMenu();
             InitializeBoardGrid();
         }
 
@@ -49,23 +49,12 @@ namespace PawnRaceMobile
             RenderAllPawns();
         }
 
-        private void EnableControl() => m_ControlEnabled = true;
-
-        private void DisableControl(IPlayer _, Move __) => m_ControlEnabled = false;
-
         protected void OnPawnTapped(object sender, EventArgs e)
         {
             if (!m_ControlEnabled)
             {
                 return;
             }
-            //Hightlight this square and possible move squares
-            //Highlight colors:
-            //Current
-            //Move
-            //Attack
-            //No available moves
-
             //Getting the selected Square
             IPlayer currentPlayer = m_GameManager.CurrentPlayer;
             Square currentSquare = SquareFromImage(sender);
@@ -111,12 +100,38 @@ namespace PawnRaceMobile
             m_Source = m_Destination = null;
         }
 
+        private void DisableControl(IPlayer _, Move __) => m_ControlEnabled = false;
+
+        private void EnableControl() => m_ControlEnabled = true;
+
+        private async void FinishGame()
+        {
+            string mainMessage;
+            string secondaryMessage = $"Total number of moves: {m_GameManager.TotalMoves}";
+            if (m_GameManager.GameResult == Core.Color.None)
+            {
+                mainMessage = "A Tie!";
+            }
+            else
+            {
+                mainMessage = $"{m_GameManager.GameResult}s Won!";
+            }
+            await DisplayAlert(mainMessage, secondaryMessage, "Main Menu");
+            await GoToMainMenu();
+        }
+
+        private async Task GoToMainMenu() => await Navigation.PopToRootAsync();
+
         private void ManageMove(Move move)
         {
             if (m_GameManager.IsValidMove(move))
             {
                 m_User.ParseMove(move);
-                if (m_LocalMultiplayer)
+                if (m_GameManager.IsFinished)
+                {
+                    FinishGame();
+                }
+                else if (m_LocalMultiplayer)
                 {
                     m_User = m_User.Opponent as HumanPlayer;
                     EnableControl();
@@ -126,6 +141,12 @@ namespace PawnRaceMobile
             {
                 Alert("Invalid move");
             }
+        }
+
+        private void SetNavBar()
+        {
+            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
         private Square SquareFromImage(object sender)

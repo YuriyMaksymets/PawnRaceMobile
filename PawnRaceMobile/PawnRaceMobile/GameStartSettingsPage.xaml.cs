@@ -15,6 +15,15 @@ namespace PawnRaceMobile
         private char m_BlackGap = 'A';
         private BoardPage m_BoardPage;
 
+        private void InitialSetting(BoardPage boardPage)
+        {
+            m_WhiteColorSelected = true;
+            m_LocalMultiplayer = true;
+            blackGapPicker.SelectedIndex = 0;
+            whiteGapPicker.SelectedIndex = 0;
+            m_BoardPage = boardPage;
+        }
+
         private void OnBlackColorSelected(object sender, EventArgs e)
         {
             m_WhiteColorSelected = false;
