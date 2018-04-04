@@ -12,20 +12,15 @@ namespace PawnRaceMobile
     {
         #region Image Sources
 
-        private readonly ImageSource r_BlackFillSource = ImageSource.FromResource
-           ("PawnRaceMobile.Resourses.blackfill.png", Assembly.GetExecutingAssembly());
+        private readonly ImageSource r_BlackFillSource = "blackfill.png";
 
-        private readonly ImageSource r_BlackImageSource = ImageSource.FromResource
-                    ("PawnRaceMobile.Resourses.blackpawn.png", Assembly.GetExecutingAssembly());
+        private readonly ImageSource r_BlackImageSource = "blackpawn.png";
 
-        private readonly ImageSource r_WhiteFillSource = ImageSource.FromResource
-            ("PawnRaceMobile.Resourses.whitefill.png", Assembly.GetExecutingAssembly());
+        private readonly ImageSource r_WhiteFillSource = "whitefill.png";
 
-        private readonly ImageSource r_WhiteImageSource = ImageSource.FromResource
-                    ("PawnRaceMobile.Resourses.whitepawn.png", Assembly.GetExecutingAssembly());
+        private readonly ImageSource r_WhiteImageSource = "whitepawn.png";
 
-        private readonly ImageSource r_YellowPointImageSource = ImageSource.FromResource
-          ("PawnRaceMobile.Resourses.moveHighlight.png", Assembly.GetExecutingAssembly());
+        private readonly ImageSource r_YellowPointImageSource = "movehighlight.png";
 
         #endregion Image Sources
 

@@ -8,16 +8,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resourses\blackfill.png" />
     <None Remove="Resourses\blackpawn.png" />
+    <None Remove="Resourses\boardfill.png" />
     <None Remove="Resourses\moveHighlight.png" />
     <None Remove="Resourses\whitefill.png" />
     <None Remove="Resourses\whitepawn.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resourses\moveHighlight.png" />
+    <EmbeddedResource Include="Resourses\boardfill.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resourses\movehighlight.png" />
     <EmbeddedResource Include="Resourses\blackfill.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

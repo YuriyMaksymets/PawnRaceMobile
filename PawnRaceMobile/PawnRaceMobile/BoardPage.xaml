@@ -5,6 +5,8 @@
 
     <StackLayout x:Name="layout" HorizontalOptions="CenterAndExpand">
         <Button Text="Clear console" Clicked="OnClearButton" VerticalOptions="Start" />
+        <!--<Grid>-->
+        <!--<Image Source="boardfill.png" Aspect="AspectFill"></Image>-->
         <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="Center">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -27,6 +29,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
         </Grid>
+        <!--</Grid>-->
         <ScrollView>
             <Label x:Name="console" Text="Console" VerticalOptions="End" />
         </ScrollView>

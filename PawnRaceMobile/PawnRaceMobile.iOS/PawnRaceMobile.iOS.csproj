@@ -145,4 +145,22 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\boardfill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\blackfill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\blackpawn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\movehighlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\whitefill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\whitepawn.png" />
+  </ItemGroup>
 </Project>
