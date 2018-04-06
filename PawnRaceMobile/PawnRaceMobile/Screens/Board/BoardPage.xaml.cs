@@ -26,11 +26,14 @@ namespace PawnRaceMobile
 
         #endregion Image Sources
 
+        private const uint c_DestroyAnimLength = 120;
+        private const uint c_MoveAnimLength = 280;
+
         private IList<Image> m_AvailableMoves = new List<Image>(2);
         private bool m_BoardRotated;
         private (double, double) m_Dimensions;
         private IDictionary<Square, Image> m_PawnImages = new Dictionary<Square, Image>(14);
-        private double w, o;
+        private double m_SquareWidth;
 
         public void InitializeBackground()
         {
@@ -71,7 +74,7 @@ namespace PawnRaceMobile
             m_Dimensions = (width, height);
             layout.WidthRequest = width;
             layout.HeightRequest = height;
-            w = (double)(width / 8);
+            m_SquareWidth = width / 8;
             if (height >= width)
             {
                 mainGrid.HeightRequest = width;
@@ -90,7 +93,6 @@ namespace PawnRaceMobile
                 }
                 mainGrid.WidthRequest = height;
             }
-            RenderAllPawns();
         }
 
         private void AddTapRecognition(View element, EventHandler action)
@@ -124,8 +126,7 @@ namespace PawnRaceMobile
                     AddTapRecognition(image, OnSquareTapped);
                 }
                 m_AvailableMoves.Add(image);
-                mainGrid.Children.Add(image, m.To.X
-                , m_BoardRotated ? Board.c_MAX_INDEX - m.To.Y : m.To.Y);
+                mainGrid.Children.Add(image, m.To.X, CoordBasedOnBoardRotation(m.To.Y));
             }
         }
 
@@ -165,13 +166,12 @@ namespace PawnRaceMobile
         private void RenderChanges()
         {
             Move lastMove = m_GameManager.LastMove;
-            DerenderPawn(lastMove.From);
             if (lastMove.IsEpCapture)
             {
                 Square s1 = m_GameManager.Board.GetSquare(lastMove.To.X, lastMove.To.Y - 1);
                 Square s2 = m_GameManager.Board.GetSquare(lastMove.To.X, lastMove.To.Y + 1);
                 Square pawnToRemove = m_PawnImages.ContainsKey(s1) ? s1 : s2;
-                DerenderPawn(pawnToRemove);
+                DerenderPawn(pawnToRemove, true);
             }
             else if (lastMove.IsCapture)
             {
@@ -182,57 +182,51 @@ namespace PawnRaceMobile
 
         private void DerenderPawn(Square pawn, bool animate = false)
         {
+            Image pawnImage = m_PawnImages[pawn];
             if (animate)
             {
                 int actualY = CoordBasedOnBoardRotation(pawn.Y);
-                animationLayout.Children.Add(m_PawnImages[pawn]
-                    , new Rectangle(pawn.X * w, actualY * w, w, w));
-                m_PawnImages[pawn].FadeTo(0, 100, Easing.Linear).ContinueWith((x) => Alert("Fade"));
+                animationLayout.Children.Add(pawnImage, PawnBoundsRectangle(pawn));
+                pawnImage.FadeTo(0, c_DestroyAnimLength, Easing.Linear);
             }
-            mainGrid.Children.Remove(m_PawnImages[pawn]);
+            mainGrid.Children.Remove(pawnImage);
             m_PawnImages.Remove(pawn);
+        }
+
+        private Rectangle PawnBoundsRectangle(Square pawn)
+        {
+            return new Rectangle
+                    (pawn.X * m_SquareWidth
+                    , CoordBasedOnBoardRotation(pawn.Y) * m_SquareWidth
+                    , m_SquareWidth
+                    , m_SquareWidth);
         }
 
         private async void RenderPawn(Square pawn, Square animateFrom = null)
         {
-            Image image = pawn.IsBlack ? new Image
-            {
-                Source = r_BlackImageSource
-            }
-            : new Image
-            {
-                Source = r_WhiteImageSource
-            };
-
             int actualY = CoordBasedOnBoardRotation(pawn.Y);
             if (animateFrom != null)
             {
                 DisableControl();
-                Rectangle oldBounds = new Rectangle(animateFrom.X * w, CoordBasedOnBoardRotation(animateFrom.Y) * w, w, w);
-                Rectangle newBounds = new Rectangle(pawn.X * w, actualY * w, w, w);
-                animationLayout.Children.Add(image, oldBounds);
-                image.Layout(oldBounds);
-                await image.LayoutTo(newBounds, 250, Easing.SinOut);
-                Image newimage = pawn.IsBlack ? new Image
-                {
-                    Source = r_BlackImageSource
-                }
-            : new Image
-            {
-                Source = r_WhiteImageSource
-            };
-
-                //image.Layout(oldBounds);
-                m_PawnImages.Add(pawn, newimage);
-                AddTapRecognition(newimage, OnPawnTapped);
-                mainGrid.Children.Add(newimage, pawn.X, actualY);
+                Image image = m_PawnImages[animateFrom];
+                Rectangle newBounds = PawnBoundsRectangle(pawn);
+                await image.LayoutTo(newBounds, c_MoveAnimLength, Easing.SinOut);
+                mainGrid.Children.Add(image, pawn.X, actualY);
                 mainGrid.ForceLayout();
+                m_PawnImages.Remove(animateFrom);
+                m_PawnImages.Add(pawn, image);
                 EnableControl();
-                //image.IsVisible = false;
-                animationLayout.Children.Remove(image);
             }
             else
             {
+                Image image = pawn.IsBlack ? new Image
+                {
+                    Source = r_BlackImageSource
+                }
+                : new Image
+                {
+                    Source = r_WhiteImageSource
+                };
                 m_PawnImages.Add(pawn, image);
                 AddTapRecognition(image, OnPawnTapped);
                 mainGrid.Children.Add(image, pawn.X, actualY);
