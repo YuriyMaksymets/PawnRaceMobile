@@ -45,7 +45,7 @@ namespace PawnRaceMobile
                 opponent = new RandomAI(userColor.Inverse());
             }
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
-            m_GameManager.MoveMade += RenderAllPawns;
+            m_GameManager.MoveMade += RenderChanges;
             RenderAllPawns();
         }
 

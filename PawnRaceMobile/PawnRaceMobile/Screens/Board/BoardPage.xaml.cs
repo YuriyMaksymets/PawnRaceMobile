@@ -27,7 +27,7 @@ namespace PawnRaceMobile
         private IList<Image> m_AvailableMoves = new List<Image>(2);
         private bool m_BoardRotated;
         private (double, double) m_Dimensions;
-        private IList<Image> m_PawnImages = new List<Image>(14);
+        private IDictionary<Square, Image> m_PawnImages = new Dictionary<Square, Image>(14);
 
         public void InitializeBackground()
         {
@@ -46,7 +46,7 @@ namespace PawnRaceMobile
                         Aspect = Aspect.AspectFill,
                     };
                     AddTapRecognition(image, OnSquareTapped);
-                    mainGrid.Children.Add(image, i, m_BoardRotated ? Board.c_MAX_INDEX - j : j);
+                    mainGrid.Children.Add(image, i, CoordBasedOnBoardRotation(j));
                 }
             }
             Console.WriteLine("BoardPage background initialized");
@@ -54,9 +54,7 @@ namespace PawnRaceMobile
 
         protected override void OnAppearing()
         {
-            //mainGrid.BatchBegin();
             mainGrid.ForceLayout();
-            //mainGrid.Focus();
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -154,9 +152,33 @@ namespace PawnRaceMobile
 
         private void RenderAllPawns()
         {
-            m_PawnImages.ForEach(x => mainGrid.Children.Remove(x));
-            m_PawnImages = new List<Image>(m_GameManager.Board.Pawns.Count);
+            m_PawnImages.ForEach(x => mainGrid.Children.Remove(x.Value));
+            m_PawnImages = new Dictionary<Square, Image>(m_GameManager.Board.Pawns.Count);
             m_GameManager.Board.Pawns.ForEach(x => RenderPawn(x));
+        }
+
+        private void RenderChanges()
+        {
+            Move lastMove = m_GameManager.LastMove;
+            DerenderPawn(lastMove.From);
+            if (lastMove.IsEpCapture)
+            {
+                Square s1 = m_GameManager.Board.GetSquare(lastMove.To.X, lastMove.To.Y - 1);
+                Square s2 = m_GameManager.Board.GetSquare(lastMove.To.X, lastMove.To.Y + 1);
+                Square pawnToRemove = m_PawnImages.ContainsKey(s1) ? s1 : s2;
+                DerenderPawn(pawnToRemove);
+            }
+            else if (lastMove.IsCapture)
+            {
+                DerenderPawn(lastMove.To);
+            }
+            RenderPawn(lastMove.To);
+        }
+
+        private void DerenderPawn(Square pawn)
+        {
+            mainGrid.Children.Remove(m_PawnImages[pawn]);
+            m_PawnImages.Remove(pawn);
         }
 
         private void RenderPawn(Square pawn)
@@ -169,16 +191,20 @@ namespace PawnRaceMobile
             {
                 Source = r_WhiteImageSource
             };
-            m_PawnImages.Add(image);
+            m_PawnImages.Add(pawn, image);
             AddTapRecognition(image, OnPawnTapped);
-            mainGrid.Children.Add(image, pawn.X
-                , m_BoardRotated ? Board.c_MAX_INDEX - pawn.Y : pawn.Y);
+            mainGrid.Children.Add(image, pawn.X, CoordBasedOnBoardRotation(pawn.Y));
         }
 
         private void UndisplayAvailableMoves()
         {
             m_AvailableMoves.ForEach(x => mainGrid.Children.Remove(x));
             m_AvailableMoves.Clear();
+        }
+
+        private int CoordBasedOnBoardRotation(int y)
+        {
+            return m_BoardRotated ? Board.c_MAX_INDEX - y : y;
         }
     }
 }

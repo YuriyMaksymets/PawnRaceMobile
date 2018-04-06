@@ -12,6 +12,7 @@ namespace PawnRaceMobile
         public bool IsFinished => m_Game.IsFinished;
         public Color GameResult => m_Game.GameResult;
         public int TotalMoves => m_Game.NumberOfMoves;
+        public Move LastMove => m_Game.LastMove;
 
         public event Action MoveMade;
 

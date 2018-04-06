@@ -77,6 +77,8 @@
     <Prefer32Bit>true</Prefer32Bit>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\x86\Debug\PawnRaceMobile.UWP.XML</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
