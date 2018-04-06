@@ -100,6 +100,8 @@ namespace PawnRaceMobile
             m_Source = m_Destination = null;
         }
 
+        private void DisableControl() => m_ControlEnabled = false;
+
         private void DisableControl(IPlayer _, Move __) => m_ControlEnabled = false;
 
         private void EnableControl() => m_ControlEnabled = true;
