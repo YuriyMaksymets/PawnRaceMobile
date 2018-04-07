@@ -20,7 +20,6 @@ namespace PawnRaceMobile
             InitializeComponent();
             SetNavBar();
             backButton.Clicked += async (sender, e) => await GoToMainMenu();
-            InitializeBoardGrid();
         }
 
         public void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
@@ -154,10 +153,8 @@ namespace PawnRaceMobile
         private Square SquareFromImage(object sender)
         {
             Image senderImage = (Image)sender;
-            return m_GameManager.Board
-                .GetSquare(Grid.GetColumn(senderImage),
-                m_BoardRotated ? Board.c_MAX_INDEX - Grid.GetRow(senderImage)
-                : Grid.GetRow(senderImage));
+            return m_GameManager.Board.GetSquare
+                (Grid.GetColumn(senderImage), YBasedOnBoardRotation(Grid.GetRow(senderImage)));
         }
     }
 }

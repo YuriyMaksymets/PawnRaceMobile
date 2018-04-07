@@ -19,6 +19,7 @@ namespace PawnRaceMobile.Core
             }
             else
             {
+                OnMoveProduced(null);
                 return null;
             }
         }

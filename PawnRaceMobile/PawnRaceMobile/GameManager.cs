@@ -34,7 +34,6 @@ namespace PawnRaceMobile
                     return true;
                 }
             }
-
             return false;
         }
 

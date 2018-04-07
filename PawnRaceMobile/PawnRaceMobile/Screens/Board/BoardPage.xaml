@@ -6,30 +6,28 @@
         <Button Text="Clear console" Clicked="OnClearButton" VerticalOptions="Start" />
         <!--<Grid>-->
         <!--<Image Source="boardfill.png" Aspect="AspectFill"></Image>-->
-        <AbsoluteLayout x:Name="animationLayout">
-            <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-            </Grid>
-        </AbsoluteLayout>
+        <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+        </Grid>
         <!--</Grid>-->
         <ScrollView>
             <Label x:Name="console" Text="Console" VerticalOptions="End" />

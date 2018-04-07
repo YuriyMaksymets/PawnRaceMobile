@@ -68,13 +68,13 @@ namespace PawnRaceMobile.Core
                         return true;
                     }
                 }
-                if (m_Moves.Count < c_MinMovesToFinishByKilling)
-                {
-                    return false;
-                }
                 if (CurrentPlayer.CalculatePossibleMovesOptimized().Count < 1)
                 {
                     return true;
+                }
+                if (m_Moves.Count < c_MinMovesToFinishByKilling)
+                {
+                    return false;
                 }
                 return Board.BlackPawns.Count == 0 || Board.WhitePawns.Count == 0;
             }

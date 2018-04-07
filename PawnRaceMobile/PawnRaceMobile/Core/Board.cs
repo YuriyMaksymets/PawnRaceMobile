@@ -142,7 +142,7 @@ namespace PawnRaceMobile.Core
 
         public object Clone() => MemberwiseClone();
 
-        public string Display()
+        public string PrintToConsole()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("   A B C D E F G H   ");
