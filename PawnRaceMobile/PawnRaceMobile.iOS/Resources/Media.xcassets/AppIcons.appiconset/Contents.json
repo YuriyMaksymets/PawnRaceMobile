@@ -3,42 +3,50 @@
     {
       "scale": "2x",
       "size": "20x20",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon40.png"
     },
     {
       "scale": "3x",
       "size": "20x20",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon.png"
     },
     {
       "scale": "2x",
       "size": "29x29",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon58.png"
     },
     {
       "scale": "3x",
       "size": "29x29",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon87.png"
     },
     {
       "scale": "2x",
       "size": "40x40",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon80.png"
     },
     {
       "scale": "3x",
       "size": "40x40",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon120.png"
     },
     {
       "scale": "2x",
       "size": "60x60",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon120.png"
     },
     {
       "scale": "3x",
       "size": "60x60",
-      "idiom": "iphone"
+      "idiom": "iphone",
+      "filename": "Icon180.png"
     },
     {
       "scale": "1x",
@@ -88,7 +96,8 @@
     {
       "scale": "1x",
       "size": "1024x1024",
-      "idiom": "ios-marketing"
+      "idiom": "ios-marketing",
+      "filename": "AppStoreIcon.png"
     }
   ],
   "properties": {},
