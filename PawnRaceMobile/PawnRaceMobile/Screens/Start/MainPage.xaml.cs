@@ -1,4 +1,4 @@
-﻿using System;
+﻿using PawnRaceMobile.Screens;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
@@ -10,6 +10,7 @@ namespace PawnRaceMobile
         {
             InitializeComponent();
             SetNavBar();
+            SetButtons();
         }
 
         private void SetNavBar()
@@ -18,9 +19,21 @@ namespace PawnRaceMobile
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
-        private async void OnGameStart(object sender, EventArgs e)
+        private void SetButtons()
         {
-            BoardPage boardPage = new BoardPage('a', 'c', true, false);
+            startGameButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => OnGameStart())
+            });
+            rulesButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => OnGameStart())
+            });
+        }
+
+        private async void OnGameStart()
+        {
+            BoardPage boardPage = new BoardPage('a', 'a', true, false);
             boardPage.InitializeBackground();
             await Navigation.PushAsync(new GameStartSettingsPage(boardPage));
         }

@@ -1,36 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:PawnRaceMobile"
-             x:Class="PawnRaceMobile.MainPage">
+             x:Class="PawnRaceMobile.Screens.ModeSelection">
     <ContentPage.Content>
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
             <BoxView x:Name="startGameButton" Color="#6373a5"
                      VerticalOptions="Fill"
                      HorizontalOptions="Fill"
                      Grid.Row="0" />
 
-            <BoxView x:Name="rulesButton" Color="#a7c9df"
+            <BoxView Color="#a7c9df"
                      VerticalOptions="Fill"
                      HorizontalOptions="Fill"
                      Grid.Row="1" />
 
-            <Label Text="Start" FontAttributes="Bold"
+            <BoxView x:Name="rulesButton" Color="#6373a5"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"
+                     Grid.Row="2" />
+
+            <Label Text="1" FontAttributes="Bold"
                    TextColor="#a7c9df"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
-                   FontSize="128"
+                   FontSize="192"
                     Grid.Row="0" />
-            <Label Text="Rules" FontAttributes="Bold"
+
+            <Label Text="Select number of players"
                    TextColor="#6373a5"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"
-                   FontSize="128"
-                   Grid.Row="1" />
+                   FontSize="Medium"
+                    Grid.Row="1" />
+
+            <Label Text="2" FontAttributes="Bold"
+                   TextColor="#a7c9df"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   FontSize="192"
+                   Grid.Row="2" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
