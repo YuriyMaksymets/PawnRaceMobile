@@ -9,28 +9,14 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <BoxView x:Name="startGameButton" Color="#6373a5"
-                     VerticalOptions="Fill"
-                     HorizontalOptions="Fill"
-                     Grid.Row="0" />
-
-            <BoxView x:Name="rulesButton" Color="#a7c9df"
-                     VerticalOptions="Fill"
-                     HorizontalOptions="Fill"
-                     Grid.Row="1" />
-
-            <Label Text="Start" FontAttributes="Bold"
-                   TextColor="#a7c9df"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   FontSize="128"
-                    Grid.Row="0" />
-            <Label Text="Rules" FontAttributes="Bold"
-                   TextColor="#6373a5"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   FontSize="128"
-                   Grid.Row="1" />
+            <ContentView x:Name="startGameButton" BackgroundColor="{StaticResource dark}"
+                     Grid.Row="0">
+                <Label Text="Start" Style="{StaticResource lightLabel}" />
+            </ContentView>
+            <ContentView x:Name="rulesButton" BackgroundColor="{StaticResource light}"
+                     Grid.Row="1">
+                <Label Text="Rules" Style="{StaticResource darkLabel}" />
+            </ContentView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -20,6 +20,8 @@ namespace PawnRaceMobile
             InitializeComponent();
             SetNavBar();
             backButton.Clicked += async (sender, e) => await GoToMainMenu();
+            InitializeBackground();
+            RenderDummyPawns();
         }
 
         public void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)

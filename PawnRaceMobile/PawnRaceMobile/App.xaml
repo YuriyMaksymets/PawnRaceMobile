@@ -2,9 +2,31 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PawnRaceMobile.App">
-	<Application.Resources>
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="light">#a7c9df</Color>
+            <Color x:Key="dark">#6373a5</Color>
 
-		<!-- Application resource dictionary -->
-
-	</Application.Resources>
+            <Style x:Key="lightLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource light}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="96" />
+            </Style>
+            <Style x:Key="darkLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource dark}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="96" />
+            </Style>
+            <Style x:Key="descriptionLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource dark}" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="Medium" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

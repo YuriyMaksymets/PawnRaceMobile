@@ -9,41 +9,20 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
-            <BoxView x:Name="startGameButton" Color="#6373a5"
-                     VerticalOptions="Fill"
-                     HorizontalOptions="Fill"
-                     Grid.Row="0" />
+            <ContentView x:Name="onePlayerButton" BackgroundColor="{StaticResource dark}"
+                     Grid.Row="0">
+                <Label Text="1" Style="{StaticResource lightLabel}" FontSize="192" />
+            </ContentView>
 
-            <BoxView Color="#a7c9df"
-                     VerticalOptions="Fill"
-                     HorizontalOptions="Fill"
-                     Grid.Row="1" />
+            <ContentView BackgroundColor="{StaticResource light}"
+                     Grid.Row="1">
+                <Label Text="Select number of players" Style="{StaticResource descriptionLabel}" />
+            </ContentView>
 
-            <BoxView x:Name="rulesButton" Color="#6373a5"
-                     VerticalOptions="Fill"
-                     HorizontalOptions="Fill"
-                     Grid.Row="2" />
-
-            <Label Text="1" FontAttributes="Bold"
-                   TextColor="#a7c9df"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   FontSize="192"
-                    Grid.Row="0" />
-
-            <Label Text="Select number of players"
-                   TextColor="#6373a5"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   FontSize="Medium"
-                    Grid.Row="1" />
-
-            <Label Text="2" FontAttributes="Bold"
-                   TextColor="#a7c9df"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   FontSize="192"
-                   Grid.Row="2" />
+            <ContentView x:Name="twoPlayersButton" BackgroundColor="{StaticResource dark}"
+                     Grid.Row="2">
+                <Label Text="2" Style="{StaticResource lightLabel}" FontSize="192" />
+            </ContentView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

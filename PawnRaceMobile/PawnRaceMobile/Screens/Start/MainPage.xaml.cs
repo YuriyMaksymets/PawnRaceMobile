@@ -35,7 +35,7 @@ namespace PawnRaceMobile
         {
             BoardPage boardPage = new BoardPage('a', 'a', true, false);
             boardPage.InitializeBackground();
-            await Navigation.PushAsync(new GameStartSettingsPage(boardPage));
+            await Navigation.PushAsync(new ModeSelection());
         }
     }
 }
