@@ -35,5 +35,9 @@
             <Label x:Name="console" Text="Console" VerticalOptions="End" />
         </ScrollView>
         <Button x:Name="backButton" Text="Main Menu" />
+        <ScrollView Orientation="Horizontal">
+            <StackLayout x:Name="historyLayout" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            </StackLayout>
+        </ScrollView>
     </StackLayout>
 </ContentPage>

@@ -1,9 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -34,7 +31,7 @@ namespace PawnRaceMobile
         private (double, double) m_Dimensions;
         private IDictionary<Square, Image> m_PawnImages = new Dictionary<Square, Image>(14);
         private double m_SquareWidth;
-
+       
         public void InitializeBackground()
         {
             for (int i = 0; i < 8; i++)

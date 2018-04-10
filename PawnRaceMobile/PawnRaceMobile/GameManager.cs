@@ -7,6 +7,7 @@ namespace PawnRaceMobile
     internal class GameManager
     {
         private Game m_Game;
+        public Stack<Move> m_moves => m_Game.m_Moves;
         public Board Board => m_Game.Board;
         public IPlayer CurrentPlayer => m_Game.CurrentPlayer;
         public bool IsFinished => m_Game.IsFinished;
@@ -15,7 +16,8 @@ namespace PawnRaceMobile
         public Move LastMove => m_Game.LastMove;
 
         public event Action MoveMade;
-
+        public event Action<Move> buttonToAdd;
+        
         public GameManager(char whiteGap, char blackGap
             , Player player1, Player player2)
         {
@@ -45,6 +47,7 @@ namespace PawnRaceMobile
                 CurrentPlayer.MoveProduced -= SelectMove;
                 m_Game.ApplyMove(move);
                 MoveMade?.Invoke();
+                buttonToAdd?.Invoke(move);
                 CurrentPlayer.MoveProduced += SelectMove;
                 CurrentPlayer.TakeTurn();
             }

@@ -29,6 +29,11 @@ namespace PawnRaceMobile.Core
             get; private set;
         }
 
+        public int currId
+        {
+            get; set;
+        }
+
         public IList<Square> WhitePawns
         {
             get; private set;
@@ -169,8 +174,11 @@ namespace PawnRaceMobile.Core
 
         public void UnapplyMove(Move move)
         {
-            Square pawn = Squares[move.To.X, move.To.Y];
-            Color pawnColor = pawn.Color;
+            Square fromSquare = Squares[move.From.X, move.From.Y];
+            Square toSquare = Squares[move.To.X, move.To.Y];
+            Color pawnColor = toSquare.Color;
+            Color enemyColor = pawnColor.Inverse();
+            RemovePawn(toSquare);
 #if debug
             if (pawnColor == Color.None)
             {
@@ -178,51 +186,21 @@ namespace PawnRaceMobile.Core
                 return;
             }
 #endif
+            fromSquare.Color = pawnColor;
+            toSquare.Color = Color.None;
+
             if (move.IsEpCapture)
             {
-                Square to = move.To;
-                int toX = to.X;
-                int toY = to.Y;
-                if (pawnColor == Color.Black)
-                {
-                    Square tPawn = Squares[toX, toY + 1];
-                    tPawn.Color = Color.White;
-                    WhitePawns.Add(tPawn);
-                    BlackPawns.Remove(pawn);
-                    pawn.Color = Color.None;
-                }
-                else
-                {
-                    Square tPawn = Squares[toX, toY - 1];
-                    tPawn.Color = Color.Black;
-                    BlackPawns.Add(tPawn);
-                    WhitePawns.Remove(pawn);
-                    pawn.Color = Color.None;
-                }
+                Square adjSquare = Squares[move.From.X, move.To.Y];
+                adjSquare.Color = enemyColor;
+                AddPawn(adjSquare);
             }
             else if (move.IsCapture)
             {
-                if (pawnColor == Color.White)
-                {
-                    pawn.Color = Color.Black;
-                    BlackPawns.Add(pawn);
-                    WhitePawns.Remove(pawn);
-                }
-                else
-                {
-                    pawn.Color = Color.White;
-                    WhitePawns.Add(pawn);
-                    BlackPawns.Remove(pawn);
-                }
+                toSquare.Color = enemyColor;
+                AddPawn(toSquare);
             }
-            else
-            {
-                RemovePawn(pawn);
-                pawn.Color = Color.None;
-            }
-            Square from = move.From;
-            from.Color = pawnColor;
-            AddPawn(from);
+            AddPawn(fromSquare);
         }
 
         private void RemovePawn(Square pawn)

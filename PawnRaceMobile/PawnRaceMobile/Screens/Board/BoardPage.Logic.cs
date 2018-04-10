@@ -1,6 +1,7 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
@@ -14,6 +15,11 @@ namespace PawnRaceMobile
         private bool m_LocalMultiplayer;
         private Square m_Source;
         private HumanPlayer m_User;
+
+        //History box fields
+        private int currId = -1;
+        private List<Guid> historyButtonsIds = new List<Guid>();
+
 
         public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
         {
@@ -46,6 +52,7 @@ namespace PawnRaceMobile
             }
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderChanges;
+            m_GameManager.buttonToAdd += AddButton;
             RenderAllPawns();
         }
 
@@ -126,23 +133,69 @@ namespace PawnRaceMobile
 
         private void ManageMove(Move move)
         {
-            if (m_GameManager.IsValidMove(move))
+            if (currId != m_GameManager.TotalMoves - 1)
             {
-                m_User.ParseMove(move);
-                if (m_GameManager.IsFinished)
-                {
-                    FinishGame();
-                }
-                else if (m_LocalMultiplayer)
-                {
-                    m_User = m_User.Opponent as HumanPlayer;
-                    EnableControl();
-                }
+                Alert("Select last move first");
+                return;
             }
-            else
+            if (!m_GameManager.IsValidMove(move))
             {
                 Alert("Invalid move");
+                return;
             }
+
+            m_User.ParseMove(move);
+            if (m_GameManager.IsFinished)
+            {
+                FinishGame();
+            }
+            else if (m_LocalMultiplayer)
+            {
+                m_User = m_User.Opponent as HumanPlayer;
+                EnableControl();
+            }  
+        }
+
+        private void AddButton(Move move)
+        {
+            Button button = new Button
+            {
+                Text = move.SAN
+            };
+            ++currId;
+            historyButtonsIds.Add(button.Id);
+            button.Clicked += OnHistoryButtonClicked;
+            historyLayout.Children.Add(button);
+        }
+
+        private void OnHistoryButtonClicked(object sender, EventArgs e)
+        {
+            //Find the selected move
+            int moveId = 0;
+            while (moveId < historyButtonsIds.Count && ((Button)sender).Id != historyButtonsIds[moveId])
+            {
+                moveId++;
+            }
+            //System.Diagnostics.Debug.WriteLine("Now on move: " + currId);
+            //System.Diagnostics.Debug.WriteLine("Go to move no: " + moveId);
+            Move[] m_moves = m_GameManager.m_moves.ToArray();
+            Array.Reverse(m_moves);
+            if (currId != moveId)
+            {
+                while (currId < moveId)
+                {
+                    m_GameManager.Board.ApplyMove(m_moves[++currId]);
+                    //System.Diagnostics.Debug.WriteLine("Applying move: " + m_moves[currId].SAN);
+                }
+                while (currId > moveId)
+                {
+                    m_GameManager.Board.UnapplyMove(m_moves[currId--]);
+                   // System.Diagnostics.Debug.WriteLine("Unapplying move: " + m_moves[currId+1].SAN);
+                }
+                RenderAllPawns();
+            }
+            //System.Diagnostics.Debug.WriteLine(m_GameManager.Board.Display());
+
         }
 
         private void SetNavBar()

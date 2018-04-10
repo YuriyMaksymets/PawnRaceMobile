@@ -8,7 +8,7 @@ namespace PawnRaceMobile.Core
         private const byte c_MinMovesToFinish = 8;
         private const byte c_MinMovesToFinishByKilling = 14;
 
-        private Stack<Move> m_Moves = new Stack<Move>();
+        public Stack<Move> m_Moves = new Stack<Move>();
 
         public Player BlackPlayer
         {
