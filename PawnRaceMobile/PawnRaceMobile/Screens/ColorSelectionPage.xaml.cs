@@ -16,15 +16,15 @@ namespace PawnRaceMobile.Screens
 
         private void SetButtons()
         {
-            onePlayerButton.GestureRecognizers.Add(new TapGestureRecognizer
+            whiteButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async ()
-                => await Navigation.PushAsync(new BoardPage('a', 'a', true, false)))
+                => await Navigation.PushAsync(new BoardPage(true, false)))
             });
-            twoPlayersButton.GestureRecognizers.Add(new TapGestureRecognizer
+            blackButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async ()
-                => await Navigation.PushAsync(new BoardPage('a', 'a', true, false)))
+                => await Navigation.PushAsync(new BoardPage(false, false)))
             });
         }
 

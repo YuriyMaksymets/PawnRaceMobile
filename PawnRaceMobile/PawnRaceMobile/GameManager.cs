@@ -21,7 +21,6 @@ namespace PawnRaceMobile
         {
             m_Game = new Game(whiteGap, blackGap, player1, player2);
             CurrentPlayer.MoveProduced += SelectMove;
-            CurrentPlayer.TakeTurn();
         }
 
         public bool IsValidMove(Move move)

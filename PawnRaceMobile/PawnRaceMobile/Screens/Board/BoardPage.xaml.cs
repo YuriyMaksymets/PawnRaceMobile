@@ -15,14 +15,11 @@ namespace PawnRaceMobile
         #region Image Sources
 
         private readonly ImageSource r_BlackFillSource = "blackfill.png";
-
         private readonly ImageSource r_BlackImageSource = "blackpawn.png";
-
         private readonly ImageSource r_WhiteFillSource = "whitefill.png";
-
         private readonly ImageSource r_WhiteImageSource = "whitepawn.png";
-
-        private readonly ImageSource r_YellowPointImageSource = "movehighlight.png";
+        private readonly ImageSource r_MoveHighlightingImageSource = "movehighlight.png";
+        private readonly ImageSource r_BlockHighlightingImageSource = "closedhighlight.png";
 
         #endregion Image Sources
 
@@ -111,7 +108,7 @@ namespace PawnRaceMobile
             {
                 image = new Image
                 {
-                    Source = r_YellowPointImageSource,
+                    Source = r_MoveHighlightingImageSource,
                     Aspect = Aspect.Fill
                 };
                 if (m.To.IsOccupied)
@@ -126,10 +123,6 @@ namespace PawnRaceMobile
                 mainGrid.Children.Add(image, m.To.X, YBasedOnBoardRotation(m.To.Y));
             }
         }
-
-        private void Log(object obj) => console.Text += ('\n' + obj.ToString());
-
-        private void OnClearButton(object sender, EventArgs e) => console.Text = "";
 
         private void RenderAllPawns()
         {

@@ -9,7 +9,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
-            <ContentView x:Name="onePlayerButton" BackgroundColor="{StaticResource dark}"
+            <ContentView x:Name="whiteButton" BackgroundColor="{StaticResource dark}"
                      Grid.Row="0">
                 <Label Text="White" Style="{StaticResource lightLabel}" />
             </ContentView>
@@ -19,7 +19,7 @@
                 <Label Text="Select your color" Style="{StaticResource descriptionLabel}" />
             </ContentView>
 
-            <ContentView x:Name="twoPlayersButton" BackgroundColor="{StaticResource dark}"
+            <ContentView x:Name="blackButton" BackgroundColor="{StaticResource dark}"
                      Grid.Row="2">
                 <Label Text="Black" Style="{StaticResource lightLabel}" />
             </ContentView>

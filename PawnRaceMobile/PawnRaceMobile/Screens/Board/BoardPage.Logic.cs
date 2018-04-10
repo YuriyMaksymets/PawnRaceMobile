@@ -15,20 +15,31 @@ namespace PawnRaceMobile
         private Square m_Source;
         private HumanPlayer m_User;
 
-        public BoardPage(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
+        public BoardPage(bool userPlaysWhite, bool localMultiplayer)
         {
             InitializeComponent();
             SetNavBar();
+            m_LocalMultiplayer = localMultiplayer;
+            m_ControlEnabled = m_BoardRotated = userPlaysWhite;
             backButton.Clicked += async (sender, e) => await GoToMainMenu();
+            startButton.Clicked += (sender, e) => StartGame();
             InitializeBackground();
-            RenderDummyPawns();
+            if (!localMultiplayer && userPlaysWhite)
+            {
+                //Ai selects gap positions and game starts
+                SetUpGame('a', 'a');
+                RenderAllPawns();
+                m_GameManager.CurrentPlayer.TakeTurn();
+            }
+            else
+            {
+                RenderDummyPawns();
+            }
         }
 
-        public void SetUpGame(char whiteGap, char blackGap, bool userPlaysWhite, bool localMultiplayer)
+        public void SetUpGame(char whiteGap, char blackGap)
         {
-            m_LocalMultiplayer = localMultiplayer;
-            Core.Color userColor = userPlaysWhite ? Core.Color.White : Core.Color.Black;
-            m_ControlEnabled = m_BoardRotated = userPlaysWhite;
+            Core.Color userColor = m_BoardRotated ? Core.Color.White : Core.Color.Black;
             m_User = new HumanPlayer(userColor);
             m_User.TurnTaken += EnableControl;
             m_User.MoveProduced += DisableControl;
@@ -36,7 +47,7 @@ namespace PawnRaceMobile
             if (m_LocalMultiplayer)
             {
                 opponent = new HumanPlayer(userColor.Inverse());
-                if (!userPlaysWhite)
+                if (!m_BoardRotated)
                 {
                     m_ControlEnabled = true;
                 }
@@ -47,7 +58,6 @@ namespace PawnRaceMobile
             }
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderChanges;
-            RenderAllPawns();
         }
 
         protected void OnPawnTapped(object sender, EventArgs e)

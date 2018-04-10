@@ -111,6 +111,7 @@
     <Content Include="blackfill.png" />
     <Content Include="blackpawn.png" />
     <Content Include="boardfill.png" />
+    <Content Include="closedhighlight.png" />
     <Content Include="movehighlight.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-100.png" />

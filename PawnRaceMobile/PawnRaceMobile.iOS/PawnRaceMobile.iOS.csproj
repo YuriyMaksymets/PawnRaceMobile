@@ -199,4 +199,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\LaunchImage960.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\closedhighlight.png" />
+  </ItemGroup>
 </Project>

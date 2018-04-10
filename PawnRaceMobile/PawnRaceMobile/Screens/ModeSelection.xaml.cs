@@ -36,7 +36,7 @@ namespace PawnRaceMobile.Screens
         {
             if (multiplayer)
             {
-                await Navigation.PushAsync(new GapSelectionPage());
+                await Navigation.PushAsync(new BoardPage(true, true));
             }
             else
             {

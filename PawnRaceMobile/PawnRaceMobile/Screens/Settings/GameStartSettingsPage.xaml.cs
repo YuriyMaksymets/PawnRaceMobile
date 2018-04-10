@@ -82,7 +82,7 @@ namespace PawnRaceMobile
 
         private async void OnStartClicked(object sender, EventArgs e)
         {
-            m_BoardPage.SetUpGame(m_WhiteGap, m_BlackGap, m_WhiteColorSelected, m_LocalMultiplayer);
+            // m_BoardPage.SetUpGame(m_WhiteGap, m_BlackGap, m_WhiteColorSelected, m_LocalMultiplayer);
             await Navigation.PushAsync(m_BoardPage);
         }
     }
