@@ -52,7 +52,7 @@
     <Compile Update="Screens\Board\BoardPage.Logic.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Screens\Start\MainPage.xaml.cs">
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Screens\MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -61,16 +61,13 @@
     <EmbeddedResource Update="Screens\Board\BoardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Screens\ColorSelectionPage.xaml">
+    <EmbeddedResource Update="Screens\Settings\ColorSelectionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Screens\GapSelectionPage.xaml">
+    <EmbeddedResource Update="Screens\Settings\GapSelectionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Screens\ModeSelection.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Screens\Settings\GameStartSettingsPage.xaml">
+    <EmbeddedResource Update="Screens\Settings\ModeSelection.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

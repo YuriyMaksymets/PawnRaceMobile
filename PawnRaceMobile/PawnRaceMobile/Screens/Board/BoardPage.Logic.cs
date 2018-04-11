@@ -26,8 +26,12 @@ namespace PawnRaceMobile
             InitializeBackground();
             if (!localMultiplayer && userPlaysWhite)
             {
-                //Ai selects gap positions and game starts
-                SetUpGame('a', 'a');
+                Random random = new Random();
+                char[] gaps = new char[2]
+                {
+                    (char)('a' + random.Next(8)), (char)('a' + random.Next(8))
+                };
+                SetUpGame(gaps[0], gaps[1]);
                 RenderAllPawns();
                 m_GameManager.CurrentPlayer.TakeTurn();
             }
