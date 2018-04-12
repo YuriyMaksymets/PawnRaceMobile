@@ -21,8 +21,18 @@ namespace PawnRaceMobile
             SetNavBar();
             m_LocalMultiplayer = localMultiplayer;
             m_ControlEnabled = m_BoardRotated = userPlaysWhite;
-            backButton.Clicked += async (sender, e) => await GoToMainMenu();
-            startButton.Clicked += (sender, e) => StartGame();
+            backButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(async () => await GoToMainMenu())
+            });
+            startButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    try { StartGame(); }
+                    catch (InvalidOperationException) { }
+                })
+            });
             InitializeBackground();
             if (!localMultiplayer && userPlaysWhite)
             {
@@ -31,6 +41,7 @@ namespace PawnRaceMobile
                 {
                     (char)('a' + random.Next(8)), (char)('a' + random.Next(8))
                 };
+                HideStartButton();
                 SetUpGame(gaps[0], gaps[1]);
                 RenderAllPawns();
                 m_GameManager.CurrentPlayer.TakeTurn();

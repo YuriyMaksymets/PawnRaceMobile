@@ -98,6 +98,7 @@ namespace PawnRaceMobile
         {
             char whiteGap = (char)('a' + m_GapIndecies[0]);
             char blackGap = (char)('a' + m_GapIndecies[1]);
+            HideStartButton();
             SetUpGame(whiteGap, blackGap);
             LinkDummyPawns();
             m_BlockedImages.ForEach(x => mainGrid.Children.Remove(x));

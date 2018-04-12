@@ -1,9 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -87,6 +84,8 @@ namespace PawnRaceMobile
                     mainGrid.ColumnDefinitions[i].Width = m_SquareWidth;
                 }
             }
+            mainGridRow.Height = width;
+            layoutGrid.ForceLayout();
         }
 
         private void AddTapRecognition(View element, EventHandler action)
@@ -211,6 +210,12 @@ namespace PawnRaceMobile
         private int YBasedOnBoardRotation(int y)
         {
             return m_BoardRotated ? Board.c_MAX_INDEX - y : y;
+        }
+
+        private void HideStartButton()
+        {
+            startButton.IsEnabled = false;
+            startButton.IsVisible = false;
         }
     }
 }

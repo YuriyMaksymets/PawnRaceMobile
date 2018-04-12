@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <Color x:Key="light">#a7c9df</Color>
             <Color x:Key="dark">#6373a5</Color>
+            <Color x:Key="verydark">#001d4b</Color>
 
             <Style x:Key="lightLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource light}" />
