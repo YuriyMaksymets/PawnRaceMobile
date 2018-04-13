@@ -142,9 +142,19 @@ namespace PawnRaceMobile
             }
             else
             {
-                mainMessage = $"{m_GameManager.GameResult}s Won!";
+                if (m_LocalMultiplayer)
+                {
+                    mainMessage = $"{m_GameManager.GameResult}s Won!";
+                }
+                else
+                {
+                    mainMessage = m_GameManager.GameResult == m_User.Color ?
+                        "You Won!"
+                        : "You Lost!";
+                }
             }
             DimTheScreen();
+            DisplayEndgameAlert();
             await DisplayAlert(mainMessage, secondaryMessage, "Main Menu");
             await GoToMainMenu();
         }

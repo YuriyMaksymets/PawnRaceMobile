@@ -31,6 +31,8 @@ namespace PawnRaceMobile
 
         #endregion Animations
 
+        private const double c_DimmingOpacity = 0.9;
+
         private IList<Image> m_AvailableMovesImages = new List<Image>(2);
         private bool m_BoardRotated;
         private (double, double) m_Dimensions;
@@ -223,8 +225,23 @@ namespace PawnRaceMobile
             };
             overlayLayout.Children.Add(dimmedImage);
 #pragma warning disable CS4014
-            dimmedImage.FadeTo(1, c_DimmingTime);
+            dimmedImage.FadeTo(c_DimmingOpacity, c_DimmingTime);
 #pragma warning restore CS4014
+        }
+
+        private void DisplayEndgameAlert()
+        {
+            BoxView box = new BoxView
+            {
+                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["light"],
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Opacity = 0
+            };
+            overlayLayout.Children.Add(box);
+            AbsoluteLayout.SetLayoutBounds(box, new Rectangle(.5, .5, .9, .24));
+            AbsoluteLayout.SetLayoutFlags(box, AbsoluteLayoutFlags.All);
+            box.FadeTo(1, c_DimmingTime);
         }
     }
 }
