@@ -23,17 +23,14 @@ namespace PawnRaceMobile
         {
             startGameButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() => OnGameStart())
+                Command = new Command(() => StartGame())
             });
             rulesButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() => OnGameStart())
+                Command = new Command(() => StartGame())
             });
         }
 
-        private async void OnGameStart()
-        {
-            await Navigation.PushAsync(new ModeSelection());
-        }
+        private async void StartGame() => await Navigation.PushAsync(new ModeSelection());
     }
 }

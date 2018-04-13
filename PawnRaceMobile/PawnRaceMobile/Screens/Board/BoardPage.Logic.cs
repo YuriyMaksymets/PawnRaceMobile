@@ -134,8 +134,8 @@ namespace PawnRaceMobile
 
         private async void FinishGame()
         {
-            string mainMessage;
             string secondaryMessage = $"Total number of moves: {m_GameManager.TotalMoves}";
+            string mainMessage;
             if (m_GameManager.GameResult == Core.Color.None)
             {
                 mainMessage = "A Tie!";
@@ -144,6 +144,7 @@ namespace PawnRaceMobile
             {
                 mainMessage = $"{m_GameManager.GameResult}s Won!";
             }
+            DimTheScreen();
             await DisplayAlert(mainMessage, secondaryMessage, "Main Menu");
             await GoToMainMenu();
         }
@@ -164,10 +165,6 @@ namespace PawnRaceMobile
                     m_User = m_User.Opponent as HumanPlayer;
                     EnableControl();
                 }
-            }
-            else
-            {
-                Alert("Invalid move");
             }
         }
 

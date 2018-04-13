@@ -17,6 +17,7 @@ namespace PawnRaceMobile
         private readonly ImageSource r_WhiteImageSource = "whitepawn.png";
         private readonly ImageSource r_MoveHighlightingImageSource = "movehighlight.png";
         private readonly ImageSource r_BlockHighlightingImageSource = "closedhighlight.png";
+        private readonly ImageSource r_DimOverlayImageSource = "dimoverlay.png";
 
         #endregion Image Sources
 
@@ -24,6 +25,7 @@ namespace PawnRaceMobile
 
         private const uint c_DestroyAnimLength = 120;
         private const uint c_MoveAnimLength = 280;
+        private const uint c_DimmingTime = 120;
         private readonly Easing r_MoveAnimEasing = Easing.SinOut;
         private readonly Easing r_DestroyAnimEasing = Easing.Linear;
 
@@ -55,11 +57,6 @@ namespace PawnRaceMobile
                 }
             }
             Console.WriteLine("BoardPage background initialized");
-        }
-
-        protected override void OnAppearing()
-        {
-            mainGrid.ForceLayout();
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -207,15 +204,27 @@ namespace PawnRaceMobile
             m_AvailableMovesImages.Clear();
         }
 
-        private int YBasedOnBoardRotation(int y)
-        {
-            return m_BoardRotated ? Board.c_MAX_INDEX - y : y;
-        }
+        private int YBasedOnBoardRotation(int y) => m_BoardRotated ? Board.c_MAX_INDEX - y : y;
 
         private void HideStartButton()
         {
             startButton.IsEnabled = false;
             startButton.IsVisible = false;
+        }
+
+        private void DimTheScreen()
+        {
+            Image dimmedImage = new Image
+            {
+                Source = r_DimOverlayImageSource,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Opacity = 0
+            };
+            overlayLayout.Children.Add(dimmedImage);
+#pragma warning disable CS4014
+            dimmedImage.FadeTo(1, c_DimmingTime);
+#pragma warning restore CS4014
         }
     }
 }

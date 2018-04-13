@@ -2,50 +2,52 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PawnRaceMobile.BoardPage">
-    <StackLayout x:Name="layout"
+    <AbsoluteLayout x:Name="overlayLayout">
+        <StackLayout x:Name="layout"
                  HorizontalOptions="CenterAndExpand"
                  VerticalOptions="Center"
                  BackgroundColor="{StaticResource verydark}">
-        <Grid x:Name="layoutGrid" VerticalOptions="FillAndExpand">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition x:Name="mainGridRow" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <ContentView x:Name="backButton" BackgroundColor="{StaticResource dark}" Grid.Row="0">
-                <Label Text="Main Menu" Style="{StaticResource lightLabel}"
-                   FontSize="48" VerticalOptions="CenterAndExpand" />
-            </ContentView>
-
-            <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="CenterAndExpand" Grid.Row="1">
+            <Grid x:Name="layoutGrid" VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="*" />
+                    <RowDefinition x:Name="mainGridRow" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-            </Grid>
-            <ContentView BackgroundColor="{StaticResource dark}" Grid.Row="2">
-                <ContentView x:Name="startButton" BackgroundColor="{StaticResource dark}">
-                    <Label x:Name="startButtonLabel" Text="Start" Style="{StaticResource lightLabel}"
+
+                <ContentView x:Name="backButton" BackgroundColor="{StaticResource dark}" Grid.Row="0">
+                    <Label Text="Main Menu" Style="{StaticResource lightLabel}"
                    FontSize="48" VerticalOptions="CenterAndExpand" />
                 </ContentView>
-            </ContentView>
-        </Grid>
-    </StackLayout>
+
+                <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="CenterAndExpand" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <ContentView BackgroundColor="{StaticResource dark}" Grid.Row="2">
+                    <ContentView x:Name="startButton" BackgroundColor="{StaticResource dark}">
+                        <Label x:Name="startButtonLabel" Text="Start" Style="{StaticResource lightLabel}"
+                   FontSize="48" VerticalOptions="CenterAndExpand" />
+                    </ContentView>
+                </ContentView>
+            </Grid>
+        </StackLayout>
+    </AbsoluteLayout>
 </ContentPage>

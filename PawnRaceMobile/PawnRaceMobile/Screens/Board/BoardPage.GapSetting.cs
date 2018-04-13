@@ -9,9 +9,6 @@ namespace PawnRaceMobile
 {
     public partial class BoardPage : ContentPage
     {
-        private const int c_InitialBlackGapIndex = 0;
-        private const int c_InitialWhiteGapIndex = 0;
-
         private int[] m_GapIndecies = new int[2] { 0, 0 };
         private Image[] m_BlockedImages;
 
@@ -37,7 +34,7 @@ namespace PawnRaceMobile
                 AddTapRecognition(blackImage, OnDummyPawnTapped);
                 m_PawnImages.Add(new Square(i, 1), whiteImage);
                 m_PawnImages.Add(new Square(i, 6), blackImage);
-                if (i == c_InitialWhiteGapIndex)
+                if (i == m_GapIndecies[0])
                 {
                     whiteImage.IsVisible = false;
                     m_BlockedImages[0] = new Image
@@ -46,7 +43,7 @@ namespace PawnRaceMobile
                     };
                     mainGrid.Children.Add(m_BlockedImages[0], i, actualWhiteY);
                 }
-                if (i == c_InitialBlackGapIndex)
+                if (i == m_GapIndecies[1])
                 {
                     blackImage.IsVisible = false;
                     m_BlockedImages[1] = new Image
@@ -86,11 +83,12 @@ namespace PawnRaceMobile
                 .Where(x => x.Key.Y == YBasedOnBoardRotation(senderY) && !x.Value.IsVisible)
                 .ForEach(x => x.Value.IsVisible = true);
             senderImage.IsVisible = false;
+
             bool whitePawnTapped = YBasedOnBoardRotation(senderY) == 1;
             int colorIndex = whitePawnTapped ? 0 : 1;
-            Image blockedImage = m_BlockedImages[colorIndex];
             int senderX = Grid.GetColumn(senderImage);
             m_GapIndecies[colorIndex] = senderX;
+            Image blockedImage = m_BlockedImages[colorIndex];
             mainGrid.Children.Add(blockedImage, senderX, senderY);
         }
 
