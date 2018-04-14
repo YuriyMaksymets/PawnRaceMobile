@@ -132,31 +132,10 @@ namespace PawnRaceMobile
 
         private void EnableControl() => m_ControlEnabled = true;
 
-        private async void FinishGame()
+        private void FinishGame()
         {
-            string secondaryMessage = $"Total number of moves: {m_GameManager.TotalMoves}";
-            string mainMessage;
-            if (m_GameManager.GameResult == Core.Color.None)
-            {
-                mainMessage = "A Tie!";
-            }
-            else
-            {
-                if (m_LocalMultiplayer)
-                {
-                    mainMessage = $"{m_GameManager.GameResult}s Won!";
-                }
-                else
-                {
-                    mainMessage = m_GameManager.GameResult == m_User.Color ?
-                        "You Won!"
-                        : "You Lost!";
-                }
-            }
             DimTheScreen();
             DisplayEndgameAlert();
-            await DisplayAlert(mainMessage, secondaryMessage, "Main Menu");
-            await GoToMainMenu();
         }
 
         private async Task GoToMainMenu() => await Navigation.PopToRootAsync();

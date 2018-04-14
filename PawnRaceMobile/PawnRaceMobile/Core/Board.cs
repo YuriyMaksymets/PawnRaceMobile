@@ -1,6 +1,4 @@
-﻿#define debug
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,9 +39,6 @@ namespace PawnRaceMobile.Core
 
         public Board(char whiteGap, char blackGap)
         {
-            //assert(whiteGap >= 'a' && whiteGap <= 'h'
-            //    && blackGap >= 'a' && blackGap <= 'h')
-            //  : "Wrong gap letter";
             Squares = new Square[c_MAX_COORDINATE, c_MAX_COORDINATE];
             for (int x = 0; x < c_MAX_COORDINATE; x++)
             {
@@ -105,7 +100,7 @@ namespace PawnRaceMobile.Core
             Square from = move.From;
             Square to = move.To;
             Color pawnColor = from.Color;
-#if debug
+#if DEBUG
             if (pawnColor == Color.None
                 || (to.Color == from.Color)
                 || (move.IsCapture && !move.IsEpCapture && to.Color != pawnColor.Inverse()))
@@ -171,7 +166,7 @@ namespace PawnRaceMobile.Core
         {
             Square pawn = Squares[move.To.X, move.To.Y];
             Color pawnColor = pawn.Color;
-#if debug
+#if DEBUG
             if (pawnColor == Color.None)
             {
                 Console.WriteLine("Invalid move");

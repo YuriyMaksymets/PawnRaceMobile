@@ -223,7 +223,8 @@ namespace PawnRaceMobile
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Opacity = 0
             };
-            overlayLayout.Children.Add(dimmedImage);
+            overlayLayout.Children.Add
+                (dimmedImage, new Rectangle(.5, .5, 10, 10), AbsoluteLayoutFlags.All);
 #pragma warning disable CS4014
             dimmedImage.FadeTo(c_DimmingOpacity, c_DimmingTime);
 #pragma warning restore CS4014
@@ -236,12 +237,136 @@ namespace PawnRaceMobile
                 BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["light"],
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+
+            BoxView hButtonSeparator = new BoxView
+            {
+                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                HeightRequest = 1,
+                MinimumHeightRequest = 1,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+
+            BoxView vButtonSeparator = new BoxView
+            {
+                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                WidthRequest = 1,
+                MinimumWidthRequest = 1,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+
+            BoxView menuButton = new BoxView
+            {
+                BackgroundColor = Xamarin.Forms.Color.Transparent,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 Opacity = 0
             };
-            overlayLayout.Children.Add(box);
-            AbsoluteLayout.SetLayoutBounds(box, new Rectangle(.5, .5, .9, .24));
-            AbsoluteLayout.SetLayoutFlags(box, AbsoluteLayoutFlags.All);
-            box.FadeTo(1, c_DimmingTime);
+
+            BoxView restartButton = new BoxView
+            {
+                BackgroundColor = Xamarin.Forms.Color.Transparent,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Opacity = 0
+            };
+
+            menuButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(async () => await GoToMainMenu())
+            });
+
+            restartButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(async () => await GoToMainMenu())
+            });
+
+            string secondaryMessage = $"Total number of moves: {m_GameManager.TotalMoves}";
+            string mainMessage;
+            if (m_GameManager.GameResult == Core.Color.None)
+            {
+                mainMessage = "A Tie!";
+            }
+            else
+            {
+                if (m_LocalMultiplayer)
+                {
+                    mainMessage = $"{m_GameManager.GameResult}s Won!";
+                }
+                else
+                {
+                    mainMessage = m_GameManager.GameResult == m_User.Color ?
+                        "You Won!"
+                        : "You Lost!";
+                }
+            }
+
+            Label mainLabel = new Label
+            {
+                Style = (Style)Application.Current.Resources["darkLabel"],
+                FontSize = 48,
+                Text = mainMessage
+            };
+            Label secondaryLabel = new Label
+            {
+                Style = (Style)Application.Current.Resources["descriptionLabel"],
+                Text = secondaryMessage
+            };
+            Label mainMenuLabel = new Label
+            {
+                Style = (Style)Application.Current.Resources["descriptionLabel"],
+                TextColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                Text = "Main Menu"
+            };
+            Label restartLabel = new Label
+            {
+                Style = (Style)Application.Current.Resources["descriptionLabel"],
+                TextColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                Text = "Restart"
+            };
+
+            double winHeight = Application.Current.MainPage.Height;
+            double winWidth = Application.Current.MainPage.Width;
+            double boxWidth = winWidth * 0.9;
+            double boxHeight = Application.Current.MainPage.Height * 0.24;
+
+            Rectangle boxBounds = new Rectangle(.5, .5, .9, .24);
+            Rectangle mainLabelBounds = new Rectangle(.5, .42, .7, .08);
+            Rectangle secondaryLabelBounds = new Rectangle(.5, .5, .7, .08);
+
+            Rectangle hButtonSeparatorBounds = new Rectangle(.5, .54, boxWidth, 1);
+            Rectangle vButtonSeparatorBounds = new Rectangle
+                (winWidth / 2, winHeight / 2 + boxHeight / 6, 1, boxHeight / 3);
+
+            Rectangle menuLabelBounds = new Rectangle(.1, .58, .45, .08);
+            Rectangle restartLabelBounds = new Rectangle(.9, .58, .45, .08);
+
+            AbsoluteLayoutFlags all = AbsoluteLayoutFlags.All;
+            AbsoluteLayoutFlags position = AbsoluteLayoutFlags.PositionProportional;
+            AbsoluteLayoutFlags none = AbsoluteLayoutFlags.None;
+
+            View[] elements = new View[]
+            {
+                box, hButtonSeparator, vButtonSeparator, mainLabel
+                , secondaryLabel, mainMenuLabel, restartLabel
+            };
+
+            elements.ForEach(x => x.Opacity = 0);
+
+            overlayLayout.Children.Add(box, boxBounds, all);
+            overlayLayout.Children.Add(mainLabel, mainLabelBounds, all);
+            overlayLayout.Children.Add(secondaryLabel, secondaryLabelBounds, all);
+
+            overlayLayout.Children.Add(hButtonSeparator, hButtonSeparatorBounds, position);
+            overlayLayout.Children.Add(vButtonSeparator, vButtonSeparatorBounds, none);
+            overlayLayout.Children.Add(mainMenuLabel, menuLabelBounds, all);
+            overlayLayout.Children.Add(restartLabel, restartLabelBounds, all);
+            overlayLayout.Children.Add(menuButton, menuLabelBounds, all);
+            overlayLayout.Children.Add(restartButton, restartLabelBounds, all);
+
+            vButtonSeparator.WidthRequest = 1;
+
+            elements.ForEach(x => x.FadeTo(1, c_DimmingTime));
         }
     }
 }
