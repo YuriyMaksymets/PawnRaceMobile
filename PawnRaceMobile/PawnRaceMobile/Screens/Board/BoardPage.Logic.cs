@@ -19,6 +19,7 @@ namespace PawnRaceMobile
         {
             InitializeComponent();
             SetNavBar();
+            DisplayMenu();
             m_LocalMultiplayer = localMultiplayer;
             m_ControlEnabled = m_BoardRotated = userPlaysWhite;
             backButton.GestureRecognizers.Add(new TapGestureRecognizer

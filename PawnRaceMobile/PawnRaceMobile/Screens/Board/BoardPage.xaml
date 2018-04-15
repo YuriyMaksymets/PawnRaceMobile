@@ -14,12 +14,18 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <ContentView x:Name="backButton" BackgroundColor="{StaticResource dark}" Grid.Row="0">
+                <ContentView x:Name="backButton"
+                             BackgroundColor="{StaticResource dark}"
+                             Grid.Row="0">
                     <Label Text="Main Menu" Style="{StaticResource lightLabel}"
-                   FontSize="48" VerticalOptions="CenterAndExpand" />
+                           FontSize="48"
+                           VerticalOptions="CenterAndExpand" />
                 </ContentView>
 
-                <Grid x:Name="mainGrid" ColumnSpacing="0" RowSpacing="0" VerticalOptions="CenterAndExpand" Grid.Row="1">
+                <Grid x:Name="mainGrid"
+                      ColumnSpacing="0" RowSpacing="0"
+                      VerticalOptions="CenterAndExpand"
+                      Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -41,10 +47,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                 </Grid>
-                <ContentView BackgroundColor="{StaticResource dark}" Grid.Row="2">
-                    <ContentView x:Name="startButton" BackgroundColor="{StaticResource dark}">
-                        <Label x:Name="startButtonLabel" Text="Start" Style="{StaticResource lightLabel}"
-                   FontSize="48" VerticalOptions="CenterAndExpand" />
+                <ContentView BackgroundColor="{StaticResource dark}"
+                             Grid.Row="2">
+                    <ContentView x:Name="startButton"
+                                 BackgroundColor="{StaticResource dark}">
+                        <Label x:Name="startButtonLabel"
+                               Text="Start"
+                               Style="{StaticResource lightLabel}"
+                               FontSize="48"
+                               VerticalOptions="CenterAndExpand" />
                     </ContentView>
                 </ContentView>
             </Grid>
