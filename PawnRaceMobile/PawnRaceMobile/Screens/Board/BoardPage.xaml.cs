@@ -214,7 +214,7 @@ namespace PawnRaceMobile
             startButton.IsVisible = false;
         }
 
-        private void DimTheScreen(Command onPress = null)
+        private View DimTheScreen(Command onPress = null)
         {
             Image dimmedImage = new Image
             {
@@ -237,10 +237,12 @@ namespace PawnRaceMobile
 #pragma warning disable CS4014
             dimmedImage.FadeTo(c_DimmingOpacity, c_DimmingTime);
 #pragma warning restore CS4014
+            return dimmedImage;
         }
 
         private void DisplayEndgameAlert()
         {
+            View dimmedScreen = DimTheScreen();
             BoxView box = new BoxView
             {
                 BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["light"],
@@ -281,11 +283,6 @@ namespace PawnRaceMobile
             };
 
             menuButton.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(async () => await GoToMainMenu())
-            });
-
-            restartButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async () => await GoToMainMenu())
             });
@@ -357,8 +354,22 @@ namespace PawnRaceMobile
             View[] elements = new View[]
             {
                 box, hButtonSeparator, vButtonSeparator, mainLabel
-                , secondaryLabel, mainMenuLabel, restartLabel
+                , secondaryLabel, mainMenuLabel, restartLabel, dimmedScreen
+                , menuButton, restartButton
             };
+
+            restartButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    elements.ForEach(x =>
+                    {
+                        overlayLayout.Children.Remove(x);
+                        x.IsEnabled = false;
+                    });
+                    Restart();
+                })
+            });
 
             elements.ForEach(x => x.Opacity = 0);
 

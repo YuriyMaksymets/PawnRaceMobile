@@ -1,5 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
@@ -17,48 +18,35 @@ namespace PawnRaceMobile
 
         public BoardPage(bool userPlaysWhite, bool localMultiplayer)
         {
-            InitializeComponent();
-            SetNavBar();
-            DisplayMenu();
             m_LocalMultiplayer = localMultiplayer;
             m_ControlEnabled = m_BoardRotated = userPlaysWhite;
-            backButton.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(async () => await GoToMainMenu())
-            });
-            startButton.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() =>
-                {
-                    try { StartGame(); }
-                    catch (InvalidOperationException) { }
-                })
-            });
+
+            InitializeComponent();
             InitializeBackground();
+            SetNavBar();
+            SetButtons();
+
             if (!localMultiplayer && userPlaysWhite)
             {
-                Random random = new Random();
-                char[] gaps = new char[2]
-                {
-                    (char)('a' + random.Next(8)), (char)('a' + random.Next(8))
-                };
                 HideStartButton();
-                SetUpGame(gaps[0], gaps[1]);
-                RenderAllPawns();
-                m_GameManager.CurrentPlayer.TakeTurn();
+                char[] gaps = SelectGaps();
+                m_GapIndecies = gaps.Select(x => (x - 'a')).ToArray();
+                Restart();
             }
             else
             {
-                RenderDummyPawns();
+                RenderGapSelectionPawns();
             }
         }
 
         public void SetUpGame(char whiteGap, char blackGap)
         {
             Core.Color userColor = m_BoardRotated ? Core.Color.White : Core.Color.Black;
+
             m_User = new HumanPlayer(userColor);
             m_User.TurnTaken += EnableControl;
             m_User.MoveProduced += DisableControl;
+
             Player opponent;
             if (m_LocalMultiplayer)
             {
@@ -72,6 +60,7 @@ namespace PawnRaceMobile
             {
                 opponent = new RandomAI(userColor.Inverse());
             }
+
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderChanges;
         }
@@ -129,15 +118,11 @@ namespace PawnRaceMobile
 
         private void DisableControl() => m_ControlEnabled = false;
 
-        private void DisableControl(IPlayer _, Move __) => m_ControlEnabled = false;
+        private void DisableControl(IPlayer _, Move __) => DisableControl();
 
         private void EnableControl() => m_ControlEnabled = true;
 
-        private void FinishGame()
-        {
-            DimTheScreen();
-            DisplayEndgameAlert();
-        }
+        private void FinishGame() => DisplayEndgameAlert();
 
         private async Task GoToMainMenu() => await Navigation.PopToRootAsync();
 
@@ -158,11 +143,30 @@ namespace PawnRaceMobile
             }
         }
 
+        private void Restart()
+        {
+            SetUpGame();
+            RenderAllPawns();
+            m_GameManager.CurrentPlayer.TakeTurn();
+        }
+
+        private char[] SelectGaps()
+        {
+            Random random = new Random();
+            return new char[2]
+            {
+                (char)('a' + random.Next(8)), (char)('a' + random.Next(8))
+            };
+        }
+
         private void SetNavBar()
         {
             Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
+
+        private void SetUpGame()
+                    => SetUpGame((char)('a' + m_GapIndecies[0]), (char)('a' + m_GapIndecies[1]));
 
         private Square SquareFromImage(object sender)
         {

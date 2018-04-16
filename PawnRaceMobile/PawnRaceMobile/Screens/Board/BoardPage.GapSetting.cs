@@ -11,7 +11,7 @@ namespace PawnRaceMobile
         private int[] m_GapIndecies = new int[2] { 0, 0 };
         private Image[] m_BlockedImages;
 
-        private void RenderDummyPawns()
+        private void RenderGapSelectionPawns()
         {
             m_PawnImages = new Dictionary<Square, Image>(16);
             m_BlockedImages = new Image[2];
@@ -91,15 +91,29 @@ namespace PawnRaceMobile
             mainGrid.Children.Add(blockedImage, senderX, senderY);
         }
 
-        protected void StartGame()
+        protected void StartGameAfterSelectingGaps()
         {
-            char whiteGap = (char)('a' + m_GapIndecies[0]);
-            char blackGap = (char)('a' + m_GapIndecies[1]);
             HideStartButton();
-            SetUpGame(whiteGap, blackGap);
+            SetUpGame();
             LinkDummyPawns();
             m_BlockedImages.ForEach(x => mainGrid.Children.Remove(x));
             m_GameManager.CurrentPlayer.TakeTurn();
+        }
+
+        private void SetButtons()
+        {
+            backButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(async () => await GoToMainMenu())
+            });
+            startButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    try { StartGameAfterSelectingGaps(); }
+                    catch (InvalidOperationException) { }
+                })
+            });
         }
     }
 }
