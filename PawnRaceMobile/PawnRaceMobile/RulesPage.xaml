@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PawnRaceMobile.RulesPage">
+    <ContentPage.Content>
+
+        <Grid VerticalOptions="FillAndExpand"
+                  HorizontalOptions="FillAndExpand"
+                  RowSpacing="0"
+                  ColumnSpacing="0"
+                  BackgroundColor="{StaticResource light}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="13*" />
+            </Grid.RowDefinitions>
+            <BoxView BackgroundColor="{StaticResource dark}"
+                     Grid.Column="0"
+                     Grid.Row="0"
+                     Grid.ColumnSpan="5" />
+            <Label x:Name="backButton"
+                   Text="🡨 Back"
+                   Style="{StaticResource descriptionLabel}"
+                   TextColor="{StaticResource light}"
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Grid.ColumnSpan="1" />
+            <!--<Image Source="Logo" Aspect="AspectFit" BackgroundColor="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" />-->
+            <Label Grid.Row="1"
+                   Grid.ColumnSpan="5"
+                   TextColor="{StaticResource verydark}"
+                   Text="A lot of rules here. A lot of rules here.A lot of rules here.A lot of rules here." />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
