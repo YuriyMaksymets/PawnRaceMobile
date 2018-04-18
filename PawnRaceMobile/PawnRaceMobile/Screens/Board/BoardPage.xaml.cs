@@ -242,29 +242,44 @@ namespace PawnRaceMobile
 
         private void DisplayEndgameAlert()
         {
+            Style smallLabelStyle = (Style)Application.Current.Resources["descriptionLabel"];
+            Style bigLabelStyle = (Style)Application.Current.Resources["darkLabel"];
+            Xamarin.Forms.Color veryDark
+                = (Xamarin.Forms.Color)Application.Current.Resources["verydark"];
+            Xamarin.Forms.Color light
+               = (Xamarin.Forms.Color)Application.Current.Resources["light"];
+
             View dimmedScreen = DimTheScreen();
+            Rectangle boxBounds = new Rectangle(.5, .5, .9, .24);
+
+            Grid everything = new Grid();
+            everything.RowDefinitions.Add(new RowDefinition());
+            everything.RowDefinitions.Add(new RowDefinition());
+            everything.RowDefinitions.Add(new RowDefinition());
+            everything.RowSpacing = 0;
             BoxView box = new BoxView
             {
-                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["light"],
+                BackgroundColor = light,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-
             BoxView hButtonSeparator = new BoxView
             {
-                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                BackgroundColor = veryDark,
                 HeightRequest = 1,
-                MinimumHeightRequest = 1,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand
             };
-
             BoxView vButtonSeparator = new BoxView
             {
-                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                BackgroundColor = veryDark,
                 WidthRequest = 1,
-                MinimumWidthRequest = 1,
+                HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.FillAndExpand,
             };
+            everything.Children.Add(box);
+            everything.Children.Add(hButtonSeparator, 0, 1);
+            Grid.SetRowSpan(box, 3);
 
             BoxView menuButton = new BoxView
             {
@@ -282,10 +297,22 @@ namespace PawnRaceMobile
                 Opacity = 0
             };
 
-            menuButton.GestureRecognizers.Add(new TapGestureRecognizer
+            BoxView gridBackground = new BoxView
             {
-                Command = new Command(async () => await GoToMainMenu())
-            });
+                BackgroundColor = veryDark,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+
+            Grid buttonsGrid = new Grid
+            {
+                RowSpacing = 0
+            };
+
+            buttonsGrid.RowDefinitions.Add(new RowDefinition());
+            buttonsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            buttonsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            buttonsGrid.Children.Add(vButtonSeparator);
 
             string secondaryMessage = $"Total number of moves: {m_GameManager.TotalMoves}";
             string mainMessage;
@@ -309,54 +336,44 @@ namespace PawnRaceMobile
 
             Label mainLabel = new Label
             {
-                Style = (Style)Application.Current.Resources["darkLabel"],
+                Style = bigLabelStyle,
                 FontSize = 48,
                 Text = mainMessage
             };
             Label secondaryLabel = new Label
             {
-                Style = (Style)Application.Current.Resources["descriptionLabel"],
+                Style = smallLabelStyle,
                 Text = secondaryMessage
             };
             Label mainMenuLabel = new Label
             {
-                Style = (Style)Application.Current.Resources["descriptionLabel"],
-                TextColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                Style = smallLabelStyle,
+                TextColor = veryDark,
                 Text = "Main Menu"
             };
             Label restartLabel = new Label
             {
-                Style = (Style)Application.Current.Resources["descriptionLabel"],
-                TextColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
+                Style = smallLabelStyle,
+                TextColor = veryDark,
                 Text = "Restart"
             };
-
-            double winHeight = Application.Current.MainPage.Height;
-            double winWidth = Application.Current.MainPage.Width;
-            double boxWidth = winWidth * 0.9;
-            double boxHeight = Application.Current.MainPage.Height * 0.24;
-
-            Rectangle boxBounds = new Rectangle(.5, .5, .9, .24);
-            Rectangle mainLabelBounds = new Rectangle(.5, .42, .7, .08);
-            Rectangle secondaryLabelBounds = new Rectangle(.5, .5, .7, .08);
-
-            Rectangle hButtonSeparatorBounds = new Rectangle(.5, .54, boxWidth, 1);
-            Rectangle vButtonSeparatorBounds = new Rectangle
-                (winWidth / 2, winHeight / 2 + boxHeight / 6, 1, boxHeight / 3);
-
-            Rectangle menuLabelBounds = new Rectangle(.1, .58, .45, .08);
-            Rectangle restartLabelBounds = new Rectangle(.9, .58, .45, .08);
-
-            AbsoluteLayoutFlags all = AbsoluteLayoutFlags.All;
-            AbsoluteLayoutFlags position = AbsoluteLayoutFlags.PositionProportional;
-            AbsoluteLayoutFlags none = AbsoluteLayoutFlags.None;
+            buttonsGrid.Children.Add(mainMenuLabel, 0, 0);
+            buttonsGrid.Children.Add(menuButton, 0, 0);
+            buttonsGrid.Children.Add(restartLabel, 1, 0);
+            buttonsGrid.Children.Add(restartButton, 1, 0);
+            everything.Children.Add(buttonsGrid, 0, 2);
 
             View[] elements = new View[]
             {
                 box, hButtonSeparator, vButtonSeparator, mainLabel
                 , secondaryLabel, mainMenuLabel, restartLabel, dimmedScreen
-                , menuButton, restartButton
+                , menuButton, restartButton, buttonsGrid
             };
+
+            menuButton.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(async () => await GoToMainMenu())
+            });
 
             restartButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -372,83 +389,8 @@ namespace PawnRaceMobile
             });
 
             elements.ForEach(x => x.Opacity = 0);
-
-            overlayLayout.Children.Add(box, boxBounds, all);
-            overlayLayout.Children.Add(mainLabel, mainLabelBounds, all);
-            overlayLayout.Children.Add(secondaryLabel, secondaryLabelBounds, all);
-
-            overlayLayout.Children.Add(hButtonSeparator, hButtonSeparatorBounds, position);
-            overlayLayout.Children.Add(vButtonSeparator, vButtonSeparatorBounds, none);
-            overlayLayout.Children.Add(mainMenuLabel, menuLabelBounds, all);
-            overlayLayout.Children.Add(restartLabel, restartLabelBounds, all);
-            overlayLayout.Children.Add(menuButton, menuLabelBounds, all);
-            overlayLayout.Children.Add(restartButton, restartLabelBounds, all);
-
-            vButtonSeparator.WidthRequest = 1;
-
+            overlayLayout.Children.Add(everything, boxBounds, AbsoluteLayoutFlags.All);
             elements.ForEach(x => x.FadeTo(1, c_DimmingTime));
-        }
-
-        private void DisplayMenu()
-        {
-            BoxView box = new BoxView
-            {
-                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["light"],
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-            };
-
-            BoxView hButtonSeparator = new BoxView
-            {
-                BackgroundColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
-                HeightRequest = 1,
-                MinimumHeightRequest = 1,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-            };
-
-            Label mainMenuLabel = new Label
-            {
-                Style = (Style)Application.Current.Resources["descriptionLabel"],
-                TextColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
-                Text = "Main Menu",
-                FontSize = 40
-            };
-            Label restartLabel = new Label
-            {
-                Style = (Style)Application.Current.Resources["descriptionLabel"],
-                TextColor = (Xamarin.Forms.Color)Application.Current.Resources["verydark"],
-                Text = "Restart",
-                FontSize = 40
-            };
-
-            double boxWidth = Application.Current.MainPage.Width * 0.9;
-
-            Rectangle boxBounds = new Rectangle(.5, .5, .9, .24);
-            Rectangle hButtonSeparatorBounds = new Rectangle(.5, .5, boxWidth, 1);
-            Rectangle menuLabelBounds = new Rectangle(.5, .43, .9, .1);
-            Rectangle restartLabelBounds = new Rectangle(.5, .56, .9, .1);
-
-            AbsoluteLayoutFlags all = AbsoluteLayoutFlags.All;
-            AbsoluteLayoutFlags position = AbsoluteLayoutFlags.PositionProportional;
-
-            View[] elements = new View[]
-            {
-                box, hButtonSeparator, mainMenuLabel, restartLabel
-            };
-
-            elements.ForEach(x => x.Opacity = 0);
-
-            DimTheScreen(new Command(() =>
-            {
-                elements.ForEach(x => x.FadeTo(0));
-            }));
-
-            overlayLayout.Children.Add(box, boxBounds, all);
-            overlayLayout.Children.Add(hButtonSeparator, hButtonSeparatorBounds, position);
-            overlayLayout.Children.Add(mainMenuLabel, menuLabelBounds, all);
-            overlayLayout.Children.Add(restartLabel, restartLabelBounds, all);
-
-            elements.ForEach(x => x.FadeTo(1));
         }
     }
 }

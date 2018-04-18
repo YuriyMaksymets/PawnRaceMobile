@@ -32,6 +32,7 @@ namespace PawnRaceMobile
                 char[] gaps = SelectGaps();
                 m_GapIndecies = gaps.Select(x => (x - 'a')).ToArray();
                 Restart();
+                DisplayEndgameAlert();
             }
             else
             {
