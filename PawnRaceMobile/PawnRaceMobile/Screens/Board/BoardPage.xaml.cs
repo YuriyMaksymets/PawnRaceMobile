@@ -31,7 +31,7 @@ namespace PawnRaceMobile
 
         #endregion Animations
 
-        private const double c_DimmingOpacity = 0.9;
+        private const double c_DimmingOpacity = 0.75;
 
         private IList<Image> m_AvailableMovesImages = new List<Image>(2);
         private bool m_BoardRotated;
@@ -337,7 +337,7 @@ namespace PawnRaceMobile
             Label mainLabel = new Label
             {
                 Style = bigLabelStyle,
-                FontSize = 48,
+                FontSize = Device.RuntimePlatform == Device.Android ? 40 : 48,
                 Text = mainMessage
             };
             Label secondaryLabel = new Label
@@ -361,13 +361,15 @@ namespace PawnRaceMobile
             buttonsGrid.Children.Add(menuButton, 0, 0);
             buttonsGrid.Children.Add(restartLabel, 1, 0);
             buttonsGrid.Children.Add(restartButton, 1, 0);
+            everything.Children.Add(mainLabel, 0, 0);
+            everything.Children.Add(secondaryLabel, 0, 1);
             everything.Children.Add(buttonsGrid, 0, 2);
 
             View[] elements = new View[]
             {
                 box, hButtonSeparator, vButtonSeparator, mainLabel
-                , secondaryLabel, mainMenuLabel, restartLabel, dimmedScreen
-                , menuButton, restartButton, buttonsGrid
+                , secondaryLabel, mainMenuLabel, restartLabel
+                , menuButton, restartButton, buttonsGrid, everything
             };
 
             menuButton.GestureRecognizers.Add(new TapGestureRecognizer
@@ -384,6 +386,9 @@ namespace PawnRaceMobile
                         overlayLayout.Children.Remove(x);
                         x.IsEnabled = false;
                     });
+                    overlayLayout.Children.Remove(dimmedScreen);
+                    dimmedScreen.IsEnabled = false;
+
                     Restart();
                 })
             });
