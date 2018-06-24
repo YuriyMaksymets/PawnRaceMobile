@@ -25,10 +25,53 @@
                    Grid.Row="0"
                    Grid.ColumnSpan="1" />
             <!--<Image Source="Logo" Aspect="AspectFit" BackgroundColor="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" />-->
-            <Label Grid.Row="1"
-                   Grid.ColumnSpan="5"
-                   TextColor="{StaticResource verydark}"
-                   Text="A lot of rules here. A lot of rules here.A lot of rules here.A lot of rules here." />
+            <ScrollView Grid.Row="1"
+                   Grid.ColumnSpan="5">
+                <StackLayout Padding="10, 0, 10, 0">
+                    <Label Style="{StaticResource rulesHeader}"
+                       Text="General" />
+                    <Label Style="{StaticResource rulesContent}"
+                       Text="This game is a subset of chess in which both sides have only 7 pawns.
+The goal is to either promote one of your pawns to the other side or to consume all the enemy's
+pawns. The pawns are located on standard rows and whites make the first move." />
+
+                    <ContentView Padding="0, 15, 0, 0">
+                        <Label Style="{StaticResource rulesHeader}"
+                       Text="Moves" />
+                    </ContentView>
+                    <Label Style="{StaticResource rulesContent}"
+                       Text="Players can move their pawns exactly like in real chess.
+A pawn can either beat enemy's pawn on any of the nearest forward diagonals
+or move forward by 1 square. If the pawn has not moved before, it can move
+forward by 2 squares. However, en passant capture is available; that is,
+after a pawn has moved by 2 squares it can be consumed on either of them." />
+
+                    <ContentView Padding="0, 15, 0, 0">
+                        <Label Style="{StaticResource rulesHeader}"
+                       Text="Gap Selection" />
+                    </ContentView>
+                    <Label Style="{StaticResource rulesContent}"
+                       Text="As there are 7 pawns on each side, one of the squares on a pawn
+row must be empty. As whites have the advantage of the first move, blacks can select the gaps'
+positions for both sides before the game begins." />
+
+                    <ContentView Padding="0, 15, 0, 0">
+                        <Label Style="{StaticResource rulesHeader}"
+                       Text="Tie condition" />
+                    </ContentView>
+                    <Label Style="{StaticResource rulesContent}"
+                       Text="
+If any of the players has no available moves, the game stops and the result is a tie." />
+
+                    <ContentView Padding="0, 15, 0, 0">
+                        <Label Style="{StaticResource rulesHeader}"
+                       Text="Acknowledgements" />
+                    </ContentView>
+                    <Label Style="{StaticResource rulesContent}"
+                       Text="The game rules were devised by Imperial College London to provide
+an AI writing challenge for 1st year computing students." />
+                </StackLayout>
+            </ScrollView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

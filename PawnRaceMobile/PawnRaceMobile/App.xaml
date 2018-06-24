@@ -28,6 +28,14 @@
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="FontSize" Value="Medium" />
             </Style>
+            <Style x:Key="rulesHeader" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource verydark}" />
+                <Setter Property="FontSize" Value="Large" />
+            </Style>
+            <Style x:Key="rulesContent" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource verydark}" />
+                <Setter Property="FontSize" Value="Medium" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
