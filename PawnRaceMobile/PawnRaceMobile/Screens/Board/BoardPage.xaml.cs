@@ -31,7 +31,7 @@ namespace PawnRaceMobile
 
         #endregion Animations
 
-        private const double c_DimmingOpacity = 0.75;
+        private const double c_DimmingOpacity = 0.95;
 
         private IList<Image> m_AvailableMovesImages = new List<Image>(2);
         private bool m_BoardRotated;
@@ -58,7 +58,6 @@ namespace PawnRaceMobile
                     mainGrid.Children.Add(image, i, YBasedOnBoardRotation(j));
                 }
             }
-            Console.WriteLine("BoardPage background initialized");
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -337,8 +336,9 @@ namespace PawnRaceMobile
             Label mainLabel = new Label
             {
                 Style = bigLabelStyle,
-                FontSize = Device.RuntimePlatform == Device.Android ? 40 : 48,
-                Text = mainMessage
+                FontSize = Device.RuntimePlatform == Device.UWP ? 48 : 32,
+                Text = mainMessage,
+                VerticalOptions = LayoutOptions.End
             };
             Label secondaryLabel = new Label
             {

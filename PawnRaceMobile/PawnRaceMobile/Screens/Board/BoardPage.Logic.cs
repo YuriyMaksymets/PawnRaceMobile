@@ -16,16 +16,19 @@ namespace PawnRaceMobile
         private Square m_Source;
         private HumanPlayer m_User;
 
-        public BoardPage(bool userPlaysWhite, bool localMultiplayer)
+        public BoardPage()
         {
-            m_LocalMultiplayer = localMultiplayer;
-            m_ControlEnabled = m_BoardRotated = userPlaysWhite;
-
             InitializeComponent();
+
             InitializeBackground();
             SetNavBar();
             SetButtons();
+        }
 
+        public void Initialize(bool userPlaysWhite, bool localMultiplayer)
+        {
+            m_LocalMultiplayer = localMultiplayer;
+            m_ControlEnabled = m_BoardRotated = userPlaysWhite;
             if (!localMultiplayer && userPlaysWhite)
             {
                 HideStartButton();
@@ -162,7 +165,7 @@ namespace PawnRaceMobile
         private void SetNavBar()
         {
             Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+            //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
         private void SetUpGame()

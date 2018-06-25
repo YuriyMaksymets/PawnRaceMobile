@@ -17,7 +17,7 @@ namespace PawnRaceMobile.Screens
         private void SetNavBar()
         {
             Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+            //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
         private void SetButtons()
@@ -36,7 +36,8 @@ namespace PawnRaceMobile.Screens
         {
             if (multiplayer)
             {
-                await Navigation.PushAsync(new BoardPage(true, true));
+                Global.Instance.BoardPage.Initialize(true, true);
+                await Navigation.PushAsync(Global.Instance.BoardPage);
             }
             else
             {

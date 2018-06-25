@@ -11,7 +11,7 @@
             </Grid.RowDefinitions>
             <ContentView x:Name="onePlayerButton" BackgroundColor="{StaticResource dark}"
                      Grid.Row="0">
-                <Label Text="1" Style="{StaticResource lightLabel}" FontSize="192" />
+                <Label Text="1" Style="{StaticResource lightLabel}" FontSize="128" />
             </ContentView>
 
             <ContentView BackgroundColor="{StaticResource light}"
@@ -21,7 +21,7 @@
 
             <ContentView x:Name="twoPlayersButton" BackgroundColor="{StaticResource dark}"
                      Grid.Row="2">
-                <Label Text="2" Style="{StaticResource lightLabel}" FontSize="192" />
+                <Label Text="2" Style="{StaticResource lightLabel}" FontSize="128" />
             </ContentView>
         </Grid>
     </ContentPage.Content>

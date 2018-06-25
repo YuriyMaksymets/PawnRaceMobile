@@ -13,14 +13,14 @@
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="FontSize" Value="96" />
+                <Setter Property="FontSize" Value="72" />
             </Style>
             <Style x:Key="darkLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource dark}" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="FontSize" Value="96" />
+                <Setter Property="FontSize" Value="72" />
             </Style>
             <Style x:Key="descriptionLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource dark}" />

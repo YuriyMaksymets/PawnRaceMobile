@@ -10,8 +10,8 @@ namespace PawnRaceMobile.Screens
         public ColorSelectionPage()
         {
             InitializeComponent();
-            SetNavBar();
             SetButtons();
+            SetNavBar();
         }
 
         private void SetButtons()
@@ -19,19 +19,29 @@ namespace PawnRaceMobile.Screens
             whiteButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async ()
-                => await Navigation.PushAsync(new BoardPage(true, false)))
+                =>
+                {
+                    Global.Instance.BoardPage.Initialize(true, false);
+                    await Navigation.PushAsync(Global.Instance.BoardPage);
+                }
+                )
             });
             blackButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async ()
-                => await Navigation.PushAsync(new BoardPage(false, false)))
+                =>
+                {
+                    Global.Instance.BoardPage.Initialize(false, false);
+                    await Navigation.PushAsync(Global.Instance.BoardPage);
+                }
+                )
             });
         }
 
         private void SetNavBar()
         {
             Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+            //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
     }
 }

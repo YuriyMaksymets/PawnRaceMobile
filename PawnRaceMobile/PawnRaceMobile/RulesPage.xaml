@@ -10,24 +10,29 @@
                   ColumnSpacing="0"
                   BackgroundColor="{StaticResource light}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="1.2*" />
                 <RowDefinition Height="13*" />
             </Grid.RowDefinitions>
             <BoxView BackgroundColor="{StaticResource dark}"
                      Grid.Column="0"
                      Grid.Row="0"
-                     Grid.ColumnSpan="5" />
-            <Label x:Name="backButton"
-                   Text="🡨 Back"
-                   Style="{StaticResource descriptionLabel}"
-                   TextColor="{StaticResource light}"
-                   Grid.Column="0"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="1" />
-            <!--<Image Source="Logo" Aspect="AspectFit" BackgroundColor="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" />-->
-            <ScrollView Grid.Row="1"
+                     Grid.ColumnSpan="5"
+                     Grid.RowSpan="2" />
+            <ContentView Padding="10, 0, 0, 0"
+                         Grid.Column="0"
+                   Grid.Row="1"
                    Grid.ColumnSpan="5">
-                <StackLayout Padding="10, 0, 10, 0">
+                <Label x:Name="backButton"
+                   Text="◀ Back"
+                       HorizontalOptions="Start"
+                   Style="{StaticResource descriptionLabel}"
+                   TextColor="{StaticResource light}" />
+            </ContentView>
+            <!--<Image Source="Logo" Aspect="AspectFit" BackgroundColor="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" />-->
+            <ScrollView Grid.Row="2"
+                   Grid.ColumnSpan="5">
+                <StackLayout Padding="10, 15, 10, 15">
                     <Label Style="{StaticResource rulesHeader}"
                        Text="General" />
                     <Label Style="{StaticResource rulesContent}"

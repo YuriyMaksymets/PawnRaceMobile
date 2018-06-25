@@ -16,7 +16,7 @@ namespace PawnRaceMobile
         private void SetNavBar()
         {
             Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+            // On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
         private void SetButtons()

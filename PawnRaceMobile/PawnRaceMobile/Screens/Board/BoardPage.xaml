@@ -18,7 +18,7 @@
                              BackgroundColor="{StaticResource dark}"
                              Grid.Row="0">
                     <Label Text="Main Menu" Style="{StaticResource lightLabel}"
-                           FontSize="48"
+                           FontSize="36"
                            VerticalOptions="CenterAndExpand" />
                 </ContentView>
 
@@ -54,7 +54,7 @@
                         <Label x:Name="startButtonLabel"
                                Text="Start"
                                Style="{StaticResource lightLabel}"
-                               FontSize="48"
+                               FontSize="36"
                                VerticalOptions="CenterAndExpand" />
                     </ContentView>
                 </ContentView>
