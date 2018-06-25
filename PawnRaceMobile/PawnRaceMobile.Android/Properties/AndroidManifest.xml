@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="13" package="com.companyname.PawnRaceMobile" android:installLocation="auto" android:versionName="0.82">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="18" package="com.companyname.PawnRaceMobile" android:installLocation="auto" android:versionName="0.913">
 	<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="27" />
-	<application android:icon="@drawable/icon" android:label="PleaseWork"></application>
+	<application android:label="PleaseWork" android:icon="@drawable/icon"></application>
 </manifest>

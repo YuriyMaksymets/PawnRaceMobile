@@ -7,7 +7,11 @@ namespace PawnRaceMobile
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new MainPage());
+            Color veryDark = (Xamarin.Forms.Color)Application.Current.Resources["verydark"];
+            var mainPage = new NavigationPage(new MainPage());
+            mainPage.BarBackgroundColor = veryDark;
+            MainPage = mainPage;
+            MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, veryDark);
         }
 
         protected override void OnStart()
