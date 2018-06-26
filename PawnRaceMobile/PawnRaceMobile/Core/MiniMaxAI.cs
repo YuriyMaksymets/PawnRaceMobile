@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace PawnRaceMobile.Core
 {
     public class MiniMaxAI : Player
     {
-        private long timeLimit = 3000;
+        private long timeLimit = 5;
         private long moveStartTime;
         private int minimaxMoveIndex, minimaxMoveScore;
         private const int c_MinimaxDepth = 5;
@@ -38,7 +39,7 @@ namespace PawnRaceMobile.Core
                 moveStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
                 Move selectedMove = possibleMoves[minimax()];
-                OnMoveProduced(selectedMove);
+                Device.BeginInvokeOnMainThread(() => OnMoveProduced(selectedMove));
                 return selectedMove;
             }
             else
