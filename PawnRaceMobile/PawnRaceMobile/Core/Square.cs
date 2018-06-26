@@ -28,9 +28,6 @@
 
         public Square(int x, int y, Color color)
         {
-            //    assert X<Board.MAX_COORDINATE
-            //&& y < Board.MAX_COORDINATE && X >= 0 && y >= 0
-            //      : "Wrong square coordinate";
             X = x;
             Y = y;
             Color = color;

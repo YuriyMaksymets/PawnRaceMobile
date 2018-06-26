@@ -10,6 +10,8 @@ namespace PawnRaceMobile.Core
         public const byte c_MAX_COORDINATE = 8;
         public const byte c_MAX_INDEX = c_MAX_COORDINATE - 1;
 
+        public int Size => c_MAX_COORDINATE;
+
         public byte BlackGapIndex
         {
             get; private set;
@@ -231,5 +233,9 @@ namespace PawnRaceMobile.Core
                 BlackPawns.Remove(pawn);
             }
         }
+
+        public int getNoOfWhites() => WhitePawns.Count;
+
+        public int getNoOfBlackes() => WhitePawns.Count;
     }
 }

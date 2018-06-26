@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PawnRaceMobile
 {
@@ -61,7 +60,7 @@ namespace PawnRaceMobile
             }
             else
             {
-                opponent = new RandomAI(userColor.Inverse());
+                opponent = new MiniMaxAI(userColor.Inverse());
             }
 
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);

@@ -13,7 +13,7 @@ namespace PawnRaceMobile.Core
         private readonly Random r_Random = new Random();
         private readonly int r_YCannotPass;
         private readonly int r_YForLongMove;
-        private Game m_Game;
+        protected Game m_Game;
 
         internal Player Opponent
         {
@@ -40,7 +40,7 @@ namespace PawnRaceMobile.Core
 
         public bool IsWhite => Color == Color.White;
 
-        private IList<Square> Pawns
+        public IList<Square> Pawns
             => IsWhite ? Board.WhitePawns : Board.BlackPawns;
 
         public abstract Move ProduceMove();

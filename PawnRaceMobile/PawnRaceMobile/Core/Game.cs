@@ -190,7 +190,12 @@ namespace PawnRaceMobile.Core
             return null;
         }
 
-        public void UnapplyMove() => throw new NotImplementedException();
+        public void UnapplyMove(Move move)
+        {
+            Board.UnapplyMove(move);
+            m_Moves.Pop();
+            SwitchPlayer();
+        }
 
         private bool SquareOccupiedByCurrentPlayer(int x, int y)
                     => Board.GetSquare(x, y).IsOccupiedBy(CurrentPlayer.Color);
