@@ -15,10 +15,7 @@ namespace PawnRaceMobile
             MainPage = mainPage;
         }
 
-        protected override void OnStart()
-        {
-            Global.Instance.BoardPage = new BoardPage();
-        }
+        protected override void OnStart() => Global.Instance.InitializeBoardPage();
 
         protected override void OnSleep()
         {

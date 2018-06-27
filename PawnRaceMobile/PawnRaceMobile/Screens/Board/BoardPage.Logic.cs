@@ -24,6 +24,8 @@ namespace PawnRaceMobile
             SetButtons();
         }
 
+        public override int GetHashCode() => base.GetHashCode();
+
         public void Initialize(bool userPlaysWhite, bool localMultiplayer)
         {
             m_LocalMultiplayer = localMultiplayer;
@@ -65,6 +67,12 @@ namespace PawnRaceMobile
 
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderChanges;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Global.Instance.InitializeBoardPage();
         }
 
         protected void OnPawnTapped(object sender, EventArgs e)
@@ -126,7 +134,11 @@ namespace PawnRaceMobile
 
         private void FinishGame() => DisplayEndgameAlert();
 
-        private async Task GoToMainMenu() => await Navigation.PopToRootAsync();
+        private async Task GoToMainMenu()
+        {
+            await Navigation.PopToRootAsync();
+            Global.Instance.InitializeBoardPage();
+        }
 
         private void ManageMove(Move move)
         {
@@ -163,7 +175,7 @@ namespace PawnRaceMobile
 
         private void SetNavBar()
         {
-            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasNavigationBar(this, false);
             //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-
-namespace PawnRaceMobile
+﻿namespace PawnRaceMobile
 {
     public class Global
     {
@@ -17,7 +12,9 @@ namespace PawnRaceMobile
 
         public BoardPage BoardPage
         {
-            get; set;
+            get; private set;
         }
+
+        public void InitializeBoardPage() => BoardPage = new BoardPage();
     }
 }

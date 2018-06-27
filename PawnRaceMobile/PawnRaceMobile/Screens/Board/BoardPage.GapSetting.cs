@@ -96,7 +96,13 @@ namespace PawnRaceMobile
             HideStartButton();
             SetUpGame();
             LinkDummyPawns();
-            m_BlockedImages.ForEach(x => mainGrid.Children.Remove(x));
+            m_BlockedImages.ForEach(x
+                => Device.BeginInvokeOnMainThread(() =>
+                {
+                    x.IsVisible = false;
+                    mainGrid.Children.Remove(x);
+                }));
+
             m_GameManager.CurrentPlayer.TakeTurn();
         }
 

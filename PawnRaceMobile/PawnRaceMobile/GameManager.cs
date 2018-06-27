@@ -1,7 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace PawnRaceMobile
 {
@@ -45,7 +44,7 @@ namespace PawnRaceMobile
                 m_Game.ApplyMove(move);
                 MoveMade?.Invoke();
                 CurrentPlayer.MoveProduced += SelectMove;
-                ThreadPool.QueueUserWorkItem(x => CurrentPlayer.TakeTurn());
+                CurrentPlayer.TakeTurn();
             }
         }
     }
