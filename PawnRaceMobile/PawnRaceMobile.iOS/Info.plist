@@ -9,8 +9,8 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -20,13 +20,13 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>11.4</string>
+	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pawn Race</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.yuriy.pawns</string>
 	<key>CFBundleVersion</key>
-	<string>1.1.1</string>
+	<string>1.2.0</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon-60@2x</string>
@@ -50,7 +50,7 @@
 	<key>CFBundleName</key>
 	<string>PawnRaceMobile</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.1</string>
+	<string>0.8.2</string>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
 	<key>XSLaunchImageAssets</key>
