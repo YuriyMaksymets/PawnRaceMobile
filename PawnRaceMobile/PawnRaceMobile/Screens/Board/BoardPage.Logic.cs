@@ -67,6 +67,15 @@ namespace PawnRaceMobile
 
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderChanges;
+            m_GameManager.MoveMade += CheckEndGame;
+        }
+
+        private void CheckEndGame()
+        {
+            if (m_GameManager.IsFinished)
+            {
+                FinishGame();
+            }
         }
 
         protected override void OnDisappearing()
@@ -145,11 +154,7 @@ namespace PawnRaceMobile
             if (m_GameManager.IsValidMove(move))
             {
                 m_User.ParseMove(move);
-                if (m_GameManager.IsFinished)
-                {
-                    FinishGame();
-                }
-                else if (m_LocalMultiplayer)
+                if (m_LocalMultiplayer)
                 {
                     m_User = m_User.Opponent as HumanPlayer;
                     EnableControl();
