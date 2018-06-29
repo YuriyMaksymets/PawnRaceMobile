@@ -115,6 +115,7 @@
     <Content Include="boardfill.png" />
     <Content Include="closedhighlight.png" />
     <Content Include="dimoverlay.png" />
+    <Content Include="github.png" />
     <Content Include="movehighlight.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-100.png" />

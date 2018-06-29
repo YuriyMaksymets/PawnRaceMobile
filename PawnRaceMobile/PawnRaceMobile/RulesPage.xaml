@@ -75,6 +75,44 @@ If any of the players has no available moves, the game stops and the result is a
                     <Label Style="{StaticResource rulesContent}"
                        Text="The game rules were devised by Imperial College London to provide
 an AI writing challenge for 1st year computing students." />
+
+                    <ContentView Padding="0, 15, 0, 0">
+                        <Label Style="{StaticResource rulesHeader}"
+                       Text="Authors" />
+                    </ContentView>
+                    <Label x:Name="authorLink1" Style="{StaticResource rulesContent}" FontAttributes="Bold"
+                       Text="Dragos Martac (AI)" />
+                    <Label x:Name="authorLink2" Style="{StaticResource rulesContent}" FontAttributes="Bold"
+                       Text="Yuriy Maksymets (Design and UI)" />
+                    <!--<Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="1" />
+                        </Grid.ColumnDefinitions>
+                        <Label Style="{StaticResource rulesContent}" Grid.Row="0" Grid.Column="0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Dragos Martac — AI (" />
+                                    <Span FontAttributes="Bold" FontSize="Medium" Text="github" />
+                                    <Span Text=")" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Style="{StaticResource rulesContent}" Grid.Row="1" Grid.Column="0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Yuriy Maksymets — Design and UI (" />
+                                    <Span FontAttributes="Bold" FontSize="Medium" Text="github" />
+                                    <Span Text=")" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>-->
                 </StackLayout>
             </ScrollView>
         </Grid>
