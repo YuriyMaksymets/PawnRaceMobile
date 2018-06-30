@@ -25,7 +25,7 @@ namespace PawnRaceMobile.Core
             if (possibleMoves.Count == 1)
             {
                 Move selectedMove = possibleMoves[0];
-                OnMoveProduced(selectedMove);
+                Device.BeginInvokeOnMainThread(() => OnMoveProduced(selectedMove));
                 return selectedMove;
             }
             else if (possibleMoves.Count > 1)
@@ -39,13 +39,21 @@ namespace PawnRaceMobile.Core
                 }
                 moveStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-                Move selectedMove = possibleMoves[minimax()];
+                int optimalMoveIndex = minimax();
+
+                // Capture possible incorrect minimax behaviour
+                if (optimalMoveIndex < 0 || optimalMoveIndex > possibleMoves.Count)
+                {
+                    optimalMoveIndex = 0;
+                }
+
+                Move selectedMove = possibleMoves[optimalMoveIndex];
                 Device.BeginInvokeOnMainThread(() => OnMoveProduced(selectedMove));
                 return selectedMove;
             }
             else
             {
-                OnMoveProduced(null);
+                Device.BeginInvokeOnMainThread(() => OnMoveProduced(null));
                 return null;
             }
         }
@@ -115,7 +123,7 @@ namespace PawnRaceMobile.Core
                     , CalculateAvailableMovesByColor(Color.White), playerToMove) != -1);
         }
 
-        private int computeScore(Color playerToMove)
+        private int computeScore(Color playerToMove, bool saveWinMove)
         {
             Color enemyColor = Opponent.Color;
 
@@ -136,8 +144,16 @@ namespace PawnRaceMobile.Core
                 }
             }
 
-            if (ContainsWinningMove(Color, CalculateAvailableMovesByColor(Color), playerToMove) != -1)
+            int winMoveIndex
+                = ContainsWinningMove(Color, CalculateAvailableMovesByColor(Color), playerToMove);
+            if (winMoveIndex != -1)
             {
+                if (saveWinMove)
+                {
+                    minimaxMoveScore = Inf;
+                    minimaxMoveIndex = winMoveIndex;
+                }
+
                 return Inf;
             }
 
@@ -207,7 +223,7 @@ namespace PawnRaceMobile.Core
 
             if (searchOver(validMoves, player, remainingDepth, searchCutoff))
             {
-                return computeScore(player);
+                return computeScore(player, false);
             }
 
             foreach (Move currMove in validMoves)
@@ -243,7 +259,7 @@ namespace PawnRaceMobile.Core
 
             if (searchOver(validMoves, player, remainingDepth, searchCutoff))
             {
-                return computeScore(player);
+                return computeScore(player, depth == 0);
             }
 
             for (int i = 0; i < validMoves.Count; ++i)
