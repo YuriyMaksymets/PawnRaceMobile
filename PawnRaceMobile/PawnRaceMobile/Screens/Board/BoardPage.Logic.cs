@@ -159,7 +159,12 @@ namespace PawnRaceMobile
 
         private async Task GoToMainMenu()
         {
-            await Navigation.PopToRootAsync();
+            var navStack = Navigation.NavigationStack.ToList();
+            for (int i = 1; i < navStack.Count - 1; i++)
+            {
+                Navigation.RemovePage(navStack[i]);
+            }
+            await Navigation.PopAsync();
             Global.Instance.InitializeBoardPage();
         }
 
