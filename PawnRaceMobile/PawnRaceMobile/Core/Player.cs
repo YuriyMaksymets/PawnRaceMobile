@@ -29,6 +29,8 @@ namespace PawnRaceMobile.Core
             r_PassedY = IsWhite ? Board.c_MAX_INDEX : 0;
         }
 
+        //public event Action TurnTaken;
+
         public event Action<IPlayer, Move> MoveProduced;
 
         public Board Board => m_Game.Board;

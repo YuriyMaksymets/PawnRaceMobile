@@ -14,14 +14,6 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <ContentView x:Name="backButton"
-                             BackgroundColor="{StaticResource dark}"
-                             Grid.Row="0">
-                    <Label Text="Main Menu" Style="{StaticResource lightLabel}"
-                           FontSize="36"
-                           VerticalOptions="CenterAndExpand" />
-                </ContentView>
-
                 <Grid x:Name="mainGrid"
                       ColumnSpacing="0" RowSpacing="0"
                       VerticalOptions="CenterAndExpand"
@@ -48,7 +40,7 @@
                     </Grid.ColumnDefinitions>
                 </Grid>
                 <ContentView BackgroundColor="{StaticResource dark}"
-                             Grid.Row="2">
+                             Grid.Row="0">
                     <ContentView x:Name="startButton"
                                  BackgroundColor="{StaticResource dark}">
                         <Label x:Name="startButtonLabel"
@@ -57,6 +49,21 @@
                                FontSize="36"
                                VerticalOptions="CenterAndExpand" />
                     </ContentView>
+                </ContentView>
+                <ContentView x:Name="thinkingLabel"
+                             BackgroundColor="{StaticResource dark}"
+                             Grid.Row="0"
+                             IsVisible="False">
+                    <Label Text="Thinking..." Style="{StaticResource lightLabel}"
+                           FontSize="36"
+                           VerticalOptions="CenterAndExpand" />
+                </ContentView>
+                <ContentView x:Name="backButton"
+                             BackgroundColor="{StaticResource dark}"
+                             Grid.Row="2">
+                    <Label Text="Main Menu" Style="{StaticResource lightLabel}"
+                           FontSize="36"
+                           VerticalOptions="CenterAndExpand" />
                 </ContentView>
             </Grid>
         </StackLayout>

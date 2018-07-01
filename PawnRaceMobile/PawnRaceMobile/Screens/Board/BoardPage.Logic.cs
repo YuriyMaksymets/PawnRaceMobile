@@ -1,5 +1,6 @@
 ﻿using PawnRaceMobile.Core;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -62,12 +63,25 @@ namespace PawnRaceMobile
             }
             else
             {
-                opponent = new MiniMaxAI(userColor.Inverse());
+                MiniMaxAI opponentAI = new MiniMaxAI(userColor.Inverse());
+                opponentAI.TurnTaken += OpponentBeginThinking;
+                opponentAI.MoveProduced += OpponentEndThinking;
+                opponent = opponentAI;
             }
 
             m_GameManager = new GameManager(whiteGap, blackGap, m_User, opponent);
             m_GameManager.MoveMade += RenderChanges;
             m_GameManager.MoveMade += CheckEndGame;
+        }
+
+        private void OpponentBeginThinking()
+        {
+            thinkingLabel.IsVisible = true;
+        }
+
+        private void OpponentEndThinking(IPlayer _, Move __)
+        {
+            thinkingLabel.IsVisible = false;
         }
 
         private void CheckEndGame()

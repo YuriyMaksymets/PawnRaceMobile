@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Xamarin.Forms;
 
@@ -7,13 +8,15 @@ namespace PawnRaceMobile.Core
 {
     public class MiniMaxAI : Player
     {
-        private long timeLimit = 4000;
+        private long m_TimeLimit = 4000;
         private long moveStartTime;
         private int minimaxMoveIndex, minimaxMoveScore;
         private const int c_MinimaxDepth = 5;
         private int[][] whitePawnChains;
         private int[][] blackPawnChains;
         private int Inf => int.MaxValue;
+
+        public event Action TurnTaken;
 
         public MiniMaxAI(Color color) : base(color)
         {
@@ -108,7 +111,7 @@ namespace PawnRaceMobile.Core
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             long elapsedTime = (currentTime - moveStartTime);
 
-            return elapsedTime >= timeLimit;
+            return elapsedTime >= m_TimeLimit;
         }
 
         private bool searchOver(IList<Move> validMoves, Color playerToMove
@@ -357,6 +360,10 @@ namespace PawnRaceMobile.Core
             return -1;
         }
 
-        public override void TakeTurn() => ThreadPool.QueueUserWorkItem(x => ProduceMove());
+        public override void TakeTurn()
+        {
+            Device.BeginInvokeOnMainThread(() => TurnTaken?.Invoke());
+            ThreadPool.QueueUserWorkItem(x => ProduceMove());
+        }
     }
 }
