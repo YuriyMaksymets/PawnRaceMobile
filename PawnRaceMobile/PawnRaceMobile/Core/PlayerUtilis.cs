@@ -4,12 +4,10 @@ namespace PawnRaceMobile.Core
 {
     internal static class PlayerUtilis
     {
-        public static bool simpleCapture(Square to, Color player)
-        {
-            return (to.Color == BoardUtilis.enemyColor(player));
-        }
+        public static bool SimpleCapture(Square to, Color player)
+            => (to.Color == BoardUtilis.EnemyColor(player));
 
-        public static bool enPassantCapture(Square from, Square to, Board board, Color player,
+        public static bool EnPassantCapture(Square from, Square to, Board board, Color player,
             Move move)
         {
             if (move == null)
@@ -20,7 +18,7 @@ namespace PawnRaceMobile.Core
             if (from.Y == move.To.Y && to.X == move.To.X)
             {
                 if (board.GetSquare(from.X, to.Y).Color == BoardUtilis
-                    .enemyColor(player))
+                    .EnemyColor(player))
                 {
                     return true;
                 }
@@ -28,12 +26,9 @@ namespace PawnRaceMobile.Core
             return false;
         }
 
-        public static bool forwardMove(Square to)
-        {
-            return to.Color == Color.None;
-        }
+        public static bool ForwardMove(Square to) => to.Color == Color.None;
 
-        public static int getDistToFinal(Square x, Color player, Board board)
+        public static int DistanceToFinal(Square x, Color player, Board board)
         {
             if (player == Color.White)
             {
@@ -43,7 +38,7 @@ namespace PawnRaceMobile.Core
             return x.Y;
         }
 
-        private static bool checkRank(int rank, Square pawn, Board board, Color color)
+        private static bool CheckRank(int rank, Square pawn, Board board, Color color)
         {
             //its file
             if (board.GetSquare(pawn.X, rank).Color != Color.None)
@@ -54,7 +49,7 @@ namespace PawnRaceMobile.Core
             //left and right
             if (pawn.X > 0)
             {
-                if (board.GetSquare(pawn.X - 1, rank).Color == BoardUtilis.enemyColor(color))
+                if (board.GetSquare(pawn.X - 1, rank).Color == BoardUtilis.EnemyColor(color))
                 {
                     return false;
                 }
@@ -62,7 +57,7 @@ namespace PawnRaceMobile.Core
 
             if (pawn.X < board.Size - 1)
             {
-                if (board.GetSquare(pawn.X + 1, rank).Color == BoardUtilis.enemyColor(color))
+                if (board.GetSquare(pawn.X + 1, rank).Color == BoardUtilis.EnemyColor(color))
                 {
                     return false;
                 }
@@ -70,13 +65,13 @@ namespace PawnRaceMobile.Core
             return true;
         }
 
-        public static bool isPassedPawn(Square pawn, Board board, Color color)
+        public static bool IsPassedPawn(Square pawn, Board board, Color color)
         {
             if (color == Color.White)
             {
                 for (int rank = pawn.Y + 1; rank < board.Size; ++rank)
                 {
-                    if (!checkRank(rank, pawn, board, color))
+                    if (!CheckRank(rank, pawn, board, color))
                     {
                         return false;
                     }
@@ -86,7 +81,7 @@ namespace PawnRaceMobile.Core
             {
                 for (int rank = pawn.Y - 1; rank >= 0; --rank)
                 {
-                    if (!checkRank(rank, pawn, board, color))
+                    if (!CheckRank(rank, pawn, board, color))
                     {
                         return false;
                     }
@@ -95,7 +90,7 @@ namespace PawnRaceMobile.Core
             return true;
         }
 
-        public static void initPawnChains(int[][] a)
+        public static void InitPawnChains(int[][] a)
         {
             for (int i = 0; i < a.Length; ++i)
             {
@@ -106,7 +101,7 @@ namespace PawnRaceMobile.Core
             }
         }
 
-        public static void computePawnChainsForRank(int[][] a, Board board, int rank, Color color)
+        public static void ComputePawnChainsForRank(int[][] a, Board board, int rank, Color color)
         {
             int colorType = -1;
             if (color == Color.Black)
@@ -136,7 +131,7 @@ namespace PawnRaceMobile.Core
             }
         }
 
-        public static int computeScorePwnChains(int[][] a, int size)
+        public static int ComputeScorePwnChains(int[][] a, int size)
         {
             int sum = 0;
 
@@ -151,7 +146,7 @@ namespace PawnRaceMobile.Core
             return sum;
         }
 
-        public static List<Move> getValidMovesForPawn(Color player, Square pawn, Board board, Game game)
+        public static List<Move> ValidMovesForPawn(Color player, Square pawn, Board board, Game game)
         {
             List<Move> moves = new List<Move>(4);
             Move lastMove = game.LastMove;
@@ -201,7 +196,7 @@ namespace PawnRaceMobile.Core
             return moves;
         }
 
-        private static int capturedFileStructure(Square pawn, Board board)
+        private static int CapturedFileStructure(Square pawn, Board board)
         {
             int structureScore = 0;
             int pawnY = pawn.Y;
@@ -255,14 +250,14 @@ namespace PawnRaceMobile.Core
             return structureScore;
         }
 
-        public static int capturedFileScore(Board board, int file, Color player, Color myPlayer)
+        public static int CapturedFileScore(Board board, int file, Color player, Color myPlayer)
         {
             bool capturedFile = true;
             bool hasPawn = false;
             int capturedFileScore = 0;
             for (int rank = 0; rank < board.Size; ++rank)
             {
-                if (board.GetSquare(file, rank).Color == BoardUtilis.enemyColor(player))
+                if (board.GetSquare(file, rank).Color == BoardUtilis.EnemyColor(player))
                 {
                     capturedFile = false;
                 }
@@ -286,7 +281,7 @@ namespace PawnRaceMobile.Core
                 {
                     if (board.GetSquare(file, rank).Color == player)
                     {
-                        capturedFileScore = capturedFileStructure(board.GetSquare(file, rank), board) * 4;
+                        capturedFileScore = CapturedFileStructure(board.GetSquare(file, rank), board) * 4;
                         if (capturedFileScore > 0)
                         {
                             if (player == Color.White)
@@ -305,7 +300,7 @@ namespace PawnRaceMobile.Core
             return capturedFileScore * 2;
         }
 
-        public static Square leadingPawn(Color pawnColor, Board board)
+        public static Square LeadingPawn(Color pawnColor, Board board)
         {
             if (pawnColor == Color.Black)
             {
@@ -335,7 +330,7 @@ namespace PawnRaceMobile.Core
             return null;
         }
 
-        public static int blockingPawns(Color color, Color playerToMove, IList<Square> playerPawns,
+        public static int BlockingPawns(Color color, Color playerToMove, IList<Square> playerPawns,
             int[][] whitePawnChains, int[][] blackPawnChains, Board board, Game game)
         {
             int pawnValue;
@@ -369,7 +364,7 @@ namespace PawnRaceMobile.Core
                     }
                 }
 
-                validMovesForPawn = getValidMovesForPawn(color, playerPawns[i], board, game);
+                validMovesForPawn = ValidMovesForPawn(color, playerPawns[i], board, game);
                 foreach (Move move in validMovesForPawn)
                 {
                     if (move.IsCapture)

@@ -13,10 +13,7 @@ namespace PawnRaceMobile
             SetButtons();
         }
 
-        private void SetNavBar()
-        {
-            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-        }
+        private void SetNavBar() => Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
 
         private void SetButtons()
         {

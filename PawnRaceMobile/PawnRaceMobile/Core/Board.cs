@@ -234,8 +234,8 @@ namespace PawnRaceMobile.Core
             }
         }
 
-        public int getNoOfWhites() => WhitePawns.Count;
+        public int NumOfWhites() => WhitePawns.Count;
 
-        public int getNoOfBlackes() => WhitePawns.Count;
+        public int NumOfBlacks() => WhitePawns.Count;
     }
 }

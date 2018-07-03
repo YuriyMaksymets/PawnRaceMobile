@@ -1,6 +1,7 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -24,6 +25,9 @@ namespace PawnRaceMobile
         #region Animations
 
         private const uint c_DestroyAnimLength = 120;
+        private const uint c_ThinkingTime = 4000;
+        private const int c_ThinkingTimeRandomness = 750;
+        private const uint c_ThinkingCycles = 2;
         private const uint c_MoveAnimLength = 280;
         private const uint c_DimmingTime = 120;
         private readonly Easing r_MoveAnimEasing = Easing.SinOut;
@@ -211,6 +215,24 @@ namespace PawnRaceMobile
         {
             startButton.IsEnabled = false;
             startButton.IsVisible = false;
+        }
+
+        private void AnimateThinkingLabel()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                await thinkingLabel.FadeTo(1);
+                    //await Update();
+                    Random random = new Random();
+                uint displayThinkTime = c_ThinkingTime
+                    + (uint)random.Next(-c_ThinkingTimeRandomness, c_ThinkingTimeRandomness);
+                uint fadeTime = displayThinkTime / c_ThinkingCycles / 2;
+                for (int i = 0; i < c_ThinkingCycles; i++)
+                {
+                    await thinkingLabel.FadeTo(0, fadeTime);
+                    await thinkingLabel.FadeTo(1, fadeTime);
+                }
+            });
         }
 
         private View DimTheScreen(Command onPress = null)

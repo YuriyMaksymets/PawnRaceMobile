@@ -2,7 +2,7 @@
 {
     internal class BoardUtilis
     {
-        public static Color enemyColor(Color c)
+        public static Color EnemyColor(Color c)
         {
             switch (c)
             {
@@ -17,7 +17,7 @@
             }
         }
 
-        public static int getIntFromLetter(char x)
+        public static int GetIntFromLetter(char x)
         {
             if (x >= 'a' && x <= 'z')
             {

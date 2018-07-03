@@ -1,6 +1,5 @@
 ﻿using PawnRaceMobile.Core;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -77,12 +76,10 @@ namespace PawnRaceMobile
         private void OpponentBeginThinking()
         {
             thinkingLabel.IsVisible = true;
+            AnimateThinkingLabel();
         }
 
-        private void OpponentEndThinking(IPlayer _, Move __)
-        {
-            thinkingLabel.IsVisible = false;
-        }
+        private void OpponentEndThinking(IPlayer _, Move __) => thinkingLabel.IsVisible = false;
 
         private void CheckEndGame()
         {
@@ -159,7 +156,7 @@ namespace PawnRaceMobile
 
         private async Task GoToMainMenu()
         {
-            var navStack = Navigation.NavigationStack.ToList();
+            System.Collections.Generic.List<Page> navStack = Navigation.NavigationStack.ToList();
             for (int i = 1; i < navStack.Count - 1; i++)
             {
                 Navigation.RemovePage(navStack[i]);
@@ -197,11 +194,7 @@ namespace PawnRaceMobile
             };
         }
 
-        private void SetNavBar()
-        {
-            NavigationPage.SetHasNavigationBar(this, false);
-            //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
-        }
+        private void SetNavBar() => NavigationPage.SetHasNavigationBar(this, false);
 
         private void SetUpGame()
                     => SetUpGame((char)('a' + m_GapIndecies[0]), (char)('a' + m_GapIndecies[1]));

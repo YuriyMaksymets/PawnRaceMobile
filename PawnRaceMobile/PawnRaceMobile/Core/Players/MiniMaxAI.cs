@@ -8,15 +8,16 @@ namespace PawnRaceMobile.Core
 {
     public class MiniMaxAI : Player
     {
-        private long m_TimeLimit = 4000;
-        private long moveStartTime;
-        private int minimaxMoveIndex, minimaxMoveScore;
+        private const long c_TimeLimit = 4000;
         private const int c_MinimaxDepth = 5;
-        private int[][] whitePawnChains;
-        private int[][] blackPawnChains;
-        private int Inf => int.MaxValue;
+        private long m_MoveStartTime;
+        private int m_MinimaxMoveIndex, m_MinimaxMoveScore;
+        private int[][] m_WhitePawnChains;
+        private int[][] m_BlackPawnChains;
 
         public event Action TurnTaken;
+
+        private int Inf => int.MaxValue;
 
         public MiniMaxAI(Color color) : base(color)
         {
@@ -33,16 +34,16 @@ namespace PawnRaceMobile.Core
             }
             else if (possibleMoves.Count > 1)
             {
-                whitePawnChains = new int[Board.Size][];
-                blackPawnChains = new int[Board.Size][];
+                m_WhitePawnChains = new int[Board.Size][];
+                m_BlackPawnChains = new int[Board.Size][];
                 for (int i = 0; i < Board.Size; i++)
                 {
-                    whitePawnChains[i] = new int[Board.Size];
-                    blackPawnChains[i] = new int[Board.Size];
+                    m_WhitePawnChains[i] = new int[Board.Size];
+                    m_BlackPawnChains[i] = new int[Board.Size];
                 }
-                moveStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                m_MoveStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-                int optimalMoveIndex = minimax();
+                int optimalMoveIndex = Minimax();
 
                 // Capture possible incorrect minimax behaviour
                 if (optimalMoveIndex < 0 || optimalMoveIndex > possibleMoves.Count)
@@ -69,7 +70,7 @@ namespace PawnRaceMobile.Core
             ? CalculatePossibleMovesOptimized()
             : Opponent.CalculatePossibleMovesOptimized();
 
-        private Square bestPassedPawn(Color player)
+        private Square BestPassedPawn(Color player)
         {
             IList<Square> pawnsList = PawnsByColor(player);
 
@@ -78,11 +79,11 @@ namespace PawnRaceMobile.Core
 
             foreach (Square pawn in pawnsList)
             {
-                if (PlayerUtilis.isPassedPawn(pawn, Board, player))
+                if (PlayerUtilis.IsPassedPawn(pawn, Board, player))
                 {
-                    if (bestPawn == null || distMin > PlayerUtilis.getDistToFinal(pawn, player, Board))
+                    if (bestPawn == null || distMin > PlayerUtilis.DistanceToFinal(pawn, player, Board))
                     {
-                        distMin = PlayerUtilis.getDistToFinal(pawn, player, Board);
+                        distMin = PlayerUtilis.DistanceToFinal(pawn, player, Board);
                         bestPawn = pawn;
                     }
                 }
@@ -90,31 +91,31 @@ namespace PawnRaceMobile.Core
             return bestPawn;
         }
 
-        private int minimax()
+        private int Minimax()
         {
-            minimaxMoveIndex = 0;
-            minimaxMoveScore = -Inf;
+            m_MinimaxMoveIndex = 0;
+            m_MinimaxMoveScore = -Inf;
 
             int remainingDepth = c_MinimaxDepth;
             //iterative deepening
-            while (minimaxMoveScore != Inf &&
-                !getSearchCutoff())
+            while (m_MinimaxMoveScore != Inf &&
+                !SearchCutoff())
             {
-                alphaBetaMax(-Inf, Inf, 0, Color, remainingDepth);
+                AlphaBetaMax(-Inf, Inf, 0, Color, remainingDepth);
                 remainingDepth++;
             }
-            return minimaxMoveIndex;
+            return m_MinimaxMoveIndex;
         }
 
-        private bool getSearchCutoff()
+        private bool SearchCutoff()
         {
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            long elapsedTime = (currentTime - moveStartTime);
+            long elapsedTime = (currentTime - m_MoveStartTime);
 
-            return elapsedTime >= m_TimeLimit;
+            return elapsedTime >= c_TimeLimit;
         }
 
-        private bool searchOver(IList<Move> validMoves, Color playerToMove
+        private bool IsSearchOver(IList<Move> validMoves, Color playerToMove
             , int remainingDepth
             , bool searchCutoff)
         {
@@ -126,7 +127,7 @@ namespace PawnRaceMobile.Core
                     , CalculateAvailableMovesByColor(Color.White), playerToMove) != -1);
         }
 
-        private int computeScore(Color playerToMove, bool saveWinMove)
+        private int ComputeScore(Color playerToMove, bool saveWinMove)
         {
             Color enemyColor = Opponent.Color;
 
@@ -153,8 +154,8 @@ namespace PawnRaceMobile.Core
             {
                 if (saveWinMove)
                 {
-                    minimaxMoveScore = Inf;
-                    minimaxMoveIndex = winMoveIndex;
+                    m_MinimaxMoveScore = Inf;
+                    m_MinimaxMoveIndex = winMoveIndex;
                 }
 
                 return Inf;
@@ -165,43 +166,43 @@ namespace PawnRaceMobile.Core
                 return -Inf;
             }
 
-            int score = (Board.getNoOfWhites() - Board.getNoOfBlackes()) * 60;
+            int score = (Board.NumOfWhites() - Board.NumOfBlacks()) * 60;
             if (Color == Color.Black)
             {
                 score = -score;
             }
 
-            PlayerUtilis.initPawnChains(whitePawnChains);
-            PlayerUtilis.initPawnChains(blackPawnChains);
+            PlayerUtilis.InitPawnChains(m_WhitePawnChains);
+            PlayerUtilis.InitPawnChains(m_BlackPawnChains);
 
             for (int rank = 1; rank < Board.Size; ++rank)
             {
-                PlayerUtilis.computePawnChainsForRank(whitePawnChains, Board, rank, Color.White);
+                PlayerUtilis.ComputePawnChainsForRank(m_WhitePawnChains, Board, rank, Color.White);
             }
 
             for (int rank = Board.Size - 2; rank >= 1; --rank)
             {
-                PlayerUtilis.computePawnChainsForRank(blackPawnChains, Board, rank, Color.Black);
+                PlayerUtilis.ComputePawnChainsForRank(m_BlackPawnChains, Board, rank, Color.Black);
             }
 
             if (Color == Color.White)
             {
-                score += 2 * PlayerUtilis.computeScorePwnChains(whitePawnChains, Board.Size);
-                score -= 2 * PlayerUtilis.computeScorePwnChains(whitePawnChains, Board.Size);
+                score += 2 * PlayerUtilis.ComputeScorePwnChains(m_WhitePawnChains, Board.Size);
+                score -= 2 * PlayerUtilis.ComputeScorePwnChains(m_WhitePawnChains, Board.Size);
             }
             else
             {
-                score -= 2 * PlayerUtilis.computeScorePwnChains(whitePawnChains, Board.Size);
-                score += 2 * PlayerUtilis.computeScorePwnChains(whitePawnChains, Board.Size);
+                score -= 2 * PlayerUtilis.ComputeScorePwnChains(m_WhitePawnChains, Board.Size);
+                score += 2 * PlayerUtilis.ComputeScorePwnChains(m_WhitePawnChains, Board.Size);
             }
 
             IList<Square> playerPawns = PawnsByColor(Color);
             score += PlayerUtilis
-                .blockingPawns(Color, playerToMove, playerPawns, whitePawnChains, blackPawnChains,
+                .BlockingPawns(Color, playerToMove, playerPawns, m_WhitePawnChains, m_BlackPawnChains,
                     Board, m_Game);
             playerPawns = PawnsByColor(enemyColor);
             score -= PlayerUtilis
-                .blockingPawns(enemyColor, playerToMove, playerPawns, whitePawnChains, blackPawnChains,
+                .BlockingPawns(enemyColor, playerToMove, playerPawns, m_WhitePawnChains, m_BlackPawnChains,
                     Board, m_Game);
 
             //search for Board presence on empty file
@@ -209,8 +210,8 @@ namespace PawnRaceMobile.Core
             int capturedFileScore = 0;
             for (int file = 0; file < Board.Size; ++file)
             {
-                capturedFileScore += PlayerUtilis.capturedFileScore(Board, file, Color, Color);
-                capturedFileScore -= PlayerUtilis.capturedFileScore(Board, file, enemyColor, Color);
+                capturedFileScore += PlayerUtilis.CapturedFileScore(Board, file, Color, Color);
+                capturedFileScore -= PlayerUtilis.CapturedFileScore(Board, file, enemyColor, Color);
             }
 
             score += capturedFileScore;
@@ -218,21 +219,21 @@ namespace PawnRaceMobile.Core
             return score;
         }
 
-        private int alphaBetaMin(int alpha, int beta, int depth, Color player, int remainingDepth)
+        private int AlphaBetaMin(int alpha, int beta, int depth, Color player, int remainingDepth)
         {
             IList<Move> validMoves = CalculateAvailableMovesByColor(player);
             int nodeScore;
-            bool searchCutoff = getSearchCutoff();
+            bool searchCutoff = SearchCutoff();
 
-            if (searchOver(validMoves, player, remainingDepth, searchCutoff))
+            if (IsSearchOver(validMoves, player, remainingDepth, searchCutoff))
             {
-                return computeScore(player, false);
+                return ComputeScore(player, false);
             }
 
             foreach (Move currMove in validMoves)
             {
                 m_Game.ApplyMove(currMove);
-                nodeScore = alphaBetaMax(alpha, beta, depth + 1, BoardUtilis.enemyColor(player),
+                nodeScore = AlphaBetaMax(alpha, beta, depth + 1, BoardUtilis.EnemyColor(player),
                     remainingDepth - 1);
                 m_Game.UnapplyMove(currMove);
 
@@ -250,7 +251,7 @@ namespace PawnRaceMobile.Core
             return beta;
         }
 
-        private int alphaBetaMax(int alpha, int beta, int depth, Color player, int remainingDepth)
+        private int AlphaBetaMax(int alpha, int beta, int depth, Color player, int remainingDepth)
         {
             IList<Move> validMoves = CalculateAvailableMovesByColor(player);
             int nodeScore;
@@ -258,11 +259,11 @@ namespace PawnRaceMobile.Core
             int currBestScore = -Inf;
             bool toChange = false;
             Move currMove;
-            bool searchCutoff = getSearchCutoff();
+            bool searchCutoff = SearchCutoff();
 
-            if (searchOver(validMoves, player, remainingDepth, searchCutoff))
+            if (IsSearchOver(validMoves, player, remainingDepth, searchCutoff))
             {
-                return computeScore(player, depth == 0);
+                return ComputeScore(player, depth == 0);
             }
 
             for (int i = 0; i < validMoves.Count; ++i)
@@ -270,11 +271,11 @@ namespace PawnRaceMobile.Core
                 currMove = validMoves[i];
 
                 m_Game.ApplyMove(currMove);
-                nodeScore = alphaBetaMin(alpha, beta, depth + 1, BoardUtilis.enemyColor(player),
+                nodeScore = AlphaBetaMin(alpha, beta, depth + 1, BoardUtilis.EnemyColor(player),
                     remainingDepth - 1);
                 m_Game.UnapplyMove(currMove);
 
-                if (depth == 0 && i == minimaxMoveIndex && nodeScore == -Inf)
+                if (depth == 0 && i == m_MinimaxMoveIndex && nodeScore == -Inf)
                 {
                     toChange = true;
                 }
@@ -290,8 +291,8 @@ namespace PawnRaceMobile.Core
                     {
                         if (nodeScore == Inf)
                         {
-                            minimaxMoveIndex = i;
-                            minimaxMoveScore = nodeScore;
+                            m_MinimaxMoveIndex = i;
+                            m_MinimaxMoveScore = nodeScore;
                         }
                         currBestMove = i;
                         currBestScore = nodeScore;
@@ -301,11 +302,11 @@ namespace PawnRaceMobile.Core
                 }
             }
 
-            searchCutoff = getSearchCutoff();
+            searchCutoff = SearchCutoff();
             if (depth == 0 && (!searchCutoff || toChange))
             {
-                minimaxMoveIndex = currBestMove;
-                minimaxMoveScore = currBestScore;
+                m_MinimaxMoveIndex = currBestMove;
+                m_MinimaxMoveScore = currBestScore;
             }
 
             return alpha;
@@ -313,7 +314,7 @@ namespace PawnRaceMobile.Core
 
         private int ContainsWinningMove(Color player, IList<Move> validMoves, Color playerToMove)
         {
-            Square passedPawn = bestPassedPawn(player);
+            Square passedPawn = BestPassedPawn(player);
             int finalMove = -1;
             int d1;
             int d2;
@@ -321,13 +322,13 @@ namespace PawnRaceMobile.Core
             if (passedPawn != null)
             {
                 bool advancePassedPawn = true;
-                d2 = PlayerUtilis.getDistToFinal(passedPawn, player, Board);
+                d2 = PlayerUtilis.DistanceToFinal(passedPawn, player, Board);
 
                 //Check if enemy can win
                 IList<Square> enemyPawns = Opponent.Pawns;
                 foreach (Square pawn in enemyPawns)
                 {
-                    d1 = PlayerUtilis.getDistToFinal(pawn, BoardUtilis.enemyColor(player), Board);
+                    d1 = PlayerUtilis.DistanceToFinal(pawn, BoardUtilis.EnemyColor(player), Board);
 
                     if (d1 < d2)
                     {
