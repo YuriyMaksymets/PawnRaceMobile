@@ -8,8 +8,8 @@ namespace PawnRaceMobile.Core
     {
         public static bool ValidSquare(Square x)
         {
-            return (x.X >= 0 && x.X < Board.c_MAX_COORDINATE &&
-                x.Y >= 0 && x.Y < Board.c_MAX_COORDINATE);
+            return (x.X >= 0 && x.X < Board.c_MaxCoord &&
+                x.Y >= 0 && x.Y < Board.c_MaxCoord);
         }
 
         public static bool CheckSimpleCapture(Square to, Color playerColor)

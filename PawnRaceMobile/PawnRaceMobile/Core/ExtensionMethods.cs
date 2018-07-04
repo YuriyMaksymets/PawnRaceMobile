@@ -41,10 +41,6 @@ namespace PawnRaceMobile.Core
                 case Color.Black:
                     return Color.White;
 
-                case Color.None:
-                    Console.WriteLine("Getting Inverse of empty color");
-                    return Color.None;
-
                 default:
                     return Color.None;
             }

@@ -1,6 +1,7 @@
 ﻿using PawnRaceMobile.Core;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -8,6 +9,8 @@ namespace PawnRaceMobile
 {
     public partial class BoardPage : ContentPage
     {
+        private const long c_AIThinkingTime = 4000;
+
         private bool m_ControlEnabled;
         private Square m_Destination;
         private GameManager m_GameManager;
@@ -23,8 +26,6 @@ namespace PawnRaceMobile
             SetNavBar();
             SetButtons();
         }
-
-        public override int GetHashCode() => base.GetHashCode();
 
         public void Initialize(bool userPlaysWhite, bool localMultiplayer)
         {
@@ -62,7 +63,7 @@ namespace PawnRaceMobile
             }
             else
             {
-                MiniMaxAI opponentAI = new MiniMaxAI(userColor.Inverse());
+                MiniMaxAI opponentAI = new MiniMaxAI(userColor.Inverse(), c_AIThinkingTime);
                 opponentAI.TurnTaken += OpponentBeginThinking;
                 opponentAI.MoveProduced += OpponentEndThinking;
                 opponent = opponentAI;

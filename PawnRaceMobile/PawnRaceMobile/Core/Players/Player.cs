@@ -23,10 +23,10 @@ namespace PawnRaceMobile.Core
         public Player(Color color)
         {
             Color = color;
-            r_YForLongMove = IsWhite ? 1 : Board.c_MAX_INDEX - 1;
-            r_YCannotPass = Board.c_MAX_INDEX - r_YForLongMove;
+            r_YForLongMove = IsWhite ? 1 : Board.c_MaxIndex - 1;
+            r_YCannotPass = Board.c_MaxIndex - r_YForLongMove;
             r_MoveShift = IsWhite ? 1 : -1;
-            r_PassedY = IsWhite ? Board.c_MAX_INDEX : 0;
+            r_PassedY = IsWhite ? Board.c_MaxIndex : 0;
         }
 
         //public event Action TurnTaken;
@@ -81,7 +81,7 @@ namespace PawnRaceMobile.Core
             }
             else
             {
-                IList<Move> moves = new List<Move>(Board.c_MAX_INDEX << 1);
+                IList<Move> moves = new List<Move>(Board.c_MaxIndex << 1);
                 Pawns.ForEach(pawn =>
                 {
                     moves.Add(new Move(pawn, Board.GetSquare(pawn.X, pawn.Y + r_MoveShift)));
@@ -125,7 +125,7 @@ namespace PawnRaceMobile.Core
             for (int attackShift = -1; attackShift <= 1; attackShift += 2)
             {
                 int newX = pawn.X + attackShift;
-                if (newX < 0 || newX > Board.c_MAX_INDEX)
+                if (newX < 0 || newX > Board.c_MaxIndex)
                 {
                     continue;
                 }

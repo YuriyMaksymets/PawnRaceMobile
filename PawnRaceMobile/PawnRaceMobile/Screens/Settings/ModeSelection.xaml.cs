@@ -1,6 +1,5 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PawnRaceMobile.Screens
 {
@@ -14,11 +13,7 @@ namespace PawnRaceMobile.Screens
             SetButtons();
         }
 
-        private void SetNavBar()
-        {
-            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
-        }
+        private void SetNavBar() => NavigationPage.SetHasNavigationBar(this, false);
 
         private void SetButtons()
         {

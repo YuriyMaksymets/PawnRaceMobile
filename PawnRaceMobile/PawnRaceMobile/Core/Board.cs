@@ -5,14 +5,19 @@ using System.Text;
 
 namespace PawnRaceMobile.Core
 {
-    public class Board : ICloneable
+    public class Board
     {
-        public const byte c_MAX_COORDINATE = 8;
-        public const byte c_MAX_INDEX = c_MAX_COORDINATE - 1;
+        public const byte c_MaxCoord = 8;
+        public const byte c_MaxIndex = c_MaxCoord - 1;
 
-        public int Size => c_MAX_COORDINATE;
+        public int Size => c_MaxCoord;
 
         public byte BlackGapIndex
+        {
+            get; private set;
+        }
+
+        public byte WhiteGapIndex
         {
             get; private set;
         }
@@ -22,17 +27,16 @@ namespace PawnRaceMobile.Core
             get; private set;
         }
 
-        public IList<Square> Pawns => WhitePawns.Concat(BlackPawns).ToList();
-
-        public byte WhiteGapIndex
-        {
-            get; private set;
-        }
-
         public IList<Square> WhitePawns
         {
             get; private set;
         }
+
+        public int NumOfWhites() => WhitePawns.Count;
+
+        public int NumOfBlacks() => WhitePawns.Count;
+
+        public IList<Square> Pawns => WhitePawns.Concat(BlackPawns).ToList();
 
         private Square[,] Squares
         {
@@ -41,18 +45,18 @@ namespace PawnRaceMobile.Core
 
         public Board(char whiteGap, char blackGap)
         {
-            Squares = new Square[c_MAX_COORDINATE, c_MAX_COORDINATE];
-            for (int x = 0; x < c_MAX_COORDINATE; x++)
+            Squares = new Square[c_MaxCoord, c_MaxCoord];
+            for (int x = 0; x < c_MaxCoord; x++)
             {
-                for (int y = 0; y < c_MAX_COORDINATE; y++)
+                for (int y = 0; y < c_MaxCoord; y++)
                 {
                     Squares[x, y] = new Square(x, y);
                 }
             }
-            for (int i = 0; i < c_MAX_COORDINATE; i++)
+            for (int i = 0; i < c_MaxCoord; i++)
             {
                 Squares[i, 1].Color = Color.White;
-                Squares[i, c_MAX_COORDINATE - 2].Color = Color.Black;
+                Squares[i, c_MaxCoord - 2].Color = Color.Black;
             }
 
             WhiteGapIndex = (byte)(char.ToLower(whiteGap) - 'a');
@@ -60,18 +64,18 @@ namespace PawnRaceMobile.Core
             try
             {
                 Squares[WhiteGapIndex, 1].Color = Color.None;
-                Squares[BlackGapIndex, c_MAX_INDEX - 1].Color = Color.None;
+                Squares[BlackGapIndex, c_MaxIndex - 1].Color = Color.None;
             }
             catch (Exception)
             {
                 throw new Exception("Incorrect gaps: " + whiteGap + " " + blackGap);
             }
 
-            BlackPawns = new List<Square>(c_MAX_INDEX);
-            WhitePawns = new List<Square>(c_MAX_INDEX);
-            for (int i = 0; i < c_MAX_COORDINATE; i++)
+            BlackPawns = new List<Square>(c_MaxIndex);
+            WhitePawns = new List<Square>(c_MaxIndex);
+            for (int i = 0; i < c_MaxCoord; i++)
             {
-                for (int j = 0; j < c_MAX_COORDINATE; j++)
+                for (int j = 0; j < c_MaxCoord; j++)
                 {
                     if (Squares[i, j].Color == Color.White)
                     {
@@ -137,17 +141,15 @@ namespace PawnRaceMobile.Core
             AddPawn(to);
         }
 
-        public object Clone() => MemberwiseClone();
-
         public string PrintToConsole()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("   A B C D E F G H   ");
 
-            for (int col = c_MAX_COORDINATE - 1; col >= 0; col--)
+            for (int col = c_MaxCoord - 1; col >= 0; col--)
             {
                 string rowString = "\n" + (col + 1).ToString() + "  ";
-                for (int row = 0; row < c_MAX_COORDINATE; row++)
+                for (int row = 0; row < c_MaxCoord; row++)
                 {
                     rowString += Squares[row, col].Color.Char();
                     rowString += " ";
@@ -160,8 +162,6 @@ namespace PawnRaceMobile.Core
             return sb.ToString();
         }
 
-        //assert x<Squares.length && y < Squares[0].length
-        //  : "The square does not exist in current Squares";
         public Square GetSquare(int x, int y) => Squares[x, y];
 
         public void UnapplyMove(Move move)
@@ -233,9 +233,5 @@ namespace PawnRaceMobile.Core
                 BlackPawns.Remove(pawn);
             }
         }
-
-        public int NumOfWhites() => WhitePawns.Count;
-
-        public int NumOfBlacks() => WhitePawns.Count;
     }
 }

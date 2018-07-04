@@ -29,13 +29,13 @@ namespace PawnRaceMobile.Core
         {
             get
             {
-                for (int i = 0; i < Board.c_MAX_COORDINATE; i++)
+                for (int i = 0; i < Board.c_MaxCoord; i++)
                 {
                     if (Board.GetSquare(i, 0).IsOccupiedBy(Color.Black))
                     {
                         return Color.Black;
                     }
-                    if (Board.GetSquare(i, Board.c_MAX_INDEX).IsOccupiedBy(Color.White))
+                    if (Board.GetSquare(i, Board.c_MaxIndex).IsOccupiedBy(Color.White))
                     {
                         return Color.White;
                     }
@@ -60,10 +60,10 @@ namespace PawnRaceMobile.Core
                 {
                     return false;
                 }
-                for (int i = 0; i < Board.c_MAX_COORDINATE; i++)
+                for (int i = 0; i < Board.c_MaxCoord; i++)
                 {
                     if (Board.GetSquare(i, 0).IsOccupied
-                        || Board.GetSquare(i, Board.c_MAX_INDEX).IsOccupied)
+                        || Board.GetSquare(i, Board.c_MaxIndex).IsOccupied)
                     {
                         return true;
                     }
@@ -141,10 +141,10 @@ namespace PawnRaceMobile.Core
             int startY = finishY + moveShift;
             int startX = finishX;
 
-            if (startX < 0 || startX > Board.c_MAX_INDEX
-                || startY < 0 || startY > Board.c_MAX_INDEX
-                || finishX < 0 || finishX > Board.c_MAX_INDEX
-                || finishY < 0 || finishY > Board.c_MAX_INDEX)
+            if (startX < 0 || startX > Board.c_MaxIndex
+                || startY < 0 || startY > Board.c_MaxIndex
+                || finishX < 0 || finishX > Board.c_MaxIndex
+                || finishY < 0 || finishY > Board.c_MaxIndex)
             {
                 return null;
             }
@@ -176,9 +176,9 @@ namespace PawnRaceMobile.Core
             }
             else
             {
-                int possibleY = CurrentPlayer.Color == Color.White ? 1 : Board.c_MAX_INDEX - 1;
+                int possibleY = CurrentPlayer.Color == Color.White ? 1 : Board.c_MaxIndex - 1;
                 int actualY = finishY + (moveShift << 1);
-                if (actualY >= 0 && actualY < Board.c_MAX_COORDINATE)
+                if (actualY >= 0 && actualY < Board.c_MaxCoord)
                 {
                     startSquare = Board.GetSquare(startX, actualY);
                     if (actualY == possibleY && startSquare.IsOccupiedBy(CurrentPlayer.Color))

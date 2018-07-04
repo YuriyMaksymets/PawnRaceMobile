@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Xamarin.Forms;
 
@@ -8,8 +7,9 @@ namespace PawnRaceMobile.Core
 {
     public class MiniMaxAI : Player
     {
-        private const long c_TimeLimit = 4000;
         private const int c_MinimaxDepth = 5;
+        private readonly long r_TimeLimit;
+
         private long m_MoveStartTime;
         private int m_MinimaxMoveIndex, m_MinimaxMoveScore;
         private int[][] m_WhitePawnChains;
@@ -19,9 +19,7 @@ namespace PawnRaceMobile.Core
 
         private int Inf => int.MaxValue;
 
-        public MiniMaxAI(Color color) : base(color)
-        {
-        }
+        public MiniMaxAI(Color color, long timeLimit) : base(color) => r_TimeLimit = timeLimit;
 
         public override Move ProduceMove()
         {
@@ -60,6 +58,12 @@ namespace PawnRaceMobile.Core
                 Device.BeginInvokeOnMainThread(() => OnMoveProduced(null));
                 return null;
             }
+        }
+
+        public override void TakeTurn()
+        {
+            Device.BeginInvokeOnMainThread(() => TurnTaken?.Invoke());
+            ThreadPool.QueueUserWorkItem(x => ProduceMove());
         }
 
         private IList<Square> PawnsByColor(Color color)
@@ -112,7 +116,7 @@ namespace PawnRaceMobile.Core
             long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             long elapsedTime = (currentTime - m_MoveStartTime);
 
-            return elapsedTime >= c_TimeLimit;
+            return elapsedTime >= r_TimeLimit;
         }
 
         private bool IsSearchOver(IList<Move> validMoves, Color playerToMove
@@ -161,7 +165,8 @@ namespace PawnRaceMobile.Core
                 return Inf;
             }
 
-            if (ContainsWinningMove(enemyColor, CalculateAvailableMovesByColor(enemyColor), playerToMove) != -1)
+            if (ContainsWinningMove(enemyColor,
+                CalculateAvailableMovesByColor(enemyColor), playerToMove) != -1)
             {
                 return -Inf;
             }
@@ -198,11 +203,13 @@ namespace PawnRaceMobile.Core
 
             IList<Square> playerPawns = PawnsByColor(Color);
             score += PlayerUtilis
-                .BlockingPawns(Color, playerToMove, playerPawns, m_WhitePawnChains, m_BlackPawnChains,
+                .BlockingPawns(Color, playerToMove, playerPawns
+                , m_WhitePawnChains, m_BlackPawnChains,
                     Board, m_Game);
             playerPawns = PawnsByColor(enemyColor);
             score -= PlayerUtilis
-                .BlockingPawns(enemyColor, playerToMove, playerPawns, m_WhitePawnChains, m_BlackPawnChains,
+                .BlockingPawns(enemyColor, playerToMove, playerPawns
+                , m_WhitePawnChains, m_BlackPawnChains,
                     Board, m_Game);
 
             //search for Board presence on empty file
@@ -233,7 +240,7 @@ namespace PawnRaceMobile.Core
             foreach (Move currMove in validMoves)
             {
                 m_Game.ApplyMove(currMove);
-                nodeScore = AlphaBetaMax(alpha, beta, depth + 1, BoardUtilis.EnemyColor(player),
+                nodeScore = AlphaBetaMax(alpha, beta, depth + 1, player.Inverse(),
                     remainingDepth - 1);
                 m_Game.UnapplyMove(currMove);
 
@@ -271,7 +278,7 @@ namespace PawnRaceMobile.Core
                 currMove = validMoves[i];
 
                 m_Game.ApplyMove(currMove);
-                nodeScore = AlphaBetaMin(alpha, beta, depth + 1, BoardUtilis.EnemyColor(player),
+                nodeScore = AlphaBetaMin(alpha, beta, depth + 1, player.Inverse(),
                     remainingDepth - 1);
                 m_Game.UnapplyMove(currMove);
 
@@ -328,7 +335,7 @@ namespace PawnRaceMobile.Core
                 IList<Square> enemyPawns = Opponent.Pawns;
                 foreach (Square pawn in enemyPawns)
                 {
-                    d1 = PlayerUtilis.DistanceToFinal(pawn, BoardUtilis.EnemyColor(player), Board);
+                    d1 = PlayerUtilis.DistanceToFinal(pawn, player.Inverse(), Board);
 
                     if (d1 < d2)
                     {
@@ -359,12 +366,6 @@ namespace PawnRaceMobile.Core
             }
 
             return -1;
-        }
-
-        public override void TakeTurn()
-        {
-            Device.BeginInvokeOnMainThread(() => TurnTaken?.Invoke());
-            ThreadPool.QueueUserWorkItem(x => ProduceMove());
         }
     }
 }

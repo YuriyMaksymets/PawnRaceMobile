@@ -25,7 +25,6 @@ namespace PawnRaceMobile
         #region Animations
 
         private const uint c_DestroyAnimLength = 120;
-        private const uint c_ThinkingTime = 4000;
         private const int c_ThinkingTimeRandomness = 750;
         private const uint c_ThinkingCycles = 2;
         private const uint c_MoveAnimLength = 280;
@@ -209,7 +208,7 @@ namespace PawnRaceMobile
             m_AvailableMovesImages.Clear();
         }
 
-        private int YBasedOnBoardRotation(int y) => m_BoardRotated ? Board.c_MAX_INDEX - y : y;
+        private int YBasedOnBoardRotation(int y) => m_BoardRotated ? Board.c_MaxIndex - y : y;
 
         private void HideStartButton()
         {
@@ -222,9 +221,8 @@ namespace PawnRaceMobile
             Task.Factory.StartNew(async () =>
             {
                 await thinkingLabel.FadeTo(1);
-                    //await Update();
-                    Random random = new Random();
-                uint displayThinkTime = c_ThinkingTime
+                Random random = new Random();
+                uint displayThinkTime = (uint)c_AIThinkingTime
                     + (uint)random.Next(-c_ThinkingTimeRandomness, c_ThinkingTimeRandomness);
                 uint fadeTime = displayThinkTime / c_ThinkingCycles / 2;
                 for (int i = 0; i < c_ThinkingCycles; i++)

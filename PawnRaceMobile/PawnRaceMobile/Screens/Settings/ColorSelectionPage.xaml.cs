@@ -1,6 +1,5 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PawnRaceMobile.Screens
 {
@@ -20,28 +19,24 @@ namespace PawnRaceMobile.Screens
             {
                 Command = new Command(async ()
                 =>
-                {
-                    Global.Instance.BoardPage.Initialize(true, false);
-                    await Navigation.PushAsync(Global.Instance.BoardPage);
-                }
+                  {
+                      Global.Instance.BoardPage.Initialize(true, false);
+                      await Navigation.PushAsync(Global.Instance.BoardPage);
+                  }
                 )
             });
             blackButton.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async ()
                 =>
-                {
-                    Global.Instance.BoardPage.Initialize(false, false);
-                    await Navigation.PushAsync(Global.Instance.BoardPage);
-                }
+                  {
+                      Global.Instance.BoardPage.Initialize(false, false);
+                      await Navigation.PushAsync(Global.Instance.BoardPage);
+                  }
                 )
             });
         }
 
-        private void SetNavBar()
-        {
-            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
-            //On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
-        }
+        private void SetNavBar() => NavigationPage.SetHasNavigationBar(this, false);
     }
 }
