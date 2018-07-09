@@ -1,6 +1,5 @@
 ﻿using PawnRaceMobile.Screens;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PawnRaceMobile
 {
